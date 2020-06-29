@@ -1,0 +1,32 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.title-image').on('click', (event) => {
+		let link = $(event.currentTarget).attr('href');
+		location.href = link;
+	});
+});
+</script>
+<% ix = 0 %>
+<% @nests.each do | nest | %>
+  <% ix += 1 %>
+  <div class="col-sm-12" style="padding:10px;">
+	<div class="card">
+	  <div class="card-header" style="height:50px;">
+		<div class="d-flex justify-content-between">
+		  <%= link_to(nest, class: "link") do %>
+			<span class="title"><%= nest.title %></span>
+		  <% end %>
+		  <% if (  nest.admin?(current_user) ) %>
+			<%= link_to(edit_nest_path(nest), class:"link") do %>
+			  <i class="fas fa-cog"></i>
+			<% end %>
+		  <% end %>
+		</div>
+	  </div>
+	  <div class="card-body">
+		<%= icon_img_tag(nest, "side", class: "title-image", href: nest_path(nest)) %>
+	  </div>
+	</div>
+  </div>
+  <% break if ( ix == limit ) %>
+<% end %>

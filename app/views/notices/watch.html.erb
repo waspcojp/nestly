@@ -1,0 +1,27 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<style>
+.card-header {
+  background: #fff;
+}
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="junbotron col-sm-7">
+	  <h1 class="display-4">通知設定</h1>
+	  <p class="lead">
+	  </p>
+	  <div class="row">
+		<span><%= link_to @watch.target.title, @watch.target %>への通知を<%= @watch.active ? "設定" : "解除" %>しました。</span>
+	  </div>
+	  <% if ( current_user ) %>
+		<div class="row">
+		  <%= link_to @watch.target.title, @watch.target, class: "btn btn-success" %>
+		  <%= link_to "トップページへ", "/", class: "btn btn-primary" %>
+		</div>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,120 @@
+<script type="text/javascript">
+let delete_entry = (num) => {
+	$('#entry-' + num).empty();
+	$('#entry-' + num).append($('<div class="col-sm-12" style="height:50px;padding:20px 0 15px 0;text-align:center;">').append('<%= t('comments.deleted')%>'));
+};
+
+let delete_ = (event) => {
+	let num = parseInt($(event.currentTarget).attr("data-id"));
+
+	if ( confirm('<%= t('view.are_you_sure')%>') ) {
+		$.ajax({
+			type: "DELETE",
+			url: `/comments/${num}`,
+			dataType: "json",
+			success: delete_entry(num)
+		});
+	}
+};
+
+$(document).ready(function(){
+	$('.delete').on('click', delete_);
+});
+</script>
+<% _STEP = 10 %>
+<div class="card" style="margin-top:20px;">
+  <div class="card-header">
+	<%= t('comment')%>
+  </div>
+  <div class="card-body">
+	<div class="card-text">
+	  <div style="padding-bottom:20px;">
+		<%= link_to t('comments.read_all'), entry_path(from:1) %>
+		<% if ( entry.comment_count > 0 ) %>
+		  / <%= link_to "1-#{_STEP < entry.comment_count ? _STEP : entry.comment_count}", entry_path(from:1,count:10) %>
+		<% end %>
+		<%
+		  from = _STEP
+		  while ( from < entry.comment_count )
+			%>
+		  <% if ( from + _STEP - 1 < entry.comment_count ) %>
+		    / <%= link_to "#{from}-#{from + _STEP - 1}", entry_path(from:from, count:_STEP) %>
+          <% end %>
+		  <% from += _STEP %>
+        <% end %>
+		<% if ( _STEP < entry.comment_count ) %>
+		  / <%= link_to t('comments.latest', count: _STEP), entry_path(from:-_STEP) %>
+		<% end %>
+		/ <%= link_to t("reload"), entry_path(from:params[:from],to:params[:to],count:params[:count]) %>
+		<%
+		  if ( params[:from] )
+			if ( params[:from].to_i > 0 )
+			  from = params[:from].to_i
+			else
+			  from = entry.comment_count + params[:from].to_i + 1
+			  if ( from <= 0 )
+				from = 1
+			  end
+			end
+		  else
+			from = 1
+		  end
+		  if ( params[:to] )
+			if ( params[:to].to_i > 0 )
+			  count = params[:to].to_i - from + 1
+			else
+			  count = entry.comment_count - from + 1 + params[:to].to_i
+			end
+		  else
+			if ( params[:count] )
+			  count = params[:count].to_i
+			  if ( count > entry.comment_count - from + 1 )
+				count = entry.comment_count - from + 1
+			  end
+			else
+			  count = entry.comment_count - from + 1
+			end
+		  end
+		  %>
+	  </div>
+	  <% entry.comments.order("number ASC").offset(from-1).limit(count).each do | comment | %>
+		<div class="row" style="border-top:1px solid #ccc;padding:10px;" id="entry-<%= comment.id %>">
+		  <% if ( !comment.deleted_at ) %>
+			  <div class="col-sm-1">
+				<%= icon_img_tag comment.author, "header" %>
+			  </div>
+			  <div class="col-sm-11">
+				<div class="d-flex justify-content-between">
+				  <h5>[<%= comment.number %>]<%= comment.author_name %></h5>
+				  <% if ( comment.deletable?(current_user) ) %>
+					<span class="fa fa-times delete" data-id="<%= comment.id %>"></span>
+				  <% end %>
+				</div>
+				<div>
+				  <%= l comment.created_at %>
+				</div>
+				<div class="row" style="padding-top:10px;">
+				  <%= comment.body.to_html %>
+				</div>
+				<% if ( comment.attach_files.count > 0 ) %>
+				  <div class="row" style="padding-top:10px;">
+					<% comment.attach_files.order("created_at DESC").each do | attach_file | %>
+					  <div style="padding:5px;" class="col-sm-3">
+						<%= link_to("/attach_files/download/#{attach_file.id}", target: "_blank") do %>
+						  <%= image_tag "/attach_files/icon/#{attach_file.id}", style:"width:100%;", title: attach_file.name %>
+						<% end %>
+					  </div>
+					<% end %>
+			  	  </div>
+				<% end %>
+			  </div>
+		  <% else %>
+			<div class="col-sm-12" style="height:50px;padding:20px 0 15px 0;text-align:center;">
+			  <%= t('comments.deleted')%>
+			</div>
+		  <% end %>
+		</div>
+	  <% end %>
+	</div>
+  </div>
+</div>

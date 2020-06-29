@@ -1,0 +1,26 @@
+<div class="row" id="entry-header" style="margin:0px;">
+  <div class="col-sm-12 body-title-1">
+	<div class="d-flex justify-content-between">
+	  <span class="mt-2">
+		<span class="title"><%= t("entries.updates")%></span>
+	  </span>
+	  <button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#entry-list">
+		<span class="fa fa-minus"></span>
+	  </button>
+	</div>
+  </div>
+</div>
+<%
+  @entries = Entry.where(
+						 space_id: ( Space.where(nest_id: NestMember.where(user: current_user),
+												 publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY))).
+	or(Entry.where(space_id: Space.where(nest_id: NestMember.where(user: current_user,
+																   board: true),
+										 publication_level: Space::PublicationLevel::BOARDS_ONLY))).
+	order("updated_at DESC")
+  @spaces = nil %>
+<div id="entry-list" data-parent="#entry-header" style="margin:10px 5px;">
+  <div class="row">
+	<%= render "entries/list" %>
+  </div>
+</div>

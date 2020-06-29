@@ -1,0 +1,103 @@
+<%= javascript_pack_tag 'editor' %>
+<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    const submit = (e) => {
+		switch ($('#entry_body_type').val()) {
+        case "<%= Entry::BodyType::TEXT %>":
+			e.preventDefault();
+			$("#form").submit();
+			break;
+        case "<%= Entry::BodyType::HTML %>":
+			e.preventDefault();
+			$("#form").submit();
+			break;
+        case "<%= Entry::BodyType::MD %>":
+			e.preventDefault();
+			$('#entry_body').val(ed.getValue());
+			$("#form").submit();
+		}
+	};
+    const editor_open_close = () => {
+		switch ($('#entry_body_type').val()) {
+        case "<%= Entry::BodyType::TEXT %>":
+			$("#entry_body").show();
+			$("#monaco").hide();
+			break;
+        case "<%= Entry::BodyType::HTML %>":
+			CKEDITOR.replace('entry_body', {
+				format_tags: 'p;h1;h2;h3;h4;h5;pre;div',
+				allowedContent: true,
+				contentsCss: '/styles/entry.css',
+				uiColor: '#9ab8f3'
+			});
+			$("#entry_body").show();
+			$("#monaco").hide();
+			break;
+        case "<%= Entry::BodyType::MD %>":
+			$("#entry_body").hide();
+			$("#monaco").show();
+    		let session = monaco.editor.createModel($("#entry_body").text(), 'markdown');
+			let ed = monaco.editor.create($("#monaco").get(0), {
+  				autoIndent: "full",
+				minimap: { enabled: false }
+    		});
+			ed.setModel(session);
+			break;
+		}
+    };
+	
+    editor_open_close();
+
+	$("#submit").on('click', submit);
+	
+    $('#entry_body_type').on('change', editor_open_close);
+	
+});
+</script>
+<div class="form-group row">
+  <%= render 'shared/errors', record: obj %>
+</div>
+<div class="form-group row">
+  <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_field :title, class: "form-control", placeholder: t("view.title") %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :title_id, t('view.title_id'),  class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_field :title_id, class: "form-control", placeholder: t("view.title_id") %>
+	<p><%= t('view.title_id_description')%></p>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :publication_level, Entry::PublicationLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<%= hidden_field_tag "entry[edit_level]", Entry::EditLevel::BOARDS_ONLY %>
+<div class="form-group row">
+  <%= form.label :comment_level, I18n.t("entries.comment_level"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :comment_level, Entry::CommentLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :body_type, I18n.t("entries.body_type"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<% if ( @entry.id ) %>
+	  <%= form.select :body_type, Entry::BodyType::TYPES, {}, class: "form-control", disabled: true %>
+	<% else %>
+	  <%= form.select :body_type, Entry::BodyType::TYPES, {}, class: "form-control" %>
+	<% end %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :body, I18n.t("view.body"), for: "body", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_area :body, class: "form-control", style:"height:500px;" %>
+	<div id="monaco" style="height:500px;border:1px solid gray;display:none;"></div>
+  </div>
+</div>

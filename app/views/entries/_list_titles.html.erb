@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-header">
+	<span style="font-weight:bold;"><%= t('spaces.another_entries')%></span>
+  </div>
+  <div class="card-body">
+	<% entries.each do | entry | %>
+	  <span>
+		[<%= link_to "#{entry.title}(#{entry.comment_count})", entry_path(entry, from:-10) %>]
+	  </span>
+	<% end %>
+  </div>
+</div>

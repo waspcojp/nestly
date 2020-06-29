@@ -1,0 +1,52 @@
+<% @nest = @space.nest %>
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+<%= File.open('./public/styles/entry.css').read %>	
+</style>
+<%= javascript_pack_tag 'markdown' %>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#result-html').html(Markdown.render($('#entry-source').text()));
+});
+</script>
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-sm-12 mt-1" style="padding:10px;height:50px;border-bottom:1px solid #CCC;margin-bottom:20px;">
+	  <div>
+		<p><span><%= link_to @nest.title, @nest %></span> >> <span><%= link_to @space.title, @space %></span></p>
+	  </div>
+	</div>
+  </div>
+  <div class="row">
+	<div class="col-sm-3">
+	  <%= render "meta" %>
+	  <%= render "entries/list_titles", entries: @space.entries %>
+	</div>
+	<div class="col-sm-9">
+	  <div class="card entry">
+		<div class="card-header">
+		  <div class="d-flex justify-content-between">
+			<span style="font-weight:bold;"><%= @entry.title %></span>
+			<% if (  @entry.editable?(current_user) ) %>
+			  <%= link_to(edit_entry_path(@entry), class:"link") do %>
+				<i class="fas fa-cog"></i>
+			  <% end %>
+			<% end %>
+		  </div>
+		</div>
+		<%= render "entry_classes/#{@space.class_name.underscore}/show", entry: @entry %>
+	  </div>
+	  <% if ( @entry.comment_count > 0 ) %>
+		<%= render "comments/list", entry: @entry %>
+	  <% end %>
+	  <% if ( @entry.commentable?(current_user) ) %>
+		<a id="comment"></a>
+		<%= render "comments/new", entry: @entry %>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<% end %>

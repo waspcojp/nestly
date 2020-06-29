@@ -1,0 +1,39 @@
+<% content_for :header do %>
+  <%= render "header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+</style>
+<div class="container-fluid">
+
+  <h3 class="mt-3"><%= t('nests.invite_for', name: @nest.title)%></h3>
+
+  <div class="page-header">
+	<div class="row">
+	  <div class="col-sm-3">
+		<%= image_tag "/attaches/get_icon?id=#{@nest.icon_image_id}&type=side", class: "card-img-top", id: "image_preview", style: "width:200px;" %>
+	  </div>
+	  <div class="col-sm-4" style="padding:0 20px;">
+		<%= str_to_html(@nest.description) %>
+	  </div>
+	</div>
+  </div>
+
+  <%= render "member_list" %>
+  <%= render "inviting_list" %>
+
+  <div class="row" style="margin-top:20px;">
+	<div class="col-sm-12">
+	  <%= form_tag do %>
+		<div class="input-group mb-3">
+		  <%= label_tag :addresses, t('users.mail_address'), for: "addresses", class: "col-sm-2 col-form-label" %>
+		  <%= text_area_tag :addresses, session[:addresses], class: "col-sm-10 form-control" %>
+		</div>
+		<div class="input-group mb-3">
+		  <%= submit_tag I18n.t("view.save"), class: "btn btn-success col-sm-1 mb-4", style: "margin-left:10px;"%>
+		</div>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<% end %>

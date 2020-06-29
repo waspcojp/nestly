@@ -1,0 +1,63 @@
+<%= render "shared/icon_upload", obj: @nest %>
+<%= hidden_field_tag :icon_x %>
+<%= hidden_field_tag :icon_y %>
+<%= hidden_field_tag :icon_width %>
+<%= hidden_field_tag :icon_height %>
+<div class="input-group mb-3">
+  <%= render 'shared/errors', record: @nest %>
+</div>
+<div class="form-group mb-3">
+  <div class="row" style="padding:10px;">
+	<div class="col-sm-2 col-form-label">
+	  <%= t('view.icon') %>
+	</div>
+	<div class="col-sm-10" style="padding:0px 30px;">
+	  <div class="row">
+		<div class="form-ico">
+		  <div class="icon">
+			<img id="image_preview" src="/icons/get_icon?id=<%= @nest.icon_image_id %>" />
+		  </div>
+		</div>
+	  </div>
+	  <div class="row">
+		<label class="col-sm-3 col-form-label btn btn-outline-primary">
+		  <%= t('shared.nest.form.select_file') %>
+		  <input name="nest[icon_image]" id="icon_image" type="file" style="display:none;"/>
+		</label>
+	  </div>
+	</div>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <%= render 'shared/errors', record: @nest %>
+</div>
+<div class="input-group mb-3">
+  <%= form.label :title, I18n.t('nests.title'), for: "title", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_field :title, autofocus: true, placeholder: I18n.t('nests.title'), class: 'form-control' %>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <%= form.label :publication_level, I18n.t("nests.publication_level"), for: "publication_level", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :publication_level, Nest::PublicationLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <%= form.label :preparation_level, I18n.t("nests.preparation_level"), for: "preparation_level", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :preparation_level, Nest::PreparationLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <%= form.label :join_method, I18n.t("nests.join_method"), for: "join_method", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :join_method, Nest::JoinMethod::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <%= form.label :description, I18n.t('nests.description'), for: "description", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_area :description, class: "form-control" %>
+  </div>
+</div>

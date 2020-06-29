@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="card-header">
+	<span style="font-weight:bold;"><%= t('entries.attach_files')%></span>
+  </div>
+  <div class="card-body">
+	<div style="padding:0 20px;" id="file-list">
+	  <% image_count = 0 %>
+	  <% obj.attach_files.order("created_at DESC").each do | attach_file | %>
+		<div class="file-control row" id="file-control-<%= image_count %>">
+		  <div class="col-sm-12">
+			<div class="d-flex justify-content-end delete-button" id="delete-<%= image_count %>" data-id="<%= attach_file.id %>">
+			  <span class="fa fa-times"></span>
+			</div>
+		  </div>
+		  <div>
+			<%= image_tag "/attach_files/icon/#{attach_file.id}", style: "width:148px;height:111px;" %>
+		  </div>
+		</div>
+		<% image_count += 1 %>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<%= render "shared/upload_attach_file", vertical: true, record: "entry", image_count: image_count %>

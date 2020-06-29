@@ -1,0 +1,12 @@
+TODO:
+
+	デバイスの再アクティベート:
+
+		* 何らかの理由でデバイスを強制ログアウトさせた場合にサーバ側からログインさせる
+		* デバイスUUIDが正規であり、かつデバイスがログイン出来なかった場合
+			-デバイスUUIDに重複があったらダメ(既に他人が登録しているデバイスだから)
+
+wickedpicker:
+
+	* /node_modules/wickedpicker/stylesheets/wickedpicker.cssのフォントのパスにパッチを当ててあります。
+	* /public/fontsを作り、wickedpickerのフォントへのパスを張ってあります。

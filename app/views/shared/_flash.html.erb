@@ -1,0 +1,8 @@
+<ul class="message col-sm-12">
+  <% flash.each do |message_type, message| %>
+	<% message_type = 'success' if message_type == 'notice' %>
+    <li class="alert alert-<%= message_type %>">
+      <%= message %><button type="button" class="close" data-dismiss="alert">&times;</button>
+    </li>
+  <% end %>
+</ul>

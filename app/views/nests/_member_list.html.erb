@@ -1,0 +1,26 @@
+<div class="row" id="member-header" style="margin:0px;">
+  <div class="col-sm-12 body-title-1">
+	<div class="d-flex justify-content-between">
+	  <span class="mt-2">
+		<span class="title"><%= t('nests.members')%></span>
+	  </span>
+	  <button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#member-list">
+		<span class="fa fa-minus"></span>
+	  </button>
+	</div>
+  </div>
+</div>
+<div id="member-list" data-parent="#member-header" style="margin:10px 5px;">
+  <div class="row">
+	<% @nest.members.each do | member | %>
+	  <div class="card col-sm-2" style="margin:10px;padding:0">
+		<div class="card-header">
+		  <%= member.display_name %>
+		</div>
+		<div class="card-body" style="padding:5px;">
+		  <%= icon_img_tag member.user, "list", class: "card-img-top", id: "image_preview" %>
+		</div>
+	  </div>
+	<% end %>
+  </div>
+</div>

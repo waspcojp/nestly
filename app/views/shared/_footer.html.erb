@@ -1,0 +1,15 @@
+<!-- footer -->
+<footer class="main-footer">
+  <div class="container">
+	<ul class="list-inline">
+      <li class="list-inline-item"><%= link_to  I18n.t('footer.about'), "/about" %></li>
+	  <li class="list-inline-item"><%= link_to 'Help', help_path %></li>
+      <li class="list-inline-item"><%= link_to I18n.t('footer.terms_privacy'), privacy_path %></li>
+	  <li class="list-inline-item"><%= link_to I18n.t('footer.terms_general'), term_path %></li>
+	  <li class="list-inline-item"><a href="https://www.wasp.co.jp/" title="<%= I18n.t('footer.operation_company')%>" target="_blank"><%= I18n.t('footer.operation_company')%></li>
+	  <li class="list-inline-item"><%= mail_to Settings.announcement[:email], I18n.t('footer.contact_us') %></li>
+	</ul>
+    <span class="copyright">Copyright &copy; <a href="https://www.wasp.co.jp/" target="_blank">WASP CO.,LTD</a>. All Rights Reserved.</span>
+  </div>
+</footer>
+<!-- footer -->

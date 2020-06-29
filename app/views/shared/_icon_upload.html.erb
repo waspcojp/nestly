@@ -1,0 +1,97 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    var IMAGE_PREVIEW = $("#image_preview");
+    var image = IMAGE_PREVIEW;
+    <% if obj.icon_image_id %>
+      var _get_edit_icon_info_process
+             = $.ajax({
+                      type: "GET",
+                      url: "/icons/edit_icon_info?id=" + <%= obj.icon_image_id %>,
+                      dataType: "json",
+                      error: function(jqXHR,textStatus, errorThrown ){
+                        console.log(jqXHR);
+                     }
+               }).promise();
+      _get_edit_icon_info_process.done(function(data){
+        var position = null;
+        if (data.code != -1 ){
+          position = {x: data.x, y: data.y, height: data.height, width: data.width };
+        }
+        image.cropper({
+            aspectRatio: 4 / 4,
+            dragMode: "move",
+            wheelZoomRatio: 0.05,
+            modal: false,
+            viewMode: 1,
+            autoCropArea: 0,
+            cropBoxMovable: false,
+            cropBoxResizable: false,
+            minCropBoxWidth: 140,
+            minCropBoxHeight: 140,
+            minCanvasWidth: 140,
+            minCanvasHeight: 140,
+            dragCrop: false,
+            toggleDragModeOnDblclick: false,
+            data: position
+        });
+      });
+    <% end %>
+    $("#icon_image").on("change", function(){
+      var file = $(this).prop("files")[0];
+      if (! file.type.match("image.*")) {
+        $(this).val("");
+        return;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function() {
+        IMAGE_PREVIEW.cropper('destroy');
+        IMAGE_PREVIEW.attr('src', this.result);
+        IMAGE_PREVIEW.addClass("image_preview");
+        IMAGE_PREVIEW.removeClass("default_piroron");
+        IMAGE_PREVIEW.cropper({
+          aspectRatio: 4 / 4,
+          dragMode: "move",
+          wheelZoomRatio: 0.05,
+          modal: false,
+          autoCropArea: 0,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          dragCrop: false,
+          minCropBoxWidth: 140,
+          minCropBoxHeight: 140,
+          minCanvasWidth: 140,
+          minCanvasHeight: 140,
+          toggleDragModeOnDblclick: false,
+          built: function(){
+            IMAGE_PREVIEW.cropper(
+              "setCropBoxData", {width: "140", height: "140"}
+            );
+          }
+        });
+      };
+    });
+    $("#submit").click(function(e){
+      e.preventDefault();
+      var crop_data = IMAGE_PREVIEW.cropper("getData");
+      var form = new FormData($("#form").get(0));
+
+      $('#icon_x').val(Math.round(crop_data.x));
+      $('#icon_y').val( Math.round(crop_data.y));
+      $('#icon_width').val(Math.round(crop_data.width));
+      $('#icon_height').val(Math.round(crop_data.height));
+	  $("#form").submit();
+    });
+  });
+</script>
+<style>
+.icon {
+	margin: 0.8em;
+	height: 200px;
+	width: 200px;
+}
+.icon img {
+	max-width:100%;
+	border:1px solid #fddfdf;
+}
+</style>

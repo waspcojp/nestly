@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The page you were looking for doesn't exist (404)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no">
+  <title><%= content_for?(:title) ? yield(:title) : "Device Console" %></title>
+  <meta name="keywords" content=""> 
+  <meta name="description" content="">
+  <link rel="canonical" href="http://shortlair.com:3000">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <!-- share/head -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!--meta name="viewport" content="width=device-width, initial-scale=1.0" -->
+  <!-- share/head -->
+</head>
+
+<body class="rails-default-error-page">
+  <!-- This file lives in public/404.html -->
+  <div class="wrappter">
+    <div>
+      <h1>The page you were looking for doesn't exist.</h1>
+	  <div style="margin:0 auto;width:600px;">
+		<div style="float:left;padding:0 20px 0 0;"><img src="images/hikigaeru404.gif" width="214" height="200" /></div>
+		<p>申し訳ございませんが、お探しのページは存在いたしません。</p>
+		<p> ご指定されたページは、移動または削除された、アドレスが間違っているなどの理由で表示することができません。</p>
+		<p><a href="/">トップページへ戻る</a></p>
+	  </div>
+	  <div class="clear"></div>
+    </div>
+    <p>If you are the application owner check the logs for more information.</p>
+  </div>
+</body>
+</html>

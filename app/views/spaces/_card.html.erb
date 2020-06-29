@@ -1,0 +1,28 @@
+<div class="col-sm-4" style="padding:10px;">
+  <div class="card">
+	<div class="card-header" style="height:70px;">
+	  <div class="d-flex justify-content-between">
+		<%= link_to(space, class: "link") do %>
+		  <%= space.title %>
+		<% end %>
+		<% if (( @nest ) &&
+			   (  @nest.admin?(current_user) )) %>
+		  <%= link_to(edit_space_path(space), class:"link") do %>
+			<i class="fas fa-cog"></i>
+		  <% end %>
+		<% end %>
+		<span>
+		  <% if ( watch ) %>
+			<%= check_box_tag "check[#{watch.id}", watch.id, watch.active, class: "watch-check", title: "watch active"%>
+		  <% else %>
+			<%= check_box_tag "check", 0, false, class: "watch-check", title: "watch active", 'data-id': space.id, 'data-type': "Space" %>
+		  <% end %>
+		</span>
+	  </div>
+	</div>
+	<%= icon_img_tag(space, "side", class: "title-image", href: space_path(space)) %>
+	<div class="card-body" style="height:100px;">
+	  <%= space.description.to_html %>
+	</div>
+  </div>
+</div>

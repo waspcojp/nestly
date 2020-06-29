@@ -1,0 +1,33 @@
+<div class="card" style="margin-bottom:20px;">
+  <div class="card-header">
+	<span class="title">掲示板の情報</span>
+  </div>
+  <div class="card-body">
+	<dl>
+	  <dt>
+		エントリ数
+	  </dt>
+	  <dd>
+		<%= @space.entries.count %>
+	  </dd>
+	  <dt>
+		開設日
+	  </dt>
+	  <dd>
+		<%= l @space.created_at, format: :short %>
+	  </dd>
+	  <dt>
+		公開範囲
+	  </dt>
+	  <dd>
+		<%= Nest::PublicationLevel::TYPES.rassoc(@space.publication_level)[0] %>
+	  </dd>
+	  <dt>
+		トピックの作成
+	  </dt>
+	  <dd>
+		<%= Space::PreparationLevel::TYPES.rassoc(@space.preparation_level)[0] %>
+	  </dd>
+	</dl>
+  </div>
+</div>

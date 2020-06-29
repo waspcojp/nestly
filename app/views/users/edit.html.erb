@@ -1,0 +1,60 @@
+<% content_for :header do %>
+  <%= render "header" %>
+<% end %>
+
+<% content_for :body do %>
+<div class="container-fluid">
+  <div class="card-body">
+	<%= form_for(@user,
+				 html: {
+				   class: 'txt_form'
+				   }) do |f| %>
+      <div class="input-group mb-3">
+		<%= render 'shared/errors', record: @user %>
+	  </div>
+      <div class="input-group mb-3">
+		<%= f.label :user_name, I18n.t('users.user_name'), for: "user_name", class: "col-sm-2 col-form-label" %>
+		<div class="col-sm-10">
+		  <%= f.text_field :user_name, autofocus: true, placeholder: I18n.t('users.user_name'), class: 'form-control' %>
+		</div>
+	  </div>
+      <div class="input-group mb-3">
+		<%= f.label :default_display_name, I18n.t('users.display_name'), for: 'default_user_display_name', class: "col-sm-2 col-form-label" %>
+		<div class="col-sm-10">
+          <%= f.text_field :default_display_name, autofocus: true, placeholder: I18n.t('users.display_name'), class: 'form-control' %>
+		</div>
+	  </div>
+	  <% if f.object.crypted_password.present? %>
+        <div class="input-group mb-3">
+		  <%= f.label :current_password, I18n.t('users.current_password'), for: 'current_password', class: "col-sm-2 col-form-label" %>
+		  <div class="col-sm-10">
+			<%= f.password_field :current_password, autocomplete: "off", placeholder: I18n.t('users.current_password'), class: 'form-control' %>
+		  </div>
+		</div>
+	  <% end %>
+      <div class="input-group mb-3">
+		<%= I18n.t('users.password_characters_minimum', length: Settings.authenticate[:password_length] ) %>
+	  </div>
+      <div class="input-group mb-3">
+		<%= f.label :password, I18n.t('users.new_password'), for: 'new_password', class: "col-sm-2 col-form-label" %>
+		<div class="col-sm-10">
+	      <%= f.password_field :password, autocomplete: "off", placeholder: I18n.t('users.new_password'), class: 'form-control' %>
+		</div>
+	  </div>
+      <div class="input-group mb-3">
+		<%= f.label :password_confirmation, I18n.t('users.password_confirmation'), for: 'password_confirmation', class: "col-sm-2 col-form-label" %>
+		<div class="col-sm-10">
+	      <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: I18n.t('users.password_confirmation'), class: 'form-control' %>
+		</div>
+	  </div>
+      <div class="row">
+        <div class="col-12">
+		  <%= f.submit I18n.t("view.save"), class: "btn btn-success" %>
+		</div>
+        <!-- /.col -->
+      </div>
+      <!-- sp btn -->
+	<% end %>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,18 @@
+<div class="card" style="margin:20px 0;">
+  <div class="card-body">
+	<%= form_for(@comment, html: { class: "form-horizontal", id: "form", multipart: true }) do |form| %>
+	  <%= hidden_field_tag :entry, entry.id %>
+	  <%= render "comment", obj: @comment, form: form %>
+	  <div class="row">
+		<div class="col-sm-2">
+		  <%= form.submit t('view.comment'), class: 'btn btn-success', id: 'submit' %>
+		</div>
+		<div class="col-sm-10">
+		  <div class="row" id="file-list">
+		  </div>
+		</div>
+	  </div>
+	<% end %>
+  </div>
+</div>
+<%= render "shared/upload_attach_file", vertical: false, record: "comment", image_count: 0 %>

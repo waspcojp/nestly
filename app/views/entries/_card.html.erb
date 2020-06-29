@@ -1,0 +1,53 @@
+<div class="col-sm-4" style="padding:10px;">
+  <div class="card">
+	<div class="card-header" style="height:70px;">
+	  <div class="d-flex justify-content-between">
+		<%= link_to(entry, class: "link") do %>
+		  <%= entry.title %>(<%= entry.space.title %>)
+		<% end %>
+		<% if (( @nest ) &&
+			   (  @nest.admin?(current_user) )) %>
+		  <%= link_to(edit_entry_path(entry), class:"link") do %>
+			<i class="fas fa-cog"></i>
+		  <% end %>
+		<% end %>
+		<span>
+		  <% if ( watch ) %>
+			<%= check_box_tag "check", watch.id, watch.active, class: "watch-check", title: "watch active"%>
+		  <% else %>
+			<%= check_box_tag "check", 0, false, class: "watch-check", title: "watch active", 'data-id': entry.id, 'data-type': "Entry" %>
+		  <% end %>
+		</span>
+	  </div>
+	</div>
+	<div class="card-body" style="height:295px;">
+	  <div class="row">
+		<div class="col-sm-4">
+		  <%= icon_img_tag entry.author, "header", class: "icon-image" %>
+		</div>
+		<div class="col-sm-8">
+		  <div class="row">
+			<%= entry.author_name %>
+		  </div>
+		  <div class="row">
+			<%= l entry.created_at, format: :short %>
+		  </div>
+		</div>
+	  </div>
+	  <div class="row entry" style="padding:10px;">
+		<%= entry.text(52, 220,160) %>
+	  </div>
+	  <div class="row">
+		<% i = 0
+		   entry.attach_files.order("created_at DESC").
+			 each do | attach_file |
+			 i += 1
+			 break if ( i > 3 ) %>
+	      <div style="padding:5px;" class="col-sm-4">
+		    <%= image_tag "/attach_files/icon/#{attach_file.id}", style: "width:100%" %>
+	      </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

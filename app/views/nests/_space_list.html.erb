@@ -1,0 +1,74 @@
+<% k_count = 0 %>
+<% Space::ClassName::CLASSES.each do | klass | %>
+  <% k_count += 1 %>
+  <div class="row" id="space-header-<%= k_count %>" style="margin:0px;">
+	<div class="col-sm-12 body-title-1">
+	  <div class="d-flex justify-content-between">
+		<span class="mt-2">
+		  <span class="title"><%= link_to klass[0], spaces_path(nest: @nest.id, type: klass[1]), class:"link" %></span>
+		  <button type="button" class="btn" data-toggle="modal" data-target="#modal-max-spaces">
+			<span class="fa fa-pencil-alt"></span>
+		  </button>
+		</span>
+		<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#space-list-<%= k_count %>">
+		  <span class="fa fa-minus"></span>
+		</button>
+	  </div>
+	</div>
+  </div>
+  <%
+	if ( @nest.admin?(current_user) )
+	  @spaces = @nest.spaces.where("( class_name = '#{klass[1]}') ").
+		order("title ASC").limit(@nest.design.max_spaces)
+	elsif ( @nest.member?(current_user) )
+	  @spaces = @nest.spaces.where(class_name: klass[1],
+								   publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).
+		order("title ASC").limit(@nest.design.max_spaces)
+	elsif ( current_user )
+	  @spaces = @nest.spaces.where(class_name: klass[1],
+								   publication_level: 0..Space::PublicationLevel::OPEN).
+		order("title ASC").limit(@nest.design.max_spaces)
+	else
+	  @spaces = @nest.spaces.where(class_name: klass[1],
+								   publication_level: 0..Space::PublicationLevel::OPEN_GLOBAL).
+		order("title ASC").limit(@nest.design.max_spaces)
+	end %>
+  <div id="space-list-<%= k_count %>" data-parent="#space-header-<%= k_count %>" style="margin:10px 5px;">
+	<div class="row">
+	  <%= render "spaces/list", spaces: @spaces %>
+	</div>
+  </div>
+<% end %>
+<script>
+$(document).ready(function(){
+	$('#max-spaces-submit').on('click', (e) => {
+		e.preventDefault();
+		$('#max-spaces-form').submit();
+	});
+});
+</script>
+<div class="modal" id="modal-max-spaces" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h5 class="modal-title" id="max-spaces-label"><%= t('nests.set-max-spaces')%></h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><span class="fa fa-times"></span></span>
+		</button>
+	  </div>
+	  <form action="/nest_tops/<%= @nest.design.id %>" method="post" class="txt_form" id="max-spaces-form">
+		<%= hidden_field_tag "authenticity_token", form_authenticity_token %>
+		<div class="modal-body">
+		  <div class="input-group">
+			<label for="max-spaces" class="col-form-label"><%= t('nests.max-spaces')%></label>
+			<input type="text" name="nest_top[max_spaces]" value="<%= @nest.design.max_spaces %>" id="max-spaces" class="form-control">
+		  </div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <a class="btn btn-success" id="max-spaces-submit"><%= t('view.setting')%></a>
+		</div>
+	  </form>
+	</div>
+  </div>
+</div>

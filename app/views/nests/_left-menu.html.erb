@@ -1,0 +1,17 @@
+<style>
+.left-menu .active {
+  background: #CCF;
+}
+</style>
+<div class="nav flex-column left-menu">
+  <% if ( action_name == "edit" ) %>
+	<%= link_to t('nests.edit'), edit_nest_path(@nest), class:"nav-link active" %>
+  <% else %>
+	<%= link_to t('nests.edit'), edit_nest_path(@nest), class:"nav-link" %>
+  <% end %>
+  <% if ( action_name == "member_control" ) %>
+	<%= link_to t('nests.member control'), nest_member_control_path(@nest), class:"nav-link active" %>
+  <% else %>
+	<%= link_to t('nests.member control'), nest_member_control_path(@nest), class:"nav-link" %>
+  <% end %>
+</div>

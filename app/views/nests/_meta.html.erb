@@ -1,0 +1,39 @@
+<div class="card">
+  <div class="card-header">
+	<span class="title"><%= t('nests.informations')%></span>
+  </div>
+  <div class="card-body">
+	<dl>
+	  <dt>
+		<%= t('view.open_at')%>
+	  </dt>
+	  <dd>
+		<%= l @nest.created_at, format: :short %>
+	  </dd>
+	  <dt>
+		<%= t('view.publication_level')%>
+	  </dt>
+	  <dd>
+		<%= Nest::PublicationLevel::TYPES.rassoc(@nest.publication_level)[0] %>
+	  </dd>
+	  <dt>
+		<%= t('nests.join_method')%>
+	  </dt>
+	  <dd>
+		<%= Nest::JoinMethod::TYPES.rassoc(@nest.join_method)[0] %>
+	  </dd>
+	  <dt>
+		<%= t('nests.member_count')%>
+	  </dt>
+	  <dd>
+		<%= @nest.members.count %>
+	  </dd>
+	  <dt>
+		<%= t('spaces.count')%>
+	  </dt>
+	  <dd>
+		<%= @nest.spaces.count %>
+	  </dd>
+	</dl>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<div class="container-fluid">
+  <div class="card-body">
+	<%= form_for(@nest, html: { class: "txt_form", id: "form", multipart: true }) do |form| %>
+	  <%= render 'form', form: form %>
+      <div class="input-group mb-3">
+		<%= link_to t('create'), '#', class: "btn btn-success", id: 'submit' %>
+	  </div>
+	<% end %>
+  </div>
+</div>
+<% end %>

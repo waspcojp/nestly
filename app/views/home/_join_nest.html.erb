@@ -1,0 +1,23 @@
+<div class="row" id="join-nest-header" style="margin:0px;">
+  <div class="col-sm-12 body-title-1">
+	<div class="d-flex justify-content-between">
+	  <span class="mt-2">
+		<span class="title"><%= t("nests.joined")%></span>
+	  </span>
+	</div>
+  </div>
+</div>
+<%
+  @nests = []
+  NestMember.where(user: current_user).each do | nest_member |
+    @nests << nest_member.nest
+  end
+%>
+<div id="entry-list" data-parent="#entry-header" style="margin:10px 5px;">
+  <div class="row">
+	<%= render "nests/list", limit: 5 %>
+  </div>
+  <div class="row">
+	<%= link_to t("view.more"), nests_path(type: 'member'), class: "btn btn-success", style: "margin:10px;width:100%" %>
+  </div>
+</div>

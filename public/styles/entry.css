@@ -1,0 +1,55 @@
+.entry {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+.entry h1 {
+	font-size: 25px;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+.entry h2 {
+	font-size: 23px;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+.entry h3 {
+	font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+.entry h4 {
+	font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+.entry h5 {
+	font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3em;
+}
+.entry p {
+	text-indent: 1em;
+}
+.entry ul,
+.entry ol {
+}
+.entry ul ol,
+.entry ul ul,
+.entry ol ol,
+.entry ol ul
+{
+	margin-left: 0px;
+	padding-inline-start: 20px;
+}
+
+.entry pre {
+    font-family: 'Consolas', 'Deja Vu Sans Mono',
+                 'Bitstream Vera Sans Mono', monospace;
+    font-size: 0.95em;
+    line-height: 120%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+}

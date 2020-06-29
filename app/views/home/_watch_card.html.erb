@@ -1,0 +1,6 @@
+<% case watch.target_type %>
+<% when 'Space' %>
+<%= render "spaces/card", space: watch.target, watch: watch %>
+<% when 'Entry' %>
+<%= render "entries/card", entry: watch.target, watch: watch %>
+<% end %>

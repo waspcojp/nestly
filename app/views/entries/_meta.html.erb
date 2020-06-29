@@ -1,0 +1,31 @@
+<div class="card" style="margin-bottom:20px;">
+  <div class="card-header">
+	<span style="font-weight:bold;"><%= t('entries.informations')%></span>
+  </div>
+  <div class="card-body">
+	<div class="row" style="font-weight:bold;font-size:16px;padding:0 10px 0px 10px;">
+	  <%= t('comments.count')%>
+	</div>
+	<div class="row" style="font-size:16px;padding:0 10px 10px 20px;">
+	  <%= @entry.comments.count %>
+	</div>
+	<div class="row" style="font-weight:bold;font-size:16px;padding:0 10px 0px 10px;">
+	  <%= t('view.created_at') %>
+	</div>
+	<div class="row" style="font-size:16px;padding:0 10px 10px 20px;">
+	  <%= l @entry.created_at, format: :short %>
+	</div>
+	<div class="row" style="font-weight:bold;font-size:16px;padding:0 10px 0px 10px;">
+	  <%= t('view.publication_level') %>
+	</div>
+	<div class="row" style="font-size:16px;padding:0 10px 20px 20px;">
+	  <%= Entry::PublicationLevel::TYPES.rassoc(@entry.publication_level)[0] %>
+	</div>
+	<div class="row" style="font-weight:bold;font-size:16px;padding:0 10px 0px 10px;">
+	  <%= t('view.comment_level') %>
+	</div>
+	<div class="row" style="font-size:16px;padding:0 10px 20px 20px;">
+	  <%= Entry::CommentLevel::TYPES.rassoc(@entry.comment_level)[0] %>
+	</div>
+  </div>
+</div>

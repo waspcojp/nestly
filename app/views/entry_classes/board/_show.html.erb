@@ -1,0 +1,39 @@
+<div class="card-body">
+  <div class="row" style="margin-bottom: 20px;">
+	<div class="col-sm-1">
+	  <%= icon_img_tag entry.author, "header" %>
+	</div>
+	<div class="col-sm-11">
+	  <div>
+		<%= entry.author_name %>
+	  </div>
+	  <div>
+		<%= l entry.created_at %>
+	  </div>
+	  <div class="row entry" style="padding:10px 10px 0 10px;">
+		<% case entry.body_type %>
+		<% when Entry::BodyType::MD %>
+		  <div id="entry-source" style="display:none;"><%= entry.body %></div>
+		  <div id="result-html"></div>
+		<% when Entry::BodyType::HTML %>
+		  <%= entry.body.html_safe %>
+		<% else %>
+		  <%= entry.text %>
+        <% end %>
+      </div>
+     </div>
+   </div>
+   <div class="card-text">
+   </div>
+   <% if ( entry.attach_files.count > 0 ) %>
+	 <div class="row" style="padding:10px;height:210px;overflow-y:auto;border-top:1px solid #ccc;padding:10px;">
+	   <% entry.attach_files.order("created_at DESC").each do | attach_file | %>
+		 <div style="padding:5px;" class="col-sm-3">
+		   <%= link_to("/attach_files/download/#{attach_file.id}", target: "_blank") do %>
+			 <%= image_tag "/attach_files/icon/#{attach_file.id}", style:"width:100%;" %>
+		   <% end %>
+		 </div>
+	   <% end %>
+	 </div>
+   <%end %>
+</div>

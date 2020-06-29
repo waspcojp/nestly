@@ -1,0 +1,15 @@
+server:
+  host: '10.1.254.11'
+  port: 3000
+  protocol: 'http'
+authenticate:
+  password_length: 7
+mail:
+  from_address: 'ogochan@wasp.co.jp'
+  invalid_domain: 'example.net'
+  smtp_server_address: '10.3.0.44'
+  domain_part: example.com
+invitation:
+  expire: (3 * 24 * 3600)
+announcement:
+  email: "umi.piroron@gmail.com"

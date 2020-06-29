@@ -1,0 +1,216 @@
+ja:
+  open global: 外部にも公開
+  open: 公開
+  members only: 参加者のみ
+  boards only: 管理者のみ
+  private: 非公開
+  free join: 誰でも参加できる
+  abuse: 不正
+  abuses:
+    report_invite_mail: 不正な招待メールの報告
+  invite: 招待
+  invites:
+    by member: 参加者からの招待
+    by board: 管理者からの招待
+    by owner: 開設者からの招待
+    by URL: 参加リンクから参加
+  back: もどる
+  prompt:
+    please_select: 選択して下さい
+  sessions:
+    new: Nestlyログイン
+    remember_me: ログイン情報を記憶させる
+    log_in: ログイン
+  layout:
+    home: ホーム
+    mypage: マイページ
+    account_edit: アカウント設定
+    login: ログイン
+    logout: ログアウト
+    sign_up: アカウント登録
+    existing_account: アカウントをお持ちのかた
+  footer:
+    about: このサイトについて
+    site_top: サイトトップ
+    terms_privacy: プライバシー規約
+    terms_general: 利用規約
+    operation_company: 運営会社
+    back_to_top: ページ先頭に戻る
+    contact_us: お問い合わせ
+    guidance: ガイダンス
+  homes:
+    of: '%{name} のホーム'
+  nest: ネスト
+  nests:
+    admin: 管理人
+    join: ネストに参加
+    joined: 参加しているネスト
+    top: トップ
+    title: 名前
+    publication_level: 公開範囲
+    preparation_level: スペース作成
+    join_method: 参加方法
+    description: 説明
+    member control: 参加者管理
+    edit: 情報の変更
+    informations: 情報
+    member_count: 参加者数
+    members: 参加者
+    set-max-spaces: 表示スペース数の設定
+    max-spaces: 表示スペース数の最大
+    set-update-entries: 表示エントリ数の設定
+    max-update-entries: 表示エントリ数の最大
+    resign: 退会
+    invite_for: '「%{name}」への招待'
+    invitationals: 招待中の人
+  space: スペース
+  spaces:
+    count: スペース数
+    new: 新しいスペース
+    list: スペース一覧
+    preparation_level: エントリ作成
+    class_name: 種類
+    create_of: '「%{name}」のスペースの作成'
+    edit_of: '「%{name}」の編集'
+    another_entries: エントリの一覧
+  space_class:
+    board: 掲示板
+    information: お知らせ
+  comment: コメント
+  comments:
+    count: コメント数
+    read_all: 全部読む
+    latest: '最新%{count}'
+    deleted: '** あぼ〜ん **'
+  entry: エントリ
+  entries:
+    informations: エントリの情報
+    new: エントリ作成
+    comment_level: コメント追加
+    list: エントリ一覧
+    body_type: フォーマット
+    updates: 最近更新のあったエントリ
+    attach_files: 添付ファイル
+    create_of: '「%{name}」のエントリの作成'
+    edit_of: '「%{name}」の編集'
+    list_of: '「%{name}」のエントリ一覧'
+  watches:
+    list: ワッチしているもの一覧
+    list_of: '%{name} のワッチ一覧'
+  users:
+    new: アカウント登録
+    edit: ユーザー情報の変更
+    edit_profile: プロフィール
+    edit_session: セッション情報
+    user_name: ユーザ名
+    display_name: 表示名
+    profile: 自己紹介
+    email: E-mail
+    mail_address: メールアドレス
+    password: パスワード
+    password_characters_minimum: 'パスワードは %{length} 文字以上です。'
+    current_password: 現在のパスワード
+    new_password: 新パスワード
+    password_confirmation: パスワード確認
+    need_current: 現在のパスワードを入れて下さい
+    password_change: パスワードを変更する場合入力して下さい
+    cancel_account: アカウントの削除
+    confirmations_finish:
+      title: アカウント登録完了
+      text1: アカウントの登録が完了しました！
+      text2: 次に情報登録ページへ進んでください。
+      next: 情報登録
+    registrations_finish:
+      title: アカウント登録情報送信
+      text1: 入力内容の送信が完了しました。
+      text2: ご入力いただいたメールアドレスへ確認メールが届きますので、
+      text3: メールに記載されているURLをクリックして登録を完了させてください。 
+  shared:
+    menu_bar:
+      brand: Nestly
+      signed_in: サインイン
+      logout: ログアウト
+      account_edit: アカウント設定
+      settings: 設定
+      admin_setting: 管理者設定(アカウント追加)
+      notifications: お知らせ
+      notification_setting_edit: メール通知設定
+      device_lists: デバイス
+      contact_us: お問い合わせ
+      logged_in_as: ! '%{name}としてログイン'
+      change_profile: プロファイル変更
+      signup: アカウント登録
+      signin_with: ! '%{provider}でアカウント登録'
+    field_form:
+      zipcode: 郵便番号
+      address: 住所
+      prefecture: 都道府県
+      city: 市区町村
+      address1: 住所1
+      address2: 住所2
+    footer:
+      company_information: 企業情報
+      terms_of_service: 利用規約
+      privacy_policy: プライバシーポリシー
+      about_point: ポイントについて
+      download: ダウンロード
+      contact_us: お問い合わせ
+      faq: FAQ
+    header_entrance:
+      company_information: 企業情報
+  view:
+    save: 保存
+    open_at: 開設日
+    created_at: 作成日
+    set: 設定
+    are_you_sure: よろしいですか？
+    publication_level: 公開範囲
+    comment_level: コメント出来る人
+    more: もっと見る
+    setting: 設定
+
+    body: 本文
+    comment: コメント
+    edit_level: 編集範囲
+    title: タイトル
+    title_id: タイトル略称
+    title_id_description: 通知メールのタイトルにつく略称です
+    icon: アイコン
+    captured_at: 入力時刻
+    uuid: UUID
+    description: 説明
+    logs: ログ
+    message: メッセージ
+    memo: メモ
+    new: 新規登録
+    add: 追加
+    enable: 有効
+    disable: 無効
+    "on": "ON"
+    "off": "OFF"
+    publication_level: 公開範囲
+    public: 公開
+    private: 非公開
+    approval: 承認制
+    paid: 有料
+    show: 表示
+    edit: 変更
+    update: 更新
+    delete: 削除
+    back: 戻る
+    download: ダウンロード
+    blank_option: 指定なし
+    all_check: すべてチェックを入れる
+    cancel: 取消
+    s: 件
+    "~": " 〜 "
+    search: 検索
+    unspecified: "(指定なし)"
+    hidden: "(非表示)"
+    "yes": あり
+    "no": なし
+    commit: 確定
+    send: 送信
+    select: 選択してください
+    continue: 続行
+    write_btn: 書込み

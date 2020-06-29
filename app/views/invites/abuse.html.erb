@@ -1,0 +1,38 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<style>
+.card-header {
+  background: #fff;
+}
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="junbotron">
+	  <h1 class="display-4">不正な招待メールの報告</h1>
+	  <p class="lead">
+		<%= @invite.to_mail %> さん、あなたは <%= @invite.inviter.user_name %> さんから
+		<%= @invite.nest.title %>に招待されました。
+	  </p>
+	  <%= form_tag(controller: "invites",
+				   action: "report_abuse",
+				   id: @invite.id) do %>
+
+		<p>
+		  あなたはこのメールが不正なものであることを報告しようとしています。
+		</p>
+		<p>
+		  もし、本当に不正なものであるのなら、<%= submit_tag '報告する', class: "btn btn-danger"%>を押して下さい。
+		</p>
+		<p>
+		  「そこまでは...」と思う場合は、単に<%= link_to "辞退", invite_leave_path(@invite.invitation_token), method: :post, class: "btn btn-warning" %>を押して下さい。
+		</p>
+		<p>
+		  また、報告するにあたって理由や詳しい事情等を書き残したい場合は、以下に記入下さい。ただし、ここで質問等を書かれても、運営は原則的に返信はしないことを御承知下さい。
+		</p>
+		<%= text_area_tag :report, '', size:"80x5" %>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<% end %>

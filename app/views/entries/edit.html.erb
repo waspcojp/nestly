@@ -1,0 +1,29 @@
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-sm-12" style="padding:10px;height:60px;border-bottom:1px solid #CCC;margin-bottom:20px;">
+	  <h2><%= t('entries.edit_of', name: @entry.title) %></h2>
+	</div>
+  </div>
+  <%= form_for(@entry, html: { class: "form-horizontal", id: "form", multipart: true }) do |form| %>
+	<div class="row">
+	  <div class="col-sm-3">
+		<%= render "files", obj: @entry %>
+	  </div>
+	  <div class="col-sm-9">
+		<%= render "entry_classes/#{@space.class_name.underscore}/edit", form: form, obj: @entry %>
+		<div class="input-group mb-3">
+		  <%= link_to t('view.update'), '', class: "btn btn-success", id: 'submit' %>
+		  <%= link_to t('back'), @entry, class: 'btn btn-primary' %>
+		  <%= link_to t('delete'), @entry, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+		</div>
+	  </div>
+	</div>
+  <% end %>
+</div>
+<% end %>

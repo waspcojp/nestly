@@ -1,0 +1,17 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<%= render "shared/watch_control" %>
+<div class="container-fluid">
+  <h3 class="mt-3"><%= t('homes.of', name: current_user.default_display_name) %></h3>
+  <div class="row">
+	<div class="col-sm-3" style="padding:20px;">
+	  <%= render "join_nest" %>
+	</div>
+	<div class="col-sm-9" style="padding:20px;">
+	  <%= render "watch" %>
+	  <%= render "updated_entry" %>
+	</div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,16 @@
+<!-- header -->
+<header class="main-header">
+  <a class="logo" href="/"><%= image_tag 'logo.svg', width: '131', height: '30', alt: 'DEVICE-CONSOLE' %></a>
+  <nav class="navbar navbar-static-top" role="navigation">
+	<div class="navbar-custom-menu">
+	  <ul class="nav navbar-nav">
+		<%- if controller_name != 'sessions' && current_user  %>
+		  <li>
+			<a class="nav-link" data-remodal-target="login_modal"><%= I18n.t("devise.shared.links.sign_in") %></a>
+		  </li>
+		<% end -%>
+	  </ul>
+	</div>
+  </nav>
+</header>
+<!-- header -->

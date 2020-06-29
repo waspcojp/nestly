@@ -1,0 +1,70 @@
+<div class="row" id="entry-header" style="margin:0px;">
+  <div class="col-sm-12 body-title-1">
+	<div class="d-flex justify-content-between">
+	  <span class="mt-2">
+		<span class="title"><%= link_to t("entries.updates"), entries_path(nest:@nest.id, order: 'update'), class: "link" %></span>
+		<button type="button" class="btn" data-toggle="modal" data-target="#modal-max-update-entries">
+		  <span class="fa fa-pencil-alt"></span>
+		</button>
+	  </span>
+	  <button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#entry-list">
+		<span class="fa fa-minus"></span>
+	  </button>
+	</div>
+  </div>
+</div>
+<%
+  if ( @nest.admin?(current_user) )
+	@entries = Entry.where(space_id: Space.where(nest_id: @nest.id)).order("updated_at DESC").limit(@nest.design.max_update_entries)
+  elsif ( @nest.member?(current_user) )
+    @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,
+												 publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY)).
+	  order("updated_at DESC").limit(@nest.design.max_update_entries)
+  elsif ( current_user )
+    @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,
+												 publication_level: 0..Space::PublicationLevel::OPEN)).
+	  order("updated_at DESC").limit(@nest.design.max_update_entries)
+  else
+    @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,
+												 publication_level: Space::PublicationLevel::OPEN_GLOBAL)).
+	  order("updated_at DESC").limit(@nest.design.max_update_entries)
+  end
+  @spaces = nil %>
+<div id="entry-list" data-parent="#entry-header" style="margin:10px 5px;">
+  <div class="row">
+	<%= render "entries/list" %>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+	$('#max-update-entries-submit').on('click', (e) => {
+		e.preventDefault();
+		$('#max-update-entries-form').submit();
+	});
+});
+</script>
+<div class="modal" id="modal-max-update-entries" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h5 class="modal-title" id="max-update-entries-label"><%= t("nests.set-update-entries")%></h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><span class="fa fa-times"></span></span>
+		</button>
+	  </div>
+	  <form action="/nest_tops/<%= @nest.design.id %>" method="post" class="txt_form" id="max-update-entries-form">
+		<%= hidden_field_tag "authenticity_token", form_authenticity_token %>
+		<div class="modal-body">
+		  <div class="input-group">
+			<label for="max-update-entries" class="col-form-label"><%= t("nests.max-update-entries")%></label>
+			<input type="text" name="nest_top[max_update_entries]" value="<%= @nest.design.max_update_entries %>" id="max-update-entries" class="form-control">
+		  </div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <a class="btn btn-success" id="max-update-entries-submit"><%= t("view.set")%></a>
+		</div>
+	  </form>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+</style>
+<%= render "shared/icon_upload", obj: @space %>
+<div class="container-fluid">
+  <h3><%= t('spaces.create_of', name: @nest.title )%></h3>
+  <div class="row">
+	<div class="col-sm-12" style="padding:10px;height:240px;border-bottom:1px solid #CCC;margin-bottom:20px;">
+	  <%= image_tag "/icons/get_icon?id=#{@nest.icon_image_id}", class: "card-img-top", style: "width:220px;" %>
+	</div>
+  </div>
+
+  <div class="row">
+	<div class="col-sm-3">
+	  <div style="height:10px;">
+	  </div>
+	  <%= render "nests/info" %>
+	  <%= render "nests/meta" %>
+	</div>
+	<div class="col-sm-9">
+	  <%= form_for(@space, html: { class: "form-horizontal", id: "form", multipart: true }) do |form| %>
+		<%= hidden_field_tag :nest, params[:nest] %>
+		<%= render "space", form: form, obj: @space %>
+		<div class="input-group mb-3">
+		  <%= link_to t('create'), '#', class: 'btn btn-success', id: 'submit' %>
+		</div>
+	  <% end %>
+	</div>
+  </div>
+</div>
+<% end %>

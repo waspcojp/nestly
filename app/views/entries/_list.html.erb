@@ -1,0 +1,3 @@
+<% @entries.each do | entry | %>
+  <%= render "entries/card", entry: entry, watch: entry.watch(current_user) %>
+<% end %>

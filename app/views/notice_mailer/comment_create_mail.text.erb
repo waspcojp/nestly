@@ -1,0 +1,9 @@
+<%= @comment.body.to_html.gsub(/<br \/>/i, "\r\n") %>
+
+----------------------------------------------------------------------
+
+このメールはあなたが「<%= @notice.watch.target.title %>」をワッチしていることにより送られています。
+
+このエントリのワッチをやめたい場合は、以下のURLをクリックして下さい。
+
+<%=  notice_watch_url(@notice.watch.accept_token, on_off: "off") %>

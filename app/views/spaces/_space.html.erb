@@ -1,0 +1,63 @@
+<%= hidden_field_tag :icon_x %>
+<%= hidden_field_tag :icon_y %>
+<%= hidden_field_tag :icon_width %>
+<%= hidden_field_tag :icon_height %>
+<div class="form-group row">
+  <%= render 'shared/errors', record: obj %>
+</div>
+<div class="form-group row">
+  <%= form.label :class_name, I18n.t("spaces.class_name"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<% if ( @space.id ) %>
+	  <%= form.select :class_name, Space::ClassName::CLASSES, {}, class: "form-control", disabled: true %>
+	<% else %>
+	  <%= form.select :class_name, Space::ClassName::CLASSES, {}, class: "form-control" %>
+	<% end %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_field :title, class: "form-control", placeholder: t("view.title") %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :publication_level, Space::PublicationLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :preparation_level, I18n.t("spaces.preparation_level"), class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.select :preparation_level, Space::PreparationLevel::TYPES, {}, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <%= form.label :body, I18n.t("view.body"), for: "body", class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_area :description, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-2 col-form-label">
+	<%= t('view.icon') %>
+  </div>
+  <div class="col-sm-10" style="padding:0px 0px 10px 20px;">
+	<div class="row">
+	  <div class="form-ico">
+		<div class="icon">
+		  <img id="image_preview" src="/icons/get_icon?id=<%= @space.icon_image_id %>" />
+		</div>
+	  </div>
+	</div>
+	<div class="row">
+	  <div style="padding:10px 0px 0px 10px;">
+		<label class="col-form-label btn btn-outline-primary">
+		  <%= t('shared.nest.form.select_file') %>
+		  <input name="space[icon_image]" id="icon_image" type="file" style="display:none;"/>
+		</label>
+	  </div>
+	</div>
+  </div>
+</div>

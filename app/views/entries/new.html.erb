@@ -1,0 +1,39 @@
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-sm-12" style="padding:10px;height:240px;border-bottom:1px solid #CCC;margin-bottom:20px;">
+	  <div class="row">
+		<div class="sol-sm-4">
+		  <%= image_tag "/icons/get_icon?id=#{@space.icon_image_id}", class: "card-img-top", style: "margin-top:10px;width:180px;" %>
+		</div>
+		<div class="col-sm-8">
+		  <h2><%= t('entries.create_of', name: @space.title) %></h2>
+		  <div style="margin-left:20px;">
+			<%= @space.description.to_html %>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <%= form_for(@entry, html: { class: "form-horizontal", id: "form", multipart: true }) do |form| %>
+	<div class="row">
+	  <div class="col-sm-3">
+		<%= render "files", obj: @entry %>
+	  </div>
+	  <div class="col-sm-9">
+		<%= hidden_field_tag :space, params[:space] %>
+		<%= render "entry_classes/#{@space.class_name.underscore}/edit", form: form, obj: @entry %>
+		<div class="input-group mb-3">
+		  <%= link_to t('create'), '#', class: 'btn btn-success', id: 'submit' %>
+		  <%= link_to t('back'), entries_path(space: @space), class: 'btn btn-primary' %>
+		</div>
+	  </div>
+	</div>
+  <% end %>
+</div>
+<% end %>

@@ -1,0 +1,16 @@
+<div class="card">
+  <% if @nest.icon_image_id %>
+	<%= image_tag "/attaches/edit_icon?id=#{@nest.icon_image_id}", class: "card-img-top", id: "image_preview" %>
+  <% else %>
+	<%= image_tag "ico_defalut_account.svg", class: "card-img-top default_piroron", id: "image_preview" %>
+  <% end %>
+  <div class="card-body">
+	<ul>
+	  <li><%= Nest::PublicationLevel::TYPES.rassoc(@nest.publication_level)[0] %></li>
+	  <li><%= Nest::JoinMethod::TYPES.rassoc(@nest.join_method)[0] %></li>
+	</ul>
+	<div>
+	  <%= str_to_html @nest.description || "" %>
+	</div>
+  </div>
+</div>

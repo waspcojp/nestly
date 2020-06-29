@@ -1,0 +1,63 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<%= render "shared/watch_control" %>
+<div class="container-fluid">
+  <h3 class="mt-3"><%= t('watches.list_of', name: current_user.default_display_name) %></h3>
+  <div class="row">
+	<div class="col-sm-3" style="padding:20px;">
+	  <%= render "join_nest" %>
+	</div>
+	<div class="col-sm-9" style="padding:20px;">
+	  <%
+		@watches = Watch.where(target_type: 'Space',
+							   user: current_user).order("updated_at DESC")
+		%>
+
+	  <div class="row" id="watch-header" style="margin:0px;">
+		<div class="col-sm-12 body-title-1">
+		  <div class="d-flex justify-content-between">
+			<span class="" style="margin-top:12px;">
+			  <span class="title"><%= t("space")%></span>
+			</span>
+			<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#watch-list">
+			  <span class="fa fa-minus"></span>
+			</button>
+		  </div>
+		</div>
+	  </div>
+	  <div id="watch-list" data-parent="#watch-header" style="margin:0px 5px;padding:10px 0px;">
+		<div class="row">
+		  <% @watches.each do | watch | %>
+			<%= render "watch_card", watch: watch, watch_control: true %>
+          <% end %>
+		</div>
+      </div>
+	  <%
+		@watches = Watch.where(target_type: 'Entry',
+							   user: current_user).order("updated_at DESC")
+		%>
+
+	  <div class="row" id="watch-header" style="margin:0px;">
+		<div class="col-sm-12 body-title-1">
+		  <div class="d-flex justify-content-between">
+			<span class="" style="margin-top:12px;">
+			  <span class="title"><%= t("entry")%></span>
+			</span>
+			<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#watch-list">
+			  <span class="fa fa-minus"></span>
+			</button>
+		  </div>
+		</div>
+	  </div>
+	  <div id="watch-list" data-parent="#watch-header" style="margin:0px 5px;padding:10px 0px;">
+		<div class="row">
+		  <% @watches.each do | watch | %>
+			<%= render "watch_card", watch: watch, watch_control: true %>
+          <% end %>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

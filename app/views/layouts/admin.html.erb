@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <%= render partial: "shared/admin_lte" %>
+  </head>
+  <body class="hold-transition sidebar-mini">
+	<div class="wrappter">
+	  <%= render "shared/main_header" %>
+
+      <!-- main -->
+	  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+		<%= render "shared/main_sidebar" %>
+	  </aside>
+	  <div class="content-wrapper">
+		<section class="content-header">
+		  <div class="container-fluid">
+			<div class="row mb-2">
+			  <%= yield :header %>
+			</div>
+		  </div><!-- /.container-fluid -->
+		</section>
+		<section class="content">
+		  <%= yield :body%>
+		</section>
+	  </div>
+	  <!-- main -->
+	</div>
+    <%= render :partial => 'shared/footer' %>
+  </body>
+</html>
+<!-- import -->

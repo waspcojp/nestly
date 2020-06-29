@@ -1,0 +1,23 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".watch-check").on('change', (e) => {
+		let id = e.currentTarget.value;
+		let on_off = e.currentTarget.checked;
+		let target_id = $(e.currentTarget).attr("data-id");
+		let target_type = $(e.currentTarget).attr("data-type");
+
+		$.ajax({
+			type: "POST",
+			url: `/home/update_watch/${id}`,
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: {
+				on_off: on_off,
+				target_id: target_id,
+				target_type: target_type
+			}
+		});
+	});
+});
+</script>

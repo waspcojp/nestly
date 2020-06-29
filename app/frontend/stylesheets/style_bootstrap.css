@@ -1,0 +1,86 @@
+.bd-navbar {
+	background-color: #FFF;
+	border-bottom: 1px solid #CCC;
+}
+.navbar {
+	padding: 0px;
+}
+
+.subnav {
+	border-bottom: 1px solid #DDD;
+}
+
+ul.message {
+	list-style-type: none;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	padding-inline-start: 0;
+}
+
+ul.message li {
+	padding: 10px 20px;
+}
+
+.btn-area,
+.paginate-area {
+	background-color: #ffffff;
+}
+
+a.link {
+  	text-decoration: none
+}
+
+a.method,
+a.link:visited,
+a.link:link {
+  	color: #000000;
+}
+
+a.link:hover {
+  	color: #808080;
+}
+
+.left {
+	background-color: #EEE;
+	padding: 20px;
+}
+.card-body ul {
+	list-style-type: none;
+	margin-block-start: 10px;
+	margin-block-end: 10px;
+	padding-inline-start: 10px;
+}
+.body-title-1 {
+	height:50px;
+	background-color:rgba(0,0,0,0.03);
+	border-radius:0.25rem;
+	border:1px solid rgba(0,0,0,0.125);
+}
+
+span.title,
+.body-title-1 .title {
+	font-weight:bold;
+}
+
+.card-body dd {
+	padding:0 10px 10px 20px;
+	margin-bottom: 0;
+}
+.card-body dd:last-child {
+	padding:0 10px 0px 20px;
+	margin-bottom: 0;
+}
+
+.card-body dl {
+	margin-bottom: 0;
+}
+
+.page-header {
+	height:220px;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.icon-image {
+	border-radius:50%;
+}

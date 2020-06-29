@@ -1,0 +1,64 @@
+  <a class="brand-link" href="/">
+	<%= image_tag 'ico_home.svg', alt: "NESTLY.NET", class: "brand-image img-circle elevation-3" %>
+	<span class="brand-text font-weight-light">Nestly</span>
+  </a>
+  <div class="sidebar">
+	<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+	  <div class="image">
+		<% if current_user.icon_image_id %>
+		  <img id="icon-image" src="/icons/download?type=header&id=<%= current_user.icon_image_id %>" alt="" class="img-circle elevation-2"/>
+		<% else %>
+		  <%= image_tag "ico_defalut_account_s.svg", id:"icon-image", alt:"", class: "img-circle elevation-2" %>
+		<% end %>
+	  </div>
+	  <div class="info">
+		<a href="#" class="d-block"><%= current_user.user_name %></a>
+	  </div>
+	</div>
+
+	<nav class="mt-2">
+	  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+		<li class="nav-item">
+		  <% if controller_name == 'laries' %>
+			<%#= link_to t('shared.lower_header.nests_index'), nests_path, class: "nav-link active" %>
+		  <% else %>
+			<%#= link_to t('shared.lower_header.nests_index'), nests_path, class: "nav-link" %>
+		  <% end %>
+		</li>
+
+		<li class="nav-item">
+		  <% if controller_name == "invites" %>
+			<%#= link_to t('shared.lower_header.invite_index'), invites_path, class: "nav-link active" %>
+		  <% else %>
+			<%#= link_to t('shared.lower_header.invite_index'), invites_path, class: "nav-link" %>
+		  <% end %>
+		</li>
+
+		<li class="nav-item has-treeview<%=  (controller_name == 'registrations') ? " menu-open" : "" %>">
+		  <a href="#" class="nav-link<%=  (controller_name == 'registrations') ? " active" : "" %>">
+			<%= t('shared.lower_header.account_edit') %>
+		  </a>
+		  <ul class="nav nav-treeview">
+			<li class="nav-item">
+			  <% if ( ( controller_name == 'registrations' ) &&
+					  ( ( action_name == "edit_profile" ) ||
+						( action_name == "update_profile" ) ) ) %>
+				<%= link_to t('shared.lower_header.profile'), edit_profile_path, class: "nav-link active" %>
+			  <% else %>
+				<%= link_to t('shared.lower_header.profile'), edit_profile_path, class: "nav-link" %>
+			  <% end %>
+			</li>
+			<li class="nav-item">
+			  <% if ( ( controller_name == 'users' ) &&
+					  ( ( action_name == "edit" ) ||
+						( action_name == "update" ) ) ) %>
+				<span class="nav-link active"><%= t('shared.lower_header.authenticate') %></span>
+			  <% else %>
+				<%= link_to t('shared.lower_header.authenticate'), edit_user_path(current_user), class: "nav-link" %>
+			  <% end %>
+			</li>
+		  </ul>
+		</li>
+	  </ul>
+	</nav>
+  </div>

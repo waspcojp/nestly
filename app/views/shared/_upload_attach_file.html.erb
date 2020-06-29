@@ -1,0 +1,88 @@
+<script type="text/javascript">
+let image_count = <%= image_count %>;
+
+let delete_button = (event) => {
+	let data_id = parseInt($(event.currentTarget).attr("data-id"));
+	let id = parseInt($(event.currentTarget).prop("id").replace(/delete-/, ''));
+
+	if ( confirm('Are you sure?') ) {
+		$.ajax({
+			type: "DELETE",
+			url: `/attach_files/${data_id}`,
+			dataType: "json",
+			success: (data) => {
+				$('#file-control-' + id).remove();
+			}
+		});
+	}
+};
+
+let make_upload = (num) => {
+	let file_control = $(`
+<% if vertical %>
+ <div class="file-control row" id="file-control-${num}">
+<% else %>
+ <div class="file-control col-sm-3" id="file-control-${num}" style="padding-left:0;padding-right:0;">
+<% end %>
+`);
+	let upload_area = $('<div>');
+	let attach_file = $(`<input type="file" name="<%= record %>[attach_file_${num}]" style="display:none">`);
+	let upload_label = $('<label>').attr('class', 'btn btn-outline-primary').
+		append('Select File').
+		append(attach_file);
+	upload_area.append(upload_label);
+	file_control.append(upload_area);
+
+	let delete_button = $(`<div class="d-flex justify-content-end" id="delete-area-${num}">`).
+				append($(`<span class="fa fa-times">`));
+	let delete_area = $('<div class="col-sm-12">').
+		append(delete_button);
+
+	let image_preview = $('<img>').attr({ 'style':'width:148px; height:111px;',
+										  'id': 'image_preview-' + num});
+
+	file_control.append(delete_area);
+	file_control.append($('<div>').append(image_preview));
+	image_preview.hide();
+
+	upload_area.show();
+	delete_area.hide();
+	delete_button.on('click', (event) => {
+		let num = parseInt($(event.currentTarget).prop("id").replace(/delete-area-/, ''));
+		$('#file-control-' + num).remove();
+		image_count -= 1;
+	});
+	attach_file.on("change", (event) => {
+		let file = $(event.currentTarget).prop("files")[0];
+		let reader = new FileReader();
+		reader.addEventListener('load', () => {
+			let	preview;
+			let	file_type = attach_file.prop('files')[0].type;
+			let	file_name = attach_file.prop('files')[0].name;
+			if ( file_type.match(/^image/) ) {
+				preview = reader.result;
+			} else {
+				if ( file_type != '' ) {
+					let fn = file_type.split('/').join('-');
+					preview = `/images/content_types/${fn}.png`
+				} else {
+					preview = '/images/content_types/unknown.png'
+				}
+			}
+			image_preview.attr('src', preview).show();
+			upload_area.hide();
+			delete_area.show();
+		}, false);
+		image_count += 1;
+		reader.readAsDataURL(file);
+		$('#file-list').prepend(make_upload(image_count));
+	});
+
+	return (file_control);
+}
+
+$(document).ready(function(){
+	$('#file-list').prepend(make_upload(image_count));
+	$('.delete-button').on('click', delete_button);
+});
+</script>

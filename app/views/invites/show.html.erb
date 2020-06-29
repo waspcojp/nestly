@@ -1,0 +1,77 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<style>
+.card-header {
+  background: #fff;
+}
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="junbotron">
+	  <h1 class="display-4">招待メールへの応答</h1>
+	  <p class="lead">
+		<%= @invite.to_mail %> さん、あなたは <%= @invite.inviter.user_name %> さんから
+		<%= @invite.nest.title %>に招待されました。
+	  </p>
+	  <h2><%= @invite.nest.title %>とは</h2>
+	  <div>
+		<%= str_to_html @invite.nest.description %>
+	  </div>
+	  <hr class="my-4">
+	  <% if current_user %>
+		<p>
+		  あなたは今、<%= current_user.user_name %> としてログインしています。
+		</p>
+		<% if ( @invite.nest.member?(current_user) ) %>
+		  <p>
+			あなたは既に<%= @invite.nest.title %>に参加しています。
+		  </p>
+		  <p>
+			このまま<%= link_to "追加", invite_append_path(@invite.invitation_token), method: :post, class: "btn btn-primary" %>
+			した場合、このメールアドレス(<%= @invite.to_mail %>)は現在のアカウントに認証済みアドレスとして、自動的に追加されます。
+			別のアカウントで参加する場合や新たにアカウントを取得してから参加したい場合、一度ログアウトしてからあらためてメールをクリックして下さい。
+		  </p>
+		<% else %>
+		  <p>
+			このまま参加する場合は、<%= link_to "参加", invite_join_path(@invite.invitation_token), class: "btn btn-primary" %>をクリックして下さい。
+		  </p>
+		<% end %>
+	  <% else %>
+		<p>
+		  あなたは今、ログインしていません。
+		</p>
+		<% if ( User.mail_used?(@invite.to_mail) ) %>
+		  <p>
+			あなたがこのメールアドレス(<%= @invite.to_mail %>)の持ち主なら、
+			<%= link_to "ログイン", new_session_path(return: request.fullpath) , class: "btn btn-success" %>してからあらためてメールをクリックして下さい。
+		  </p>
+		<% else %>
+		  <p>
+			このまま<%= link_to "参加", invite_join_path(@invite.invitation_token), class: "btn btn-primary" %>した場合、新たにShorNestにアカウントが作られ、メールアドレス(<%= @invite.to_mail %>)は認証済みアドレスとして、自動的に追加されます。
+		  </p>
+		  <p>
+			既にアカウントをお持ちの場合は、<%= link_to "ログイン", new_session_path(return: request.fullpath) , class: "btn btn-success" %>してからあらためてメールをクリックして下さい。
+		  </p>
+		<% end %>
+	  <% end %>
+	  <hr class="my-4">
+	  <p>
+		参加を辞退したい場合は、<%= link_to "辞退", invite_leave_path(@invite.invitation_token), method: :post, class: "btn btn-warning" %>
+		をクリックして下さい。
+	  </p>
+	  <hr class="my-4">
+	  <p>
+		以下のいずれかに該当する場合は、<%= link_to "拒否", invite_abuse_path(@invite.invitation_token), class: "btn btn-danger" %>
+		をクリックして下さい。
+	  </p>
+	  <ul>
+		<li><%= @invite.inviter.user_name %>さんが誰だかわからない</li>
+		<li><%= @invite.nest.title %>が何をする集まりなのかよくわからない</li>
+		<li>このメールに心当たりがない</li>
+	  </ul>
+	  <hr class="my-4">
+	</div>
+  </div>
+</div>
+<% end %>

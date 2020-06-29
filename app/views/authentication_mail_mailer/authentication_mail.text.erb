@@ -1,0 +1,7 @@
+<%= @user_mail_address.user.user_name %>
+========================================
+
+新しくメールアドレス <%= @user_mail_address.mail_address %> が登録されました。
+以下のURLをクリックして下さい。
+
+<%= auth_mail_url(@user_mail_address.authenticate_token) %>

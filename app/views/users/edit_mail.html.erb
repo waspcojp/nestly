@@ -1,0 +1,72 @@
+<% content_for :header do %>
+  <%= render "header" %>
+<% end %>
+<% content_for :body do %>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".mail-check").on('change', (e) => {
+		let id = e.currentTarget.value;
+		let on_off = e.currentTarget.checked;
+
+		$.ajax({
+			type: "POST",
+			url: `/users/notice_mail/${id}`,
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: {
+				on_off: on_off
+			}
+		});
+	});
+});
+</script>
+  <div class="container-fluid">
+	<div class="row mb-3 mt-3">
+	  <div class="col-md-2">
+	  </div>
+	  <div class="col-md-10">
+		<ul class="list-group">
+		  <% @user.user_mail_addresses.order("mail_address ASC").each do | address | %>
+			<li class="list-group-item d-flex justify-content-between">
+			  <span>
+				<% if ( address.authorized_at ) %>
+				  <%= check_box_tag "check[#{address.id}", address.id, address.notice, class: "mail-check", title: "use for notice mail"%>
+				<% else %>
+				  <span style="padding:9px;"></span>
+				<% end %>
+				<span><%= address.mail_address %></span>
+			  </span>
+			  <span>
+				<% if ( address.authorized_at ) %>
+				  <i title="確認済み" class="fas fa-check"></i>
+				<% else %>
+				  <%= link_to send_mail_path(address), method: :post, class: "link" do %>
+				    <i class="fas fa-envelope"></i>
+				  <% end %>
+				<% end %>
+				<%= link_to(address, method: :delete, data: { confirm: 'Are you sure?' }, class: "link" ) do %>
+				  <i class="far fa-minus-square"></i>
+				<% end %>
+			  </span>
+			</li>
+		  <% end %>
+		</ul>
+	  </div>
+	</div>
+	<%= form_for(@user_mail_address,
+				 url: append_mail_path(@user_mail_address),
+				 html: {
+				   class: 'text_form',
+				   }) do | f | %>
+	  <div class="input-group mb-3">
+		<%= render 'shared/errors', record: @user %>
+	  </div>
+      <div class="input-group mb-3">
+		<%= f.label :mail_address, I18n.t('users.mail_address'), for: 'mail_address', class: "col-sm-2 col-form-label" %>
+        <%= f.text_field :mail_address, autofocus: true, placeholder: I18n.t('users.mail_address'), class: 'col-sm-8 form-control' %>
+		<%= f.submit I18n.t("view.save"), class: "btn btn-success col-sm-1 mb-4", style: "margin-left:10px;"%>
+	  </div>
+	<% end %>
+  </div>
+<% end %>

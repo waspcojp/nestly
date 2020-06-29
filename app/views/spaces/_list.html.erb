@@ -1,0 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.title-image').on('click', (event) => {
+		let link = $(event.currentTarget).attr('href');
+		location.href = link;
+	});
+});
+</script>
+<% spaces.each do | space | %>
+  <%= render "spaces/card", space: space, watch: space.watch(current_user)%>
+<% end %>

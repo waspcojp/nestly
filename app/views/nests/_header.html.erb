@@ -1,0 +1,64 @@
+<style>
+.nest-nav {
+	border-bottom: 1px solid #CCC;
+	height: 50px;
+</style>
+<div class="navbar nest-nav">
+  <ul class="nav">
+	<li class="nav-item">
+	  <%= link_to t("nests.top"), @nest, class: "nav-link" %>
+	</li>
+	<li class="nav-item">
+	  <%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link" %>
+	</li>
+	<% if ( @nest.preparable?(current_user) ) %>
+	  <li class="nav-item">
+		<%= link_to t("spaces.new"), new_space_path(nest: @nest), class: "nav-link" %>
+	  </li>
+	<% end %>
+
+	<li class="nav-item">
+	  <% if ( ( @space    ) &&
+			  ( @space.id ) ) %>
+		<%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link" %>
+	  <% else %>
+		<%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link" %>
+	  <% end %>
+	</li>
+	<% if ( ( @space    ) &&
+			( @space.id ) ) %>
+	  <% if ( @space.preparable?(current_user) ) %>
+		<li class="nav-item">
+		  <%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link" %>
+		</li>
+	  <% end %>
+	<% end %>
+  </ul>
+  <ul class="nav justify-content-end">
+	<% if ( ( action_name == "show" ) &&
+			( @nest ) ) %>
+	  <% if ( @nest.invitable?(current_user) ) %>
+		<li class="nav-item">
+		  <%= link_to t('invite'), invite_nest_path(@nest), class: "nav-link" %>
+		</li>
+	  <% end %>
+	  <% if ( @nest.admin?(current_user) ) %>
+		<li class="nav-item">
+		  <%= link_to(edit_nest_path(@nest), class:"link") do %>
+			<i class="fas fa-cog mt-2" style="font-size:20px;"></i>
+          <% end %>
+		</li>
+	  <% end %>
+	  <% if ( @nest.resinable?(current_user) ) %>
+		<li class="nav-item">
+		  <%= link_to t("nests.resign"), nests_resign_path(@nest) %>
+		</li>
+	  <% end %>
+	  <% if ( @nest.joinable?(current_user) ) %>
+		<li class="nav-item">
+		  <%= link_to t("nests.join"), nests_join_path(@nest) %>
+		</li>
+	  <% end %>
+	<% end %>
+  </ul>
+</div>
