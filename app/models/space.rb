@@ -8,6 +8,7 @@ class Space < ApplicationRecord
   after_create :log_create
   after_update :log_update
   after_destroy :log_destroy
+  before_save :create_ids
 
   module PublicationLevel
     include ControlLevel
@@ -78,4 +79,10 @@ class Space < ApplicationRecord
     end
   end
 private
+  def create_ids
+    if (( !self.title_id ) ||
+        ( self.title_id == '' ))
+      self.title_id = SecureRandom.uuid.gsub('-','')[0..7]
+    end
+  end
 end

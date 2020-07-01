@@ -22,6 +22,13 @@
   </div>
 </div>
 <div class="form-group row">
+  <%= form.label :title_id, t('view.title_id'),  class: "col-sm-2 col-form-label" %>
+  <div class="col-sm-10">
+	<%= form.text_field :title_id, class: "form-control", placeholder: t("view.title_id") %>
+	<p><%= t('view.title_id_description')%></p>
+  </div>
+</div>
+<div class="form-group row">
   <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
 	<%= form.select :publication_level, Space::PublicationLevel::TYPES, {}, class: "form-control" %>

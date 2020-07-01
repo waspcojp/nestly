@@ -55,12 +55,12 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.ts', '.tsx']
 	},
 	plugins: [
-		new webpack.ProvidePlugin({
-			$: "jquery",
-			jQuery: 'jquery',
-			jquery: 'jquery',
-			"window.jQuery": 'jquery',
-		}),
+//		new webpack.ProvidePlugin({
+//			$: "jquery",
+//			jQuery: 'jquery',
+//			jquery: 'jquery',
+//			"window.jQuery": 'jquery',
+//		}),
 		new ManifestPlugin({
 			writeToFileEmit: true
 		}),

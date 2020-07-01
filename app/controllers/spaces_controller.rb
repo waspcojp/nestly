@@ -9,7 +9,7 @@ class SpacesController < ApplicationController
     @nest = Nest.find(params[:nest])
     if ( @nest )
       space = params.require(:space).
-        permit(:title, :description, :icon_image, :publication_level, :preparation_level, :class_name)
+        permit(:title, :title_id, :description, :icon_image, :publication_level, :preparation_level, :class_name)
 
       space.delete(:icon_image)
       @space = Space.new(space)
@@ -36,7 +36,7 @@ class SpacesController < ApplicationController
   def update
     @space = Space.find(params[:id])
     space = params.require(:space).
-      permit(:title, :description, :icon_image, :publication_level, :preparation_level)
+      permit(:title, :title_id, :description, :icon_image, :publication_level, :preparation_level)
     space.delete(:icon_image)
 
     @space.attributes = space

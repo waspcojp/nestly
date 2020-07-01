@@ -1,4 +1,4 @@
-<%= javascript_pack_tag 'editor' %>
+<%= javascript_include_tag asset_bundle_path('editor.js') %>
 <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -62,13 +62,6 @@ $(document).ready(function(){
   <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
 	<%= form.text_field :title, class: "form-control", placeholder: t("view.title") %>
-  </div>
-</div>
-<div class="form-group row">
-  <%= form.label :title_id, t('view.title_id'),  class: "col-sm-2 col-form-label" %>
-  <div class="col-sm-10">
-	<%= form.text_field :title_id, class: "form-control", placeholder: t("view.title_id") %>
-	<p><%= t('view.title_id_description')%></p>
   </div>
 </div>
 <div class="form-group row">

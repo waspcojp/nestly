@@ -5,12 +5,12 @@
 
 require("@rails/ujs").start()
 
-require("jquery");
+jQuery = require("jquery");
 require("jquery-ui");
 require("bootstrap");
 require("remodal");
 require("cropper");
-
+$ = jQuery;
 window.jQuery = $;
 window.$ = $;
 

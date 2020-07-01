@@ -18,7 +18,7 @@
 		<% when Entry::BodyType::HTML %>
 		  <%= entry.body.html_safe %>
 		<% else %>
-		  <%= entry.text %>
+		  <%= entry.body.to_html %>
         <% end %>
       </div>
      </div>

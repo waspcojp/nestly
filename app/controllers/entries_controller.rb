@@ -41,7 +41,7 @@ class EntriesController < ApplicationController
     @space = Space.find(params[:space])
     if ( @space )
       entry = params.require(:entry).
-        permit(:title, :title_id, :body, :publication_level, :comment_level, :edit_level, :body_type)
+        permit(:title, :body, :publication_level, :comment_level, :edit_level, :body_type)
 
       @entry = Entry.new(entry)
       @entry.author = current_user
@@ -74,7 +74,7 @@ class EntriesController < ApplicationController
   def update
     @entry = Entry.find(params[:id])
     entry = params.require(:entry).
-      permit(:title, :body, :publication_level, :comment_level, :edit_level, :title_id)
+      permit(:title, :body, :publication_level, :comment_level, :edit_level)
 
     @entry.attributes = entry
     @entry.save

@@ -6,6 +6,7 @@ class SorceryCore < ActiveRecord::Migration[6.0]
       t.string	:salt
       t.string	:default_display_name
       t.integer	:icon_image_id
+      t.string	:uuid
 
       t.timestamps                null: false
     end

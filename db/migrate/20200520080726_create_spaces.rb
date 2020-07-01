@@ -7,6 +7,7 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
       t.integer		:publication_level, default: 9
       t.integer		:preparation_level, default: 2
       t.string		:title
+      t.string		:title_id
       t.text		:description
       t.integer		:icon_image_id
 
@@ -21,11 +22,8 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
       t.string		:title
       t.text		:body
       t.string		:localpart
-      t.string		:title_id
       t.integer		:body_type, default: 1
       t.integer		:comment_count, default: 0
-      t.timestamp	:deleted_at
-      t.integer		:deleted_by_id
 
       t.timestamps null: false
     end

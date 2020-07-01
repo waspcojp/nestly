@@ -1,6 +1,7 @@
 class Entry < ApplicationRecord
   belongs_to :space
   belongs_to :author, class_name: "User"
+
   has_many :attach_files, as: :file
   has_many :watches, dependent: :destroy, as: :target
   has_many :comments
@@ -97,7 +98,7 @@ class Entry < ApplicationRecord
   def text(length = -1, width = 560, height=315)
     case body_type
     when BodyType::TEXT
-      body[0..length].to_html(width, height)
+      body.gsub(/\r\n/,'').gsub(/\r/,'').gsub(/\n/,'')[0..length].to_html(width, height)
     when BodyType::HTML
       body.gsub(/\<.*?\>/,'')[0..length]
     when BodyType::MD
@@ -127,10 +128,6 @@ private
   def create_ids
     if self.localpart.nil?
       self.localpart = SecureRandom.uuid.gsub('-','')
-    end
-    if (( !self.title_id ) ||
-        ( self.title_id == '' ))
-      self.title_id = self.localpart[0..7]
     end
   end
 end

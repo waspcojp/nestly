@@ -10,7 +10,7 @@ module WebpackBundleHelper
 private
 
   def manifest
-    return @manifest ||= JSON.parse(File.read("public/assets/manifest.json"))
+    return @manifest ||= JSON.parse(File.read("./public/assets/manifest.json"))
   end
 
   def valid_file?(entry)

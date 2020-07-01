@@ -8,13 +8,33 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 begin
-  pg = EndpointProgram.find(1)
-  pg.save!
-rescue ActiveRecord::RecordNotFound
-  EndpointProgram.create(
-                         title: "ES形式をlogに格納する",
-                         name: "OriginalLog",
-                         publication: EndpointProgram::Publication::OPEN,
-                         reviewed_at: Time.now
-                         )
+  user = User.find(1)
+rescue
+  user = User.create!(user_name: 'root',
+                      password: 'rootroot',
+                      password_confirmation: 'rootroot',
+                      default_display_name: 'root')
 end
+design = NestTop.create!
+nest = Nest.create!(owner: user,
+                      title: 'メンバー用',
+                      description: <<__NEST__,
+会員のためのネストです
+主に「お知らせ」のためにありますが、それ以外のスペースはサンドボックスとして使えます。
+__NEST__
+                      design: design,
+                      join_method: Nest::JoinMethod::INVITE_BY_OWNER,
+                      preparation_level: Nest::PreparationLevel::PRIVATE)
+NestMember.create!(
+                   nest: nest,
+                   user: user,
+                   display_name: 'root',
+                   board: true)
+space = Space.create!(creater: user,
+                     nest: nest,
+                     title: '運営からのお知らせ',
+                     description: <<__SPACE__,
+運営からのお知らせです。
+__SPACE__
+                     publication_level: Space::PublicationLevel::MEMBERS_ONLY,
+                     preparation_level: Space::PreparationLevel::PRIVATE)

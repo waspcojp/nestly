@@ -14,7 +14,7 @@ class NoticeMailer < ApplicationMailer
       if ( mail_address.notice )
         mail(to: mail_address.mail_address,
              from: "#{@entry.localpart}@#{Settings.mail[:domain_part]}",
-             subject: "[#{@entry.title_id}] #{@entry.title}")
+             subject: "[#{@entry.space.title_id}] #{@entry.title}")
       end
     end
   end
@@ -26,7 +26,7 @@ class NoticeMailer < ApplicationMailer
       if ( mail_address.notice )
         mail(to: mail_address.mail_address,
              from: "#{@entry.localpart}@#{Settings.mail[:domain_part]}",
-             subject: "[#{@entry.title_id}:#{@entry.comment_count}] #{@entry.title}")
+             subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
       end
     end
   end

@@ -6,7 +6,7 @@
 <style>
 <%= File.open('./public/styles/entry.css').read %>	
 </style>
-<%= javascript_pack_tag 'markdown' %>
+<%= javascript_include_tag asset_bundle_path('markdown.js') %>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#result-html').html(Markdown.render($('#entry-source').text()));

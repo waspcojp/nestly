@@ -6,6 +6,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, if: -> { new_record? || changes["crypted_password"] }
   validates :password, confirmation: true, if: -> { new_record? || changes["crypted_password"] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes["crypted_password"] }
+  before_save :set_uuid
 
   def mail_authorized?
     UserMailAddress.where("( user_id = :user_id ) and ( authorized_at is not null )",
@@ -26,5 +27,11 @@ class User < ApplicationRecord
   end
   def self.mail_used?(address)
     UserMailAddress.where(mail_address: address).count > 0 ? true : false
+  end
+private
+  def set_uuid
+    if ( !self.uuid )
+      self.uuid = SecureRandom.uuid
+    end
   end
 end
