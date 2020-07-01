@@ -1,0 +1,35 @@
+<div class="row" id="entry-header" style="margin:0px;">
+  <div class="col-sm-12 body-title-1">
+	<div class="d-flex justify-content-between">
+	  <span class="mt-2">
+		<span class="title"><%= link_to t("homes.informations"), space_path(1), class: "link" %></span>
+	  </span>
+	  <button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#informations-list">
+		<span class="fa fa-minus"></span>
+	  </button>
+	</div>
+  </div>
+</div>
+<%
+  @informations = Entry.where(space_id: 1).order("created_at DESC").limit(5)
+%>
+<div id="informations-list" data-parent="#informations-header" style="margin:10px 5px;">
+  <div class="row">
+	<div class="col-sm-12" style="padding:10px;">
+	  <div class="card">
+		<div class="card-body">
+		  <dl>
+			<% @informations.each do | information | %>
+			  <dt>
+				<%= link_to information, class: "link" do %>
+				  <%= information.title %>(<%= l information.created_at, format: :short  %>)
+			    <% end %>
+			  </dt>
+			  <dd><%= information.text(40) %></dd>
+			<% end %>
+		  </dl>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
