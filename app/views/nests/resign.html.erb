@@ -4,28 +4,29 @@
 <style>
 </style>
 <div class="container-fluid">
-<div class="row">
-  <div class="col-sm-3" style="padding:10px;">
-	<%= render "left_tab"%>
-  </div>
-  <div class="col-sm-7" style="padding:10px;">
-	<h2>退会処理</h2>
-	<div class="card">
-	  <p>
-		あなたは <%= @nest.title %> を退会しようとしています。
-	  </p>
-	  <%= form_tag(controller: "nests",
-				   action: "do_resign",
-				   id: @nest.id) do %>
+  <%= render "title" %>
+  <div class="row">
+	<div class="col-sm-3">
+	  <%= render "admin" %>
+	  <%= render "meta" %>
+	</div>
+	<div class="col-sm-9">
+	  <div class="card" style="padding:20px;">
 		<p>
-		  このまま退会される場合は、<%= submit_tag '退会' , class: "btn btn-danger" %> を押して下さい。
+		  あなたは <%= @nest.title %> を退会しようとしています。
 		</p>
-		<p>
-		  退会しない場合は、<%= link_to t('back') , @nest, class: "btn btn-primary" %> を押して下さい。
-		</p>
-	  <% end %>
+		<%= form_tag(controller: "nests",
+					 action: "do_resign",
+					 id: @nest.id) do %>
+		  <p>
+			このまま退会される場合は、<%= submit_tag '退会' , class: "btn btn-danger" %> を押して下さい。
+		  </p>
+		  <p>
+			退会しない場合は、<%= link_to t('back') , @nest, class: "btn btn-primary" %> を押して下さい。
+		  </p>
+		<% end %>
+	  </div>
 	</div>
   </div>
-</div>
 </div>
 <% end %>

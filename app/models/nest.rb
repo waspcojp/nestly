@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Nest < ApplicationRecord
   belongs_to :owner, class_name: "User"
   belongs_to :design, class_name: "NestTop"
@@ -42,19 +43,28 @@ class Nest < ApplicationRecord
       ""
     end
   end
+  #
+  # エントリやスペースの可視性はそれぞれで管理されているのでここではあまりうるさく言わない
+  #
   def visible?(user)
-    if ( self.owner == user )
+    if ( self.owner_id == user.id )
       true
     else
-      case ( publication_level )
-      when PublicationLevel::MEMBERS_ONLY
-        member?(user) ? true : false
-      when PublicationLevel::PRIVATE
-        false
-      when PublicationLevel::OPEN
-        user ? true : false
-      when PublicationLevel::OPEN_GLOBAL
+      if ( self.join_method == JoinMethod::FREE_JOIN )
         true
+      else
+        case ( publication_level )
+        when PublicationLevel::MEMBERS_ONLY
+          member?(user) ? true : false
+        when PublicationLevel::PRIVATE
+          false
+        when PublicationLevel::OPEN
+          user ? true : false
+        when PublicationLevel::OPEN_GLOBAL
+          true
+        else
+          false
+        end
       end
     end
   end
@@ -164,7 +174,11 @@ class Nest < ApplicationRecord
         end
       end
     else
-      ret = false
+      if ( user.id == 1 )
+        ret = true
+      else
+        ret = false
+      end
     end
     ret
   end

@@ -4,18 +4,16 @@
     <%= render partial: "shared/bare_bootstrap" %>
   </head>
   <body>
-	<div class="wrappter">
-	  <%= render "shared/upper_header" %>
-      <!-- main -->
-	  <main class="container">
-		<section class="header">
-		  <%= yield :header %>
-		</section>
-		<section class="main">
-		  <%= yield :body %>
-		</section>
-	  </main>	<!-- main -->
-	</div>
+	<%= render "shared/upper_header" %>
+    <!-- main -->
+	<main class="container">
+	  <section class="header">
+		<%= yield :header %>
+	  </section>
+	  <section class="main">
+		<%= yield :body %>
+	  </section>
+	</main>	<!-- main -->
     <%= render :partial => 'shared/footer' %>
   </body>
 </html>

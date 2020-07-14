@@ -5,8 +5,9 @@ class SorceryCore < ActiveRecord::Migration[6.0]
       t.string	:crypted_password
       t.string	:salt
       t.string	:default_display_name
-      t.integer	:icon_image_id
-      t.string	:uuid
+      t.integer		:icon_image_id
+      t.string		:uuid
+      t.datetime	:locked_at
 
       t.timestamps                null: false
     end

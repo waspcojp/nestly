@@ -25,3 +25,9 @@ module DeviceConsole
 
   end
 end
+
+begin
+  logfile = File.open("#{Rails.root}/log/down.log", 'a')
+  logfile.sync = true
+  DOWN_LOGGER = Logger.new(logfile)
+end

@@ -11,7 +11,7 @@
 	<li class="nav-item">
 	  <% if ( action_name == "new" ) %>
 	  <% else %>
-		<%= link_to t('shared.nests.new'), new_nest_path, class: "nav-link" %>
+		<%= link_to t('nests.new'), new_nest_path, class: "nav-link" %>
 	  <% end %>
 	</li>
   </ul>
@@ -43,10 +43,10 @@
 		  <%= image_tag "/icons/edit_icon?id=#{nest.icon_image_id}", class: "card-img-top", id: "image_preview" %>
 		<% end %>
 		<div class="card-body">
-		  <ul>
+		  <!--ul>
 			<li><%= Nest::PublicationLevel::TYPES.rassoc(nest.publication_level)[0] %></li>
 			<li><%= Nest::JoinMethod::TYPES.rassoc(nest.join_method)[0] %></li>
-		  </ul>
+		  </ul -->
 		  <div>
 			<%= str_to_html nest.description || "" %>
 		  </div>

@@ -25,7 +25,15 @@ class InvitesController < ApplicationController
     @invite = Invite.where(invitation_token: params[:id]).first
     if ( @invite )
       if ( !current_user )
-        redirect_to new_user_path(token: @invite.invitation_token)
+        if ( !Settings.service[:invite_only] )
+          redirect_to new_user_path(token: @invite.invitation_token)
+        else
+          @user = @invite.create_user
+          @invite.destroy
+          auto_login(@user)
+
+          redirect_to edit_user_path(@user)
+        end
       else
         redirect_to nest_join_path(@invite.nest, token: @invite.invitation_token)
       end

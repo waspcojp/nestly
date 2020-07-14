@@ -5,7 +5,7 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
       t.integer		:creater_id
       t.string		:class_name, default: "Board"
       t.integer		:publication_level, default: 9
-      t.integer		:preparation_level, default: 2
+      t.integer		:preparation_level, default: 3
       t.string		:title
       t.string		:title_id
       t.text		:description
@@ -17,8 +17,8 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
       t.integer		:space_id
       t.integer		:author_id
       t.integer		:publication_level, default: 9
-      t.integer		:comment_level, default: 2
-      t.integer		:edit_level, default: 3
+      t.integer		:comment_level, default: 3
+      t.integer		:edit_level, default: 4
       t.string		:title
       t.text		:body
       t.string		:localpart
@@ -30,6 +30,7 @@ class CreateSpaces < ActiveRecord::Migration[6.0]
     create_table :comments do |t|
       t.integer		:entry_id
       t.integer		:author_id
+      t.integer		:parent_id
       t.text		:body
       t.integer		:number
       t.timestamp	:deleted_at

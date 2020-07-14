@@ -43,6 +43,7 @@ ja:
     informations: お知らせ
   nest: ネスト
   nests:
+    new: ネストの作成
     admin: 管理人
     join: ネストに参加
     joined: 参加しているネスト
@@ -64,6 +65,9 @@ ja:
     resign: 退会
     invite_for: '「%{name}」への招待'
     invitationals: 招待中の人
+    join_OK: 参加しました。
+    already_joined: 既に参加しています。
+    resigned: '%{name}を退会しました。'
   space: スペース
   spaces:
     count: スペース数
@@ -101,7 +105,9 @@ ja:
   users:
     new: アカウント登録
     edit: ユーザー情報の変更
-    edit_profile: プロフィール
+    edit_profile: プロフィールの変更
+    edit_mail: メールアドレスの変更
+    edit_password: パスワードの変更
     edit_session: セッション情報
     user_name: ユーザ名
     display_name: 表示名

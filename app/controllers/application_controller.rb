@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   include Pundit
   before_action :require_login
+  rescue_from ArgumentError, with: :rescue_action_in_public
+  rescue_from NoMethodError, with: :rescue_action_in_public
+  rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_404
 
   protect_from_forgery with: :exception
 
@@ -111,5 +114,41 @@ private
       content_type = nil
     end
     return id, content_type, code
+  end
+  def rescue_action_in_public(exception)
+    p "rescue_action_in_public"
+    request_uri = request.url()
+    p request_uri
+    case exception
+    when ActiveRecord::RecordNotFound, I18n::InvalidLocaleData
+      render
+    else
+      if ( !params[:nolog] )
+        DOWN_LOGGER.fatal "------------------------------------------------------------"
+        DOWN_LOGGER.fatal exception
+        DOWN_LOGGER.fatal "request uri [#{request_uri}"
+        trace = ""
+        $@.each do | line |
+          DOWN_LOGGER.fatal line
+          trace << "#{line}\n"
+        end
+        DOWN_LOGGER.fatal $!.inspect
+        DOWN_LOGGER.fatal "session:----------------------------------------------------"
+        session.to_hash.each do | key, value |
+          DOWN_LOGGER.fatal "'#{key}' = '#{value}'"
+        end
+        DOWN_LOGGER.fatal "------------------------------------------------------------"
+        DOWN_LOGGER.fatal request.raw_post().inspect
+        DownLog.create(
+                       request_uri: request_uri,
+                       remote_host: request.remote_ip(),
+                       error_message: $!.inspect,
+                       trace: trace,
+                       raw_post: request.raw_post().inspect,
+                       session: session.to_hash.inspect,
+                       referer: request.headers['Referer'])
+      end
+      redirect_to internal_server_error_path
+    end
   end
 end

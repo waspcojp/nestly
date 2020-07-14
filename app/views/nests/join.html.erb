@@ -3,41 +3,41 @@
 <% end %>
 <% content_for :body do %>
 <style>
-.card-header {
-  background: #fff;
-}
 </style>
 <div class="container-fluid">
-<div class="row">
-  <div class="col-sm-3" style="padding:10px;">
-	<%= render "left_tab"%>
-  </div>
-  <div class="col-sm-7" style="padding:10px;">
-	<h2><%= t('nest')%></h2>
-	<div class="card">
-	  <p>
-		あなたは <%= @nest.title %> に参加しようとしています。
-	  </p>
-	  <%= form_tag(controller: "nests",
-				   action: "do_join",
-				   id: @nest.id) do %>
-		<% if ( @invite ) %>
-		  <%= hidden_field_tag :token, @invite.invitation_token %>
+  <%= render "title" %>
+  <div class="row">
+	<div class="col-sm-3">
+	  <%= render "admin" %>
+	  <%= render "meta" %>
+	</div>
+	<div class="col-sm-9">
+	  <div class="card" style="padding:20px;">
+		<p>
+		  あなたは <%= @nest.title %> に参加しようとしています。
+		</p>
+		<%= form_tag(controller: "nests",
+					 action: "do_join",
+					 id: @nest.id) do %>
+		  <% if ( @invite ) %>
+			<%= hidden_field_tag :token, @invite.invitation_token %>
+		  <% end %>
+		  <p>
+			このまま参加される場合は、<%= submit_tag '参加' , class: "btn btn-danger" %> を押して下さい。
+		  </p>
+		  <p>
+			このレイアーでの名前は、<%= current_user.default_display_name %>となりますが、変更したい場合は
+			以下を変更して下さい。
+		  </p>
+		  <p>
+			<%= text_field_tag :display_name, current_user.default_display_name %>
+		  </p>
+		  <p>
+			参加しない場合は、<%= link_to t('back') , @nest, class: "btn btn-primary" %> を押して下さい。
+		  </p>
 		<% end %>
-		<p>
-		  このまま参加される場合は、<%= submit_tag '参加' , class: "btn btn-danger" %> を押して下さい。
-		</p>
-		<p>
-		  このレイアーでの名前は、<%= current_user.default_display_name %>となりますが、変更したい場合は
-		  <%= text_field_tag :display_name, current_user.default_display_name %>
-		  に入力して下さい。
-		</p>
-		<p>
-		  参加しない場合は、<%= link_to t('back') , @nest, class: "btn btn-primary" %> を押して下さい。
-		</p>
-	  <% end %>
+	  </div>
 	</div>
   </div>
-</div>
 </div>
 <% end %>

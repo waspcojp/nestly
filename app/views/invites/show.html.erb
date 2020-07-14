@@ -48,7 +48,7 @@
 		  </p>
 		<% else %>
 		  <p>
-			このまま<%= link_to "参加", invite_join_path(@invite.invitation_token), class: "btn btn-primary" %>した場合、新たにShorNestにアカウントが作られ、メールアドレス(<%= @invite.to_mail %>)は認証済みアドレスとして、自動的に追加されます。
+			このまま<%= link_to "参加", invite_join_path(@invite.invitation_token), class: "btn btn-primary" %>した場合、新たにNestlyにアカウントが作られ、メールアドレス(<%= @invite.to_mail %>)は認証済みアドレスとして、自動的に追加されます。
 		  </p>
 		  <p>
 			既にアカウントをお持ちの場合は、<%= link_to "ログイン", new_session_path(return: request.fullpath) , class: "btn btn-success" %>してからあらためてメールをクリックして下さい。

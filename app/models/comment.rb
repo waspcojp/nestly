@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   belongs_to :entry
+  belongs_to :parent, class_name: "Comment", optional: true
   belongs_to :author, class_name: "User"
   belongs_to :deleted_by, class_name: "User", optional: true
   has_many :attach_files, as: :file

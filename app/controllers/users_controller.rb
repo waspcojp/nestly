@@ -3,16 +3,58 @@ class UsersController < ApplicationController
 
   skip_before_action :require_login, only: [:index, :new, :create, :update, :edit]
 
+  def new
+    if ( !Settings.service[:invite_only] )
+      @user = User.new
+    else
+      redirect_to_404
+    end
+  end
+  def create
+    if ( !Settings.service[:invite_only] )
+      @user = User.new(strong_params)
+      if @user.save
+        if ( params[:token] )
+          user = login(params[:user][:user_name], params[:user][:password], false)
+          if ( @invite = Invite.where(invitation_token: params[:token]).first )
+            @invite.nest.join(current_user, @invite.inviter)
+            if ( !current_user.mail_owner?(@invite.to_mail) )
+              current_user.append_mail(@invite.to_mail)
+            end
+            @invite.destroy
+
+            redirect_to nest_path(@invite.nest), notice: "Signed up!"
+          else
+            redirect_to login_path, notice: "Signed up!"
+          end
+        else
+          redirect_to login_path, notice: "Signed up!"
+        end
+      else
+        render :new
+      end
+    else
+      redirect_to_404
+    end
+  end
+
+  def show
+    @user = User.find(params[:id])
+    render layout: "login"
+  end
+
   def edit
     @user = current_user
   end
   def update
     inputs = strong_params
     @user = current_user
-    if ( @user.valid_password?(inputs[:current_password]) )
+    if (( !@user.crypted_password.present? ) ||
+        ( @user.valid_password?(inputs[:current_password]) ))
       @user.password  = inputs[:password]
       @user.password_confirmation = inputs[:password_confirmation]
       if ( @user.valid? )
+        @user.default_display_name = inputs[:default_display_name]
         @user.save
         flash[:success] = 'password changed'
         redirect_to edit_user_path(@user)
@@ -99,42 +141,11 @@ class UsersController < ApplicationController
     redirect_to edit_mail_path
   end
   def notice_mail
-    p params
     @user_mail_address = UserMailAddress.find(params[:id])
     @user_mail_address.notice = params[:on_off]
     @user_mail_address.save
   end
 
-  def new
-    @user = User.new
-  end
-  def create
-    @user = User.new(strong_params)
-    if @user.save
-      if ( params[:token] )
-        user = login(params[:user][:user_name], params[:user][:password], false)
-        if ( @invite = Invite.where(invitation_token: params[:token]).first )
-          @invite.nest.join(current_user, @invite.inviter)
-          if ( !current_user.mail_owner?(@invite.to_mail) )
-            current_user.append_mail(@invite.to_mail)
-          end
-          @invite.destroy
-          redirect_to nest_path(@invite.nest), notice: "Signed up!"
-        else
-          redirect_to login_path, notice: "Signed up!"
-        end
-      else
-        redirect_to login_path, notice: "Signed up!"
-      end
-    else
-      render :new
-    end
-  end
-
-  def show
-    @user = User.find(params[:id])
-    render layout: "login"
-  end
 
 private
   def strong_params

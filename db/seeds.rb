@@ -22,9 +22,10 @@ nest = Nest.create!(owner: user,
 会員のためのネストです
 主に「お知らせ」のためにありますが、それ以外のスペースはサンドボックスとして使えます。
 __NEST__
-                      design: design,
-                      join_method: Nest::JoinMethod::INVITE_BY_OWNER,
-                      preparation_level: Nest::PreparationLevel::PRIVATE)
+                    design: design,
+                    join_method: Nest::JoinMethod::INVITE_BY_OWNER,
+                    publication_level: Space::PublicationLevel::OPEN_GLOBAL,
+                    preparation_level: Nest::PreparationLevel::PRIVATE)
 NestMember.create!(
                    nest: nest,
                    user: user,

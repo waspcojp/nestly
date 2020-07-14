@@ -84,3 +84,12 @@ span.title,
 .icon-image {
 	border-radius:50%;
 }
+.field_with_errors {
+	display: contents;
+	input {
+		@extend .is-invalid;
+	}
+	label {
+		background-color: #ffc5d5;
+	}
+}

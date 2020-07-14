@@ -7,8 +7,7 @@ class NestsController < ApplicationController
         @nests << nest_member.nest
       end
     when nil, 'all'
-      @nests = Nest.where(publication_level: 0..Nest::PublicationLevel::OPEN,
-                          join_method: Nest::JoinMethod::FREE_JOIN)
+      @nests = Nest.where(join_method: Nest::JoinMethod::FREE_JOIN)
     end
   end
 
@@ -122,9 +121,13 @@ class NestsController < ApplicationController
 
 
   def join
-    @invite = Invite.where(invitation_token: params[:token]).first
-    if ( @invite )
-      @nest = @invite.nest
+    if ( params[:token] )
+      @invite = Invite.where(invitation_token: params[:token]).first
+      if ( @invite )
+        @nest = @invite.nest
+      end
+    elsif ( params[:id] )
+      @nest = Nest.find(params[:id])
     end
   end
   def do_join
@@ -144,6 +147,13 @@ class NestsController < ApplicationController
         redirect_to_404
       end
     else
+      if ( @nest.joinable?(current_user) )
+        @nest.join(current_user, nil, params[:display_name])
+        flash[:success] = t('nests.join_OK')
+      else
+        flash[:danger] = t('nests.already_joined')
+      end
+      redirect_to @nest
     end
   end
   def resign
@@ -152,9 +162,9 @@ class NestsController < ApplicationController
   def do_resign
     @nest = Nest.find(params[:id])
     @nest.resign(current_user)
-    flash[:success] = "you resigned #{@nest.title}"
+    flash[:success] = t("nests.resigned", name: @nest.title)
 
-    redirect_to nests_path
+    redirect_to @nest
   end
 
   def member_control

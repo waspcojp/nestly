@@ -4,31 +4,8 @@
 <% content_for :body do %>
 <%= render "shared/watch_control" %>
 <div class="container-fluid">
-  <h3 class="mt-3"><%= @nest.title %></h3>
-
-  <div class="page-header">
-	<div class="row">
-	  <div class="col-sm-3">
-		<%= image_tag "/icons/get_icon?id=#{@nest.icon_image_id}", class: "card-img-top", id: "image_preview", style: "width:220px;" %>
-	  </div>
-	  <div class="col-sm-4" style="padding:0 20px;">
-		<%= str_to_html(@nest.description) %>
-	  </div>
-	  <% if ( @nest.has_information? ) %>
-		<div class="col-sm-5">
-		  <div class="row">
-			<span style="font-weight:bold;font-size:18px;"><%= t('space_class.information') %></span>
-		  </div>
-		  <% @nest.informations.order("updated_at DESC").each do | information | %>
-			<div class="row">
-			  <%= link_to information.title, information %>
-			</div>
-		  <% end %>
-		</div>
-	  <% end %>
-	</div>
-  </div>
-
+  <%= render "shared/errors", record: nil %>
+  <%= render "title" %>
   <div class="row">
 	<div class="col-sm-3">
 	  <%= render "admin" %>

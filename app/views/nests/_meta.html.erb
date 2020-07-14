@@ -23,6 +23,12 @@
 		<%= Nest::JoinMethod::TYPES.rassoc(@nest.join_method)[0] %>
 	  </dd>
 	  <dt>
+		<%= t('nests.preparation_level')%>
+	  </dt>
+	  <dd>
+		<%= Nest::PreparationLevel::TYPES.rassoc(@nest.preparation_level)[0] %>
+	  </dd>
+	  <dt>
 		<%= t('nests.member_count')%>
 	  </dt>
 	  <dd>

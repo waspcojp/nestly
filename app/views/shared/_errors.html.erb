@@ -1,18 +1,22 @@
-<% if record.errors.any? %>
-  <div id="error_explanation">
-	<h2><%= pluralize(record.errors.count, "error") %> prohibited this record from being saved:</h2>
-	<ul class="message">
-	  <% record.errors.full_messages.each do |message| %>
-		<li><%= message %></li>
-	  <% end %>
-	</ul>
-  </div>
-<% end %>
-<ul class="message col-sm-12">
-  <% flash.each do |message_type, message| %>
-	<% message_type = 'success' if message_type == 'notice' %>
-    <li class="alert alert-<%= message_type %>">
-      <%= message %><button type="button" class="close" data-dismiss="alert">&times;</button>
-    </li>
+<div class="message-field" style="margin-top:20px;">
+  <% if record %>
+	<% if record.errors.any? %>
+	  <div id="error_explanation">
+		<h2><%= pluralize(record.errors.count, "error") %> prohibited this record from being saved:</h2>
+		<ul class="message">
+		  <% record.errors.full_messages.each do |message| %>
+			<li><%= t(message) %></li>
+		  <% end %>
+		</ul>
+	  </div>
+	<% end %>
   <% end %>
-</ul>
+  <ul class="message col-sm-12">
+	<% flash.each do |message_type, message| %>
+	  <% message_type = 'success' if message_type == 'notice' %>
+      <li class="alert alert-<%= message_type %>">
+		<%= message %><button type="button" class="close" data-dismiss="alert">&times;</button>
+      </li>
+	<% end %>
+  </ul>
+</div>

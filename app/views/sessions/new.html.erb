@@ -42,7 +42,9 @@
 		<div class="row">
 		  <div class="col-8">
 			<%= f.submit t("sessions.log_in"), class:'btn btn-success'  %>
-			<%= link_to I18n.t("users.new"), new_user_path, class: "btn btn-primary" %>
+			<% if ( !Settings.service[:invite_only] ) %>
+			  <%= link_to I18n.t("users.new"), new_user_path, class: "btn btn-primary" %>
+			<% end %>
 		  </div>
 		</div>
 	  <% end %>
