@@ -1,0 +1,60 @@
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+.card-header,
+.card-footer {
+  background: #fff;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(() => {
+	$('.member').on('change', (ev) => {
+		$.ajax({
+			type: "POST",
+			url: "/spaces/assign_admin",
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: {
+				id: <%= @space.id %>,
+				user: ev.target.attributes.user.value,
+				admin: ev.target.checked
+			}
+		});
+	});
+});
+</script>
+<div class="container-fluid">
+  <h3 class="page-title"><%= t('spaces.assign_admin_title', name: @space.title )%></h3>
+  <div class="row">
+	<div class="col-sm-3">
+	  <%= render "nests/info" %>
+	  <%= render "nests/meta" %>
+	</div>
+	<div class="card col-sm-9">
+	  <div class="card-body">
+		<% @nest.members.order("display_name ASC").each do | member | %>
+		  <ul class="list-group">
+			<li class="list-group-item d-flex justify-content-between">
+			  <span>
+				<% if ( @space.admin?(member.user, false) ) %>
+				  <i class="fas fa-crown" title="nest owner"></i>
+				<% else %>
+				  <input type="checkbox" name="<%= member.id%>", value="true" <%= @space.admin?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="member" title="board member">
+				<% end %>
+				<%= icon_img_tag(member.user, "header", height: 25) %>
+				<%= label_tag "board[#{member.id}]",  member.display_name %>
+			  </span>
+			</li>
+		  </ul>
+		<% end %>
+	  </div>
+	  <div class="card-footer">
+		<%= link_to t('back'), edit_space_path(@space), class: 'btn btn-primary' %>
+	  </div>
+	</div>
+  </div>
+</div>
+<% end %>
