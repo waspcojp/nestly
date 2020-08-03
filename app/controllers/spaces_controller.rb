@@ -2,14 +2,17 @@ class SpacesController < ApplicationController
   def new
     @nest = Nest.find(params[:nest])
     if ( @nest )
-      @space = Space.new
+      @space = Space.new(class_name: params[:class])
     end
   end
   def create
     @nest = Nest.find(params[:nest])
     if ( @nest )
       space = params.require(:space).
-        permit(:title, :title_id, :description, :icon_image, :publication_level, :preparation_level, :class_name)
+        permit(:title, :title_id, :description, :icon_image,
+               :publication_level, :preparation_level,
+               :defaut_edit_level, :default_publication_level, :default_comment_level,
+               :class_name, :notice_level)
 
       space.delete(:icon_image)
       @space = Space.new(space)
@@ -26,17 +29,24 @@ class SpacesController < ApplicationController
         @space.icon_image_id = @attach.id
       end
       @space.save
+      @space.watch = current_user
       redirect_to edit_space_path(@space)
     end
   end
   def edit
     @space = Space.find(params[:id])
     @nest = @space.nest
+    if ( !@space.released? )
+      flash[:danger] = t('spaces.not_released')
+    end
   end
   def update
     @space = Space.find(params[:id])
     space = params.require(:space).
-      permit(:title, :title_id, :description, :icon_image, :publication_level, :preparation_level)
+      permit(:title, :title_id, :description, :icon_image,
+             :publication_level, :preparation_level,
+             :defaut_edit_level, :default_publication_level, :default_comment_level,
+             :notice_level)
     space.delete(:icon_image)
 
     @space.attributes = space
@@ -75,7 +85,11 @@ class SpacesController < ApplicationController
         else
           spaces = @nest.spaces.where(publication_level: Space::PublicationLevel::OPEN_GLOBAL).where(class_name: params[:type])
         end
-        @spaces = spaces.order("title ASC")
+        if ( @nest.admin?(current_user) )
+          @spaces = spaces.order("title ASC")
+        else
+          @spaces = spaces.where("released_at IS NOT NULL AND released_at < now()").order("title ASC")
+        end
       else
         @spaces = []
         Space::ClassName::CLASSES.each do | klass |
@@ -89,10 +103,17 @@ class SpacesController < ApplicationController
             spaces = @nest.spaces.where(publication_level: Space::PublicationLevel::OPEN_GLOBAL).where(class_name: klass[1])
           end
           if ( spaces.count > 0 )
-            @spaces << {
-              'class': klass[0],
-              spaces: spaces.order("title ASC")
-            }
+            if ( @nest.admin?(current_user) )
+              @spaces << {
+                'class': klass[0],
+                spaces: spaces.order("title ASC")
+              }
+            else
+              @spaces << {
+                'class': klass[0],
+                spaces: spaces.where("released_at IS NOT NULL AND released_at < now()").order("title ASC")
+              }
+            end
           end
         end
       end
@@ -100,6 +121,48 @@ class SpacesController < ApplicationController
       redirect_to_404
     end
   end
+  def release
+    @space = Space.find(params[:id])
+    @space.released_at = Time.now
+    @space.save
+    flash[:success] = t('spaces.released')
+    redirect_to edit_space_path(@space)
+  end
+  def unrelease
+    @space = Space.find(params[:id])
+    @space.released_at = nil
+    @space.save
+    flash[:danger] = t('spaces.not_released')
+    redirect_to edit_space_path(@space)
+  end
+
+  def assign_admin
+    @space = Space.find(params[:id])
+    @nest = @space.nest
+    if ( current_user.use_admin? )
+      render
+    else
+      redirect_to_404
+    end
+  end
+  def assign_admin_op
+    p params
+    @space = Space.find(params[:id])
+    @user = User.find(params[:user])
+    @space_admin = SpaceAdmin.where(space: @space,
+                                    user: @user).first
+    if ( params[:admin]  == "true" )
+      if ( !@space_admin )
+        @space_admin = SpaceAdmin.create(space: @space,
+                                         user: @user)
+      end
+    else
+      if ( @space_admin )
+        @space_admin.destroy
+      end
+    end
+  end
+
   def destroy
     @space = Space.find(params[:id])
     @nest = @space.nest
