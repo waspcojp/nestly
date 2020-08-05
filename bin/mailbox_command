@@ -1,0 +1,8 @@
+#! /bin/bash
+
+export INGRESS_PASSWORD=YoruNoIkimono
+export URL=http://localhost:3000/rails/action_mailbox/relay/inbound_emails
+export PATH=/usr/local/bin:$PATH
+
+cd /home/ogochan/rails/nestly
+./bin/rails action_mailbox:ingress:postfix

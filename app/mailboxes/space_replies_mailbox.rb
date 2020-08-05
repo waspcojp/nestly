@@ -1,0 +1,58 @@
+class SpaceRepliesMailbox < ApplicationMailbox
+  def process
+    dump
+    @user = nil
+    mail.from.each do | from |
+      address = UserMailAddress.where(mail_address: from).first
+      if ( address )
+        @user = address.user
+        break
+      end
+    end
+    if ( @user )
+      @space = nil
+      mail.to.each do | to |
+        if ( to.match(/^space-(.+)@(.+)/) )
+          @space = Space.where(localpart: $1).first
+          break;
+        end
+      end
+      if (( @space ) &&
+          ( @space.preparable?(@user) ))
+
+        @space.watch = @user
+        @entry = Entry.new(
+                           title: mail.subject,
+                           body: clean_body(mail.body.to_s),
+                           body_type: Entry::BodyType::TEXT,
+                           released_at: Time.now,
+                           author: @user,
+                           space: @space)
+        @entry.save
+      else
+        #
+        # send entry not found error
+        #
+      end
+    else
+      #
+      # send user not found error
+      #
+    end
+  end
+private
+  def dump
+    print "space ----------------------------------\n"
+    print "Return-Path: ", mail.return_path, "\n"
+    print "From: ", mail.from, "\n"
+    print "To: ", mail.to, "\n"
+    print "Subject: ", mail.subject, "\n"
+    print "Date: ", mail.date, "\n"
+    print "Message-ID: ", mail.message_id, "\n"
+    print mail.body, "\n"
+    print "--------------\n"
+    print "--------------\n"
+    p mail
+    print "----------------------------------------\n"
+  end
+end
