@@ -1,10 +1,9 @@
 class TopController < ApplicationController
-
-  before_action :redirect_new_session, if: :from_smartphone? 
+  skip_before_action :require_login
 
   def index
-    render layout: 'top'
   end
+
   def about
     render layout: 'application'
   end

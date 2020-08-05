@@ -24,7 +24,9 @@
   <div id="watch-list" data-parent="#watch-header" style="margin:0px 5px;padding:10px 0px;">
 	<div class="row">
 	  <% @watches.each do | watch | %>
-		<%= render "watch_card", watch: watch%>
+		<% if ( watch.target.visible?(current_user) ) %>
+		  <%= render "watch_card", watch: watch%>
+		<% end %>
 	  <% end %>
     </div>
   </div>

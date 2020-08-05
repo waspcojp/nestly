@@ -55,26 +55,11 @@ $(document).ready(function(){
 	
 });
 </script>
-<div class="form-group row">
-  <%= render 'shared/errors', record: obj %>
-</div>
+<%= render 'shared/errors', record: obj %>
 <div class="form-group row">
   <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
 	<%= form.text_field :title, class: "form-control", placeholder: t("view.title") %>
-  </div>
-</div>
-<div class="form-group row">
-  <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
-  <div class="col-sm-10">
-	<%= form.select :publication_level, Entry::PublicationLevel::TYPES, {}, class: "form-control" %>
-  </div>
-</div>
-<%= hidden_field_tag "entry[edit_level]", Entry::EditLevel::BOARDS_ONLY %>
-<div class="form-group row">
-  <%= form.label :comment_level, I18n.t("entries.comment_level"), class: "col-sm-2 col-form-label" %>
-  <div class="col-sm-10">
-	<%= form.select :comment_level, Entry::CommentLevel::TYPES, {}, class: "form-control" %>
   </div>
 </div>
 <div class="form-group row">

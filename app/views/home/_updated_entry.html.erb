@@ -11,13 +11,16 @@
   </div>
 </div>
 <%
-  ids = Space.where(nest_id: NestMember.where(user: current_user),
-					publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).
-	or(Space.where(nest_id: NestMember.where(user: current_user,
-											 board: true),
-				   publication_level: Space::PublicationLevel::BOARDS_ONLY))
-
-  @entries = Entry.where(space_id: ids).order("updated_at DESC")
+  ids = Space.
+	  where(nest_id: NestMember.where(user: current_user),
+		  publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).
+	  where("released_at IS NOT NULL AND released_at < now()").
+	or(Space.
+	   where(nest_id: NestMember.where(user: current_user,
+									   board: true),
+			 publication_level: Space::PublicationLevel::BOARDS_ONLY).
+	   where("released_at IS NOT NULL AND released_at < now()"))
+  @entries = Entry.where(space_id: ids).where("released_at IS NOT NULL AND released_at < now()").order("updated_at DESC")
   @spaces = nil %>
 <div id="entry-list" data-parent="#entry-header" style="margin:10px 5px;">
   <div class="row">

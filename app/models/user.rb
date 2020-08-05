@@ -30,6 +30,19 @@ class User < ApplicationRecord
   def self.mail_used?(address)
     UserMailAddress.where(mail_address: address).count > 0 ? true : false
   end
+  def member_name(nest)
+    member = NestMember.where(user: self,
+                              nest: nest).first
+    if ( member )
+      member.display_name
+    else
+      ''
+    end
+  end
+  def use_admin?
+    (( self.expire_use_admin ) &&
+     ( self.expire_use_admin > Time.now )) ? true : false
+  end
 
   # here is patch for user locking #############################
   def self.authenticate_with_locking(*credentials, &block)

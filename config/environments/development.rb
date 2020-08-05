@@ -49,6 +49,7 @@ Rails.application.configure do
   config.action_mailer.file_settings = { :location => Rails.root.join('tmp/mail') }
   config.default_from_address = Settings.mail[:from_address]
 
+  config.action_mailbox.ingress = :relay
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

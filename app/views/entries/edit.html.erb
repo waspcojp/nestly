@@ -17,8 +17,24 @@
 	  </div>
 	  <div class="col-sm-9">
 		<%= render "entry_classes/#{@space.class_name.underscore}/edit", form: form, obj: @entry %>
+		<% if (( current_user ) &&
+			   ( current_user.expire_force_notice ) &&
+			   ( current_user.expire_force_notice > Time.now )) %>
+		  <div class="form-group row">
+			<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label" %>
+			<div class="col-sm-10">
+			  <%= form.select :notice_level, Entry::NoticeLevel::TYPES, {}, class: "form-control" %>
+			</div>
+		  </div>
+		<% end %>
 		<div class="input-group mb-3">
 		  <%= link_to t('view.update'), '', class: "btn btn-success", id: 'submit' %>
+		  <% if (( !@entry.released_at ) ||
+				 ( @entry.released_at > Time.now )) %>
+			<%= link_to t('view.release'), entry_release_path(@entry), method: :post, class: "btn btn-warning" %>
+		  <% else %>
+			<%= link_to t('view.unrelease'), entry_unrelease_path(@entry), method: :post, class: "btn btn-warning" %>
+		  <% end %>
 		  <%= link_to t('back'), @entry, class: 'btn btn-primary' %>
 		  <%= link_to t('delete'), @entry, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 		</div>

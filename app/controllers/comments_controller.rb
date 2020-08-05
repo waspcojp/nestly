@@ -4,11 +4,7 @@ class CommentsController < ApplicationController
     if ( @entry )
       comment = params.require(:comment).permit(:body);
 
-      @comment = Comment.new(comment)
-      @comment.author = current_user
-      @comment.entry = @entry
-      @entry.comment_count += 1
-      @comment.number = @entry.comment_count
+      @comment = @entry.add_comment(current_user, comment)
       @comment.save
 
       params[:comment].each do | key, attach |

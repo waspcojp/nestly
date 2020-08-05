@@ -6,6 +6,14 @@
 <%= render "shared/watch_control" %>
 <style>
 </style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#copy').on('click', (el) => {
+		let address = $('#address').select();
+		document.execCommand('copy');
+	})
+});
+</script>
 <div class="container-fluid">
   <h3 class="mt-3">
 	<%= @space.title %>
@@ -22,7 +30,20 @@
 		<%= image_tag "/icons/get_icon?id=#{@space.icon_image_id}&type=side", class: "card-img-top", id: "image_preview", style: "width:220px;" %>
 	  </div>
 	  <div class="col-sm-9" style="padding:0 20px;">
-		<%= @space.description.to_html %>
+		<div style="height:160px;">
+		  <%= @space.description.to_html %>
+		</div>
+		<div style="height:70px;">
+		  <div style="font-weight: bold;"><%= t('view.address_for_post')%></div>
+		  <% if ( @space.preparable?(current_user) ) %>
+			<div style="margin-left:20px;">
+			  <%= text_field_tag 'address', "space-#{@space.localpart}@#{Settings.mail[:domain_part]}", readonly: true, size: 80 %>
+			  <button type="button" class="btn" id="copy" title="<%= t('view.address_copy')%>">
+				<i class="far fa-copy"></i>
+			  </button>
+			</div>
+		  <% end %>
+		</div>
 	  </div>
 	</div>
   </div>

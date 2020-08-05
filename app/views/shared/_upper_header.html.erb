@@ -11,25 +11,20 @@
     });
   });
 </script>
-<!-- lawer_header -->
-<header class="navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar">
-  <div class="navbar-nav-scroll">
+
+<header class="navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar" style="margin:0 40px;">
+  <div class="navbar-nav-scroll" style="height: 60px;">
 	<ul class="navbar-nav bd-navbar-nav flex-row">
 	  <li class="nav-item">
 		<a href="/" class="nav-link">
-          <%= image_tag '/images/icon.svg', alt: "Nestly", style: "height:30px;"%>
-		</a>
-	  </li>
-	  <li class="nav-item">
-		<a href="/" class="nav-link">
-          <%= image_tag '/images/logo.svg', alt: "Nestly", style: "height:30px;"%>
+          <%= image_tag '/images/logo.svg', alt: "Nestly", style: "height:40px;"%>
 		</a>
 	  </li>
 	  <% if current_user %>
-		<li class="nav-item">
+		<li class="nav-item pt-2">
 		  <%= link_to t('nest'), nests_path, class: "nav-link" %>
 		</li>
-		<li class="nav-item">
+		<li class="nav-item pt-2">
 		  <% if ( controller_name == 'users' ) %>
 			<span class="nav-link active"><%= t('users.edit') %></span>
 		  <% else %>
@@ -44,12 +39,10 @@
 	<ul class="navbar-nav ml-md-auto">
 	  <li class="nav-item dropdown">
 		<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		  <img id="icon-image" src="/icons/get_icon?type=header&id=<%= current_user.icon_image_id %>" alt="" class="icon-image"/>
+		  <%= icon_img_tag current_user, "header", id:"icon-image", alt:"", class:"icon-image"%>
 		</a>
 		<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
-		  <%#= link_to t('shared.lower_header.device_class_index'), device_classes_path, class: "dropdown-item" %>
-		  <%#= link_to t('shared.lower_header.device_index'), devices_path, class: "dropdown-item" %>
-		  <%#= link_to t('shared.lower_header.account_edit'), edit_profile_path, class: "dropdown-item" %>
+		  <%= link_to current_user.default_display_name, edit_profile_path, class: "dropdown-item" %>
           <div class="dropdown-divider"></div>
           <%= link_to "Help", help_path, class: "dropdown-item" %>
           <div class="dropdown-divider"></div>
@@ -57,7 +50,21 @@
 		</div>
       </li>
 	</ul>
+  <% else %>
+	<% if ( controller_name != 'sessions' ) %>
+	<ul class="navbar-nav ml-md-auto">
+	  <li class="nav-item">
+		<%= form_with( url: '/login', method: :post, local: true,
+					   html: {
+						 }) do |f| %>
+
+		  <%= f.text_field :user_name, autofocus: true, placeholder: I18n.t('users.user_name') %>
+		  <%= f.password_field :password, autocomplete: "off", placeholder: I18n.t('users.password') %>
+		  <%= f.submit t("sessions.log_in"), class:'btn btn-success btn-sm'  %>
+		<% end %>
+	  </li>
+	</ul>
+    <% end %>
   <% end %>
 </header>
-<!-- lawer_header -->
 

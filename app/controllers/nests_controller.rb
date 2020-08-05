@@ -6,6 +6,8 @@ class NestsController < ApplicationController
       NestMember.where(user: current_user).each do | nest_member |
         @nests << nest_member.nest
       end
+    when 'visible'
+      @nests = Nest.where(publication_level: Nest::PublicationLevel::OPEN_GLOBAL..Nest::PublicationLevel::OPEN)
     when nil, 'all'
       @nests = Nest.where(join_method: Nest::JoinMethod::FREE_JOIN)
     end
@@ -71,19 +73,7 @@ class NestsController < ApplicationController
     addresses = params[:addresses]
     session[:addresses] = addresses
 
-    address_list = []
-    addresses.split(/\s*\,\s*|\s+|\r\n/).each do | address |
-      address.gsub!(/\s+/, '')
-      if (( address != '' ) &&
-          ( address =~ /.+@.+/ ))
-        if ( address =~ /\<(.+)\>/ )
-          address_list << $1
-        else
-          address_list << address
-        end
-      end
-    end
-
+    address_list = addresses.split_list
     address_list.each do | address |
       if ( @nest.enrollable?(address) )
         invite = Invite.where(to_mail: address,

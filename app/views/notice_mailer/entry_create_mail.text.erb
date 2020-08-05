@@ -1,4 +1,4 @@
-<%= @entry.body.to_html.gsub(/<br \/>/i, "\r\n") %>
+<%= @entry.body.html_safe %>
 ========================================
 
 「<%= @notice.watch.target.space.title %>」に新しいスペース「<%= @notice.watch.target.title %>」が作られました。

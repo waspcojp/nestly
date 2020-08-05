@@ -1,17 +1,17 @@
 <div class="col-sm-4" style="padding:10px;">
-  <div class="card">
+  <div class="<%= (entry.released? && entry.space.released? ) ? "card" : "card border-danger" %>">
 	<div class="card-header" style="height:70px;">
 	  <div class="d-flex justify-content-between">
 		<%= link_to(entry, class: "link") do %>
 		  <%= entry.title %>(<%= entry.space.title %>)
 		<% end %>
-		<% if (( @nest ) &&
-			   (  @nest.admin?(current_user) )) %>
-		  <%= link_to(edit_entry_path(entry), class:"link") do %>
-			<i class="fas fa-cog"></i>
-		  <% end %>
-		<% end %>
 		<span>
+		  <% if (( @nest ) &&
+				 (  @nest.admin?(current_user) )) %>
+			<%= link_to(edit_entry_path(entry), class:"link") do %>
+			  <i class="fas fa-cog"></i>
+			<% end %>
+		  <% end %>
 		  <% if ( watch ) %>
 			<%= check_box_tag "check", watch.id, watch.active, class: "watch-check", title: "watch active"%>
 		  <% else %>

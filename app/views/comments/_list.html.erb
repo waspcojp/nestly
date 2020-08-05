@@ -11,6 +11,9 @@ let delete_ = (event) => {
 		$.ajax({
 			type: "DELETE",
 			url: `/comments/${num}`,
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
 			dataType: "json",
 			success: delete_entry(num)
 		});
@@ -22,7 +25,7 @@ $(document).ready(function(){
 });
 </script>
 <% _STEP = 10 %>
-<div class="card" style="margin-top:20px;">
+<div class="card">
   <div class="card-header">
 	<%= t('comment')%>
   </div>
@@ -85,10 +88,15 @@ $(document).ready(function(){
 			  </div>
 			  <div class="col-sm-11">
 				<div class="d-flex justify-content-between">
-				  <h5>[<%= comment.number %>]<%= comment.author_name %></h5>
-				  <% if ( comment.deletable?(current_user) ) %>
-					<span class="fa fa-times delete" data-id="<%= comment.id %>"></span>
-				  <% end %>
+				  <div>
+					[<%= comment.number %><% if ( comment.parent ) %>&nbsp;&gt;&nbsp;<%= comment.parent.number %><% end %>]
+					<%= comment.author_name %>
+				  </div>
+				  <span>
+					<% if ( comment.deletable?(current_user) ) %>
+					  <span class="fa fa-times delete" data-id="<%= comment.id %>"></span>
+					<% end %>
+				  </span>
 				</div>
 				<div>
 				  <%= l comment.created_at %>

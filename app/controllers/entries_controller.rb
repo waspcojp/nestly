@@ -2,7 +2,11 @@ class EntriesController < ApplicationController
   def index
     if ( params[:space] )
       @space = Space.find(params[:space])
-      @entries = @space.entries.order("updated_at DESC")
+      if ( @space.admin?(current_user) )
+        @entries = @space.entries.order("updated_at DESC")
+      else
+        @entries = @space.entries.where("released_at IS NOT NULL AND released_at < now()").order("updated_at DESC")
+      end
       @nest = @space.nest
     elsif ( params[:nest] )
       @nest = Nest.find(params[:nest])
@@ -20,11 +24,16 @@ class EntriesController < ApplicationController
       end
       case ( params[:order] )
       when 'update', 'update_desc'
-        @entries = entries.order("updated_at DESC")
+        entries = entries.order("updated_at DESC")
       when 'update_asc'
-        @entries = entries.order("updated_at ASC")
+        entries = entries.order("updated_at ASC")
       else
-        @entries = entries.order("title ASC")
+        entries = entries.order("title ASC")
+      end
+      if ( @nest.admin?(current_user) )
+        @entries = entries
+      else
+        @entries = entries.where("released_at IS NOT NULL AND released_at < now()")
       end
     end
   end
@@ -33,15 +42,14 @@ class EntriesController < ApplicationController
     @entries = @space.entries.order("updated_at DESC")
     @nest = @space.nest
     if ( @space )
-      @entry = Entry.new(publication_level: @space.publication_level,
-                         comment_level: @space.preparation_level)
+      @entry = Entry.new()
     end
   end
   def create
     @space = Space.find(params[:space])
     if ( @space )
       entry = params.require(:entry).
-        permit(:title, :body, :publication_level, :comment_level, :edit_level, :body_type)
+        permit(:title, :body, :edit_level, :body_type, :notice_level)
 
       @entry = Entry.new(entry)
       @entry.author = current_user
@@ -53,7 +61,7 @@ class EntriesController < ApplicationController
           end
         end
 
-        flash[:success] = 'new entry created'
+        flash[:success] = t('entries.created')
         redirect_to edit_entry_path(@entry)
       else
         redirect_to new_entry_path(space: @space)
@@ -70,11 +78,14 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
     @space = @entry.space
     @nest = @space.nest
+    if ( !@entry.released? )
+      flash[:danger] = t('entries.not_released')
+    end
   end
   def update
     @entry = Entry.find(params[:id])
     entry = params.require(:entry).
-      permit(:title, :body, :publication_level, :comment_level, :edit_level)
+      permit(:title, :body, :notice_level)
 
     @entry.attributes = entry
     @entry.save
@@ -85,6 +96,20 @@ class EntriesController < ApplicationController
       end
     end
 
+    redirect_to edit_entry_path(@entry)
+  end
+  def release
+    @entry = Entry.find(params[:id])
+    @entry.released_at = Time.now
+    @entry.save
+    flash[:success] = t('entries.released')
+    redirect_to edit_entry_path(@entry)
+  end
+  def unrelease
+    @entry = Entry.find(params[:id])
+    @entry.released_at = nil
+    @entry.save
+    flash[:danger] = t('entries.not_released')
     redirect_to edit_entry_path(@entry)
   end
   def destroy

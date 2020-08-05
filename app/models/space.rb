@@ -2,6 +2,7 @@ class Space < ApplicationRecord
   belongs_to :nest
   belongs_to :creater, class_name: "User"
   has_many :entries
+  has_many :admins, class_name: "SpaceAdmin"
   has_many :watches, dependent: :destroy, as: :target
 
   include LoggingHistory
@@ -12,6 +13,9 @@ class Space < ApplicationRecord
 
   module PublicationLevel
     include ControlLevel
+  end
+  module NoticeLevel
+    include NoticeLevelHelper
   end
   module PreparationLevel
     include PreparationLevelHelper
@@ -26,26 +30,47 @@ class Space < ApplicationRecord
   def watch(user)
     ret = self.watches.where(user: user).first
   end
-  def admin?(user)
+  def watch=(user, active = true)
+    @watch = self.watches.where(user: user).first
+    if ( !@watch )
+      @watch = Watch.new(target: self,
+                         user: user)
+    end
+    @watch.active = active
+    @watch.save
+  end
+  def admin?(user, deep = true)
     if ( self.creater == user )
       true
     else
-      self.nest.admin?(user)
+      if ( self.nest.admin?(user) )
+        true
+      else
+        if ( deep )
+          ( self.admins.where(user: user).first ) ? true : false
+        else
+          false
+        end
+      end
     end
   end
   def readable?(user)
-    if ( self.creater == user )
+    if ( self.admin?(user) )
       true
     else
-      case self.publication_level
-      when  PublicationLevel::OPEN_GLOBAL
-        true
-      when  PublicationLevel::OPEN
-        user ? true : false
-      when  PublicationLevel::MEMBERS_ONLY
-        self.nest.member?(user) ? true : false
-      when  PublicationLevel::BOARDS_ONLY
-        self.nest.admin?(user) ? true : false
+      if ( self.released? )
+        case self.publication_level
+        when  PublicationLevel::OPEN_GLOBAL
+          true
+        when  PublicationLevel::OPEN
+          user ? true : false
+        when  PublicationLevel::MEMBERS_ONLY
+          self.nest.member?(user) ? true : false
+        when  PublicationLevel::BOARDS_ONLY
+          self.nest.admin?(user) ? true : false
+        end
+      else
+        false
       end
     end
   end
@@ -62,27 +87,52 @@ class Space < ApplicationRecord
     end
   end
   def send_message_callback(history)
-    self.nest.members.each do | member |
-      case ( history.operation )
-      when 'create'
-        if ( self.readable?(member.user) )
-          @watch = Watch.create(user: member.user,
-                                target: self)
-          @notice = Notice.create(user: member.user,
-                                  history: history,
-                                  watch: @watch)
-          NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
-        else
-          ;
+    case ( history.operation )
+    when 'create'
+      case (self.notice_level)
+      when NoticeLevel::DEFAULT
+        self.nest.members.each do | member |
+          if ( self.readable?(member.user) )
+            send_notice(member.user, history)
+          else
+            ;
+          end
         end
+      when NoticeLevel::ALL_MEMBERS
+        self.nest.members.each do | member |
+          send_notice(member.user, history)
+        end
+      when NoticeLevel::INCLUDE_INVITED
+        self.nest.members.each do | member |
+          send_notice(member.user, history)
+        end
+        self.nest.invites.each do | invite |
+          send_notice(nil, history, invite.to_mail)
+        end
+      else
       end
     end
   end
 private
+  def send_notice(user, history, mail = nil)
+    @watch = Watch.where(user: user,
+                         target: self).first
+    if ( !@watch )
+      @watch = Watch.create(user: user,
+                            target: self)
+    end
+    @notice = Notice.create(user: user,
+                            history: history,
+                            watch: @watch)
+    NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
+  end
   def create_ids
     if (( !self.title_id ) ||
         ( self.title_id == '' ))
       self.title_id = SecureRandom.uuid.gsub('-','')[0..7]
+    end
+    if self.localpart.nil?
+      self.localpart = SecureRandom.uuid.gsub('-','')
     end
   end
 end

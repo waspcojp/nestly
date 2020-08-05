@@ -35,8 +35,7 @@
 	<% end %>
   </ul>
   <ul class="nav justify-content-end">
-	<% if ( ( action_name == "show" ) &&
-			( @nest ) ) %>
+	<% if ( @nest ) %>
 	  <% if ( @nest.invitable?(current_user) ) %>
 		<li class="nav-item">
 		  <%= link_to t('invite'), invite_nest_path(@nest), class: "nav-link" %>

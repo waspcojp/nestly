@@ -87,9 +87,9 @@ class UsersController < ApplicationController
     end
     @user.default_display_name = account_update_params[:default_display_name]
     if ( @user.save )
-      flash[:success] = 'update profile success'
+      flash[:success] = t('users.update profile success')
     else
-      flash[:danger] = 'update profile fail'
+      flash[:danger] = t('users.update profile fail')
     end
     redirect_to edit_profile_path
   end
@@ -103,9 +103,9 @@ class UsersController < ApplicationController
     @user_mail_address = UserMailAddress.new(user_mail_address)
     @user_mail_address.user = current_user
     if ( @user_mail_address.save )
-      flash[:success] = 'append mail address success. please authenticate this mail address'
+      flash[:success] = t('users.success_add_mail')
     else
-      flash[:danger] = 'append mail address fail'
+      flash[:danger] = t('users.fail_add_mail')
     end
     redirect_to edit_mail_path
   end
@@ -123,9 +123,9 @@ class UsersController < ApplicationController
     if ( @user_mail_address.save )
       AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_later
       #AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_now
-      flash[:success] = 'authenticate mail sent'
+      flash[:success] = t('users.authenticate_mail_sent')
     else
-      flash[:danger] = 'authenticate mail fail'
+      flash[:danger] = t('users.authenticate_mail_fail')
     end
     redirect_to edit_mail_path
   end
@@ -134,9 +134,9 @@ class UsersController < ApplicationController
     if ( @user_mail_address )
       @user_mail_address.authorized_at = Time.now
       @user_mail_address.save
-      flash[:success] = 'mail address authentication OK'
+      flash[:success] = t('users.mail_authentication_success')
     else
-      flash[:danger] = 'mail address authentication fail'
+      flash[:danger] = t('users.mail_authentication_fail')
     end
     redirect_to edit_mail_path
   end

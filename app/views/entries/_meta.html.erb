@@ -19,13 +19,13 @@
 	  <%= t('view.publication_level') %>
 	</div>
 	<div class="row" style="font-size:16px;padding:0 10px 20px 20px;">
-	  <%= Entry::PublicationLevel::TYPES.rassoc(@entry.publication_level)[0] %>
+	  <%= Entry::PublicationLevel::TYPES.rassoc(@space.entry_publication_level)[0] %>
 	</div>
 	<div class="row" style="font-weight:bold;font-size:16px;padding:0 10px 0px 10px;">
 	  <%= t('view.comment_level') %>
 	</div>
 	<div class="row" style="font-size:16px;padding:0 10px 20px 20px;">
-	  <%= Entry::CommentLevel::TYPES.rassoc(@entry.comment_level)[0] %>
+	  <%= Entry::CommentLevel::TYPES.rassoc(@space.entry_comment_level)[0] %>
 	</div>
   </div>
 </div>

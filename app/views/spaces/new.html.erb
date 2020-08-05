@@ -6,17 +6,10 @@
 </style>
 <%= render "shared/icon_upload", obj: @space %>
 <div class="container-fluid">
-  <h3><%= t('spaces.create_of', name: @nest.title )%></h3>
-  <div class="row">
-	<div class="col-sm-12" style="padding:10px;height:240px;border-bottom:1px solid #CCC;margin-bottom:20px;">
-	  <%= image_tag "/icons/get_icon?id=#{@nest.icon_image_id}", class: "card-img-top", style: "width:220px;" %>
-	</div>
-  </div>
+  <h3 class="page-title"><%= t('spaces.create_of', name: @nest.title )%></h3>
 
   <div class="row">
 	<div class="col-sm-3">
-	  <div style="height:10px;">
-	  </div>
 	  <%= render "nests/info" %>
 	  <%= render "nests/meta" %>
 	</div>

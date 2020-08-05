@@ -13,12 +13,15 @@ rescue
   user = User.create!(user_name: 'root',
                       password: 'rootroot',
                       password_confirmation: 'rootroot',
-                      default_display_name: 'root')
+                      default_display_name: 'root',
+                      expire_force_notice: Time.now + 1.years,
+                      expire_use_admin: Time.now + 1.years
+                      )
 end
 design = NestTop.create!
 nest = Nest.create!(owner: user,
-                      title: 'メンバー用',
-                      description: <<__NEST__,
+                    title: 'メンバー用',
+                    description: <<__NEST__,
 会員のためのネストです
 主に「お知らせ」のためにありますが、それ以外のスペースはサンドボックスとして使えます。
 __NEST__
@@ -32,10 +35,11 @@ NestMember.create!(
                    display_name: 'root',
                    board: true)
 space = Space.create!(creater: user,
-                     nest: nest,
-                     title: '運営からのお知らせ',
-                     description: <<__SPACE__,
+                      nest: nest,
+                      title: '運営からのお知らせ',
+                      description: <<__SPACE__,
 運営からのお知らせです。
 __SPACE__
-                     publication_level: Space::PublicationLevel::MEMBERS_ONLY,
-                     preparation_level: Space::PreparationLevel::PRIVATE)
+                      publication_level: Space::PublicationLevel::MEMBERS_ONLY,
+                      preparation_level: Space::PreparationLevel::PRIVATE,
+                      released_at: Time.now)

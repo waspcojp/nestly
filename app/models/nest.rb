@@ -4,6 +4,7 @@ class Nest < ApplicationRecord
   belongs_to :design, class_name: "NestTop"
   has_many :members, class_name: "NestMember"
   has_many :spaces, class_name: "Space"
+  has_many :invites, class_name: "Invite"
 
   module PublicationLevel
     include ControlLevel

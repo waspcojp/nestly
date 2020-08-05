@@ -11,7 +11,7 @@ class SpacesController < ApplicationController
       space = params.require(:space).
         permit(:title, :title_id, :description, :icon_image,
                :publication_level, :preparation_level,
-               :defaut_edit_level, :default_publication_level, :default_comment_level,
+               :entry_edit_level, :entry_publication_level, :entry_comment_level,
                :class_name, :notice_level)
 
       space.delete(:icon_image)
@@ -45,7 +45,7 @@ class SpacesController < ApplicationController
     space = params.require(:space).
       permit(:title, :title_id, :description, :icon_image,
              :publication_level, :preparation_level,
-             :defaut_edit_level, :default_publication_level, :default_comment_level,
+             :entry_edit_level, :entry_publication_level, :entry_comment_level,
              :notice_level)
     space.delete(:icon_image)
 

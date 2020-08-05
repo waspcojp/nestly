@@ -2,9 +2,7 @@
 <%= hidden_field_tag :icon_y %>
 <%= hidden_field_tag :icon_width %>
 <%= hidden_field_tag :icon_height %>
-<div class="form-group row">
-  <%= render 'shared/errors', record: obj %>
-</div>
+<%= render 'shared/errors', record: obj %>
 <div class="form-group row">
   <%= form.label :class_name, I18n.t("spaces.class_name"), class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
@@ -40,8 +38,19 @@
 	<%= form.select :preparation_level, Space::PreparationLevel::TYPES, {}, class: "form-control" %>
   </div>
 </div>
+<% if (( current_user ) &&
+	   ( current_user.expire_force_notice ) &&
+	   ( current_user.expire_force_notice > Time.now )) %>
+  <div class="form-group row">
+	<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label" %>
+	<div class="col-sm-10">
+	  <%= form.select :notice_level, Space::NoticeLevel::TYPES, {}, class: "form-control" %>
+	</div>
+  </div>
+<% end %>
+
 <div class="form-group row">
-  <%= form.label :body, I18n.t("view.body"), for: "body", class: "col-sm-2 col-form-label" %>
+  <%= form.label :description, I18n.t("view.description"), for: "description", class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
 	<%= form.text_area :description, class: "form-control" %>
   </div>
@@ -65,6 +74,47 @@
 		  <input name="space[icon_image]" id="icon_image" type="file" style="display:none;"/>
 		</label>
 	  </div>
+	</div>
+  </div>
+</div>
+<% if (( current_user ) &&
+	   ( current_user.expire_use_admin ) &&
+	   ( current_user.expire_use_admin > Time.now )
+	   ( @space.id )) %>
+<div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;">
+  <div class="row">
+	<%= label_tag :admins, t('spaces.admins'), for: "admins", class: "col-sm-2 col-form-label" %>
+	<div class="col-sm-10">
+	  <% if ( @space.admins.size > 0 ) %>
+		<div style="padding:10px 0;">
+		  <% @space.admins.each do | admin | %>
+			<span style="border:solid 1px #CCC;padding:10px;margin:10px;">
+			  <%= admin.user.member_name(@nest) %>
+			</span>
+		  <% end %>
+		</div>
+	  <% end %>
+	  <p><%= t('spaces.admins_description')%></p>
+	  <div>
+		<%= link_to t('spaces.assign_admin'), assign_admin_path(@space) , class: "btn btn-primary" %>
+	  </div>
+	</div>
+  </div>
+</div>
+<% end %>
+<%= hidden_field_tag "space[entry_edit_level]", Entry::EditLevel::BOARDS_ONLY %>
+<div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;">
+  <p><%= t('spaces.entry_settings') %></p>
+  <div class="form-group row">
+	<%= form.label :entry_publication_level, I18n.t("spaces.entry_publication_level"), class: "col-sm-2 col-form-label" %>
+	<div class="col-sm-10">
+	  <%= form.select :entry_publication_level, Entry::PublicationLevel::TYPES, {}, class: "form-control" %>
+	</div>
+  </div>
+  <div class="form-group row">
+	<%= form.label :entry_comment_level, I18n.t("spaces.entry_comment_level"), class: "col-sm-2 col-form-label" %>
+	<div class="col-sm-10">
+	  <%= form.select :entry_comment_level, Entry::CommentLevel::TYPES, {}, class: "form-control" %>
 	</div>
   </div>
 </div>

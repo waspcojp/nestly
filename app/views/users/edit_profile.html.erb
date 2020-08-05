@@ -31,10 +31,8 @@
 		  <input name="user[icon_image]" id="icon_image" type="file" style="display:none;"/>
 		</label>
 	  </div>
-	  <div class="col-md-9">
-		<div class="input-group mb-3">
-		  <%= render 'shared/errors', record: @user %>
-		</div>
+	  <div class="col-md-9" style="margin-top:20px;">
+		<%= render 'shared/errors', record: @user %>
 		<div class="form-group row">
 		  <%= f.label :default_display_name, I18n.t('users.display_name'), for: 'default_user_display_name', class: "col-sm-2 col-form-label" %>
 		  <div class="col-sm-10">

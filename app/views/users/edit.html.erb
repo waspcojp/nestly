@@ -9,9 +9,7 @@
 				 html: {
 				   class: 'txt_form'
 				   }) do |f| %>
-      <div class="input-group mb-3">
-		<%= render 'shared/errors', record: @user %>
-	  </div>
+	  <%= render 'shared/errors', record: @user %>
       <div class="input-group mb-3">
 		<%= f.label :user_name, I18n.t('users.user_name'), for: "user_name", class: "col-sm-2 col-form-label" %>
 		<div class="col-sm-10">

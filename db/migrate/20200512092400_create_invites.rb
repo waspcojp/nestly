@@ -11,5 +11,6 @@ class CreateInvites < ActiveRecord::Migration[6.0]
       t.datetime	:created_at
     end
     add_index	:invites,	:invitation_token, unique: true
+    add_index	:invites,	:nest_id, unique: false
   end
 end

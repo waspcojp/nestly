@@ -10,7 +10,7 @@ mail:
   from_address: 'ogochan@wasp.co.jp'
   invalid_domain: 'example.net'
   smtp_server_address: '10.3.0.44'
-  domain_part: example.com
+  domain_part: nestly.net
 invitation:
   expire: (3 * 24 * 3600)
 announcement:

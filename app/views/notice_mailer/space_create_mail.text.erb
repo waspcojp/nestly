@@ -1,8 +1,14 @@
 <%= @notice.watch.target.nest.member?(@notice.user).display_name %>様
 ========================================
 
-「<%= @notice.watch.target.nest.title %>」に新しいスペース「<%= @notice.watch.target.title %>」が作られました。
+「<%= @notice.watch.target.nest.title %>」に新しいスペース「<%= @space.title %>」が作られました。
+--------------------
+<%= @space.description %>
+--------------------
 
 このスペースからの通知を受けたい場合は、以下のURLをクリックして下さい。
-
 <%=  notice_watch_url(@notice.watch.accept_token, on_off: "on") %>
+
+<% if ( @space.preparable?(@notice.user) ) %>
+このメールのアドレスにメールを送ることにより、新しいエントリを作ることが出来ます。
+<% end %>

@@ -53,7 +53,14 @@ Rails.application.routes.draw do
   post "invites/append/:id" => "invites#append", as: :invite_append
   resources :invites
 
+  post "spaces/release/:id" => "spaces#release", as: :space_release
+  post "spaces/unrelease/:id" => "spaces#unrelease", as: :space_unrelease
+  get  "spaces/assign_admin/:id" => "spaces#assign_admin", as: :assign_admin
+  post "spaces/assign_admin" => "spaces#assign_admin_op"
   resources :spaces
+
+  post "entries/release/:id" => "entries#release", as: :entry_release
+  post "entries/unrelease/:id" => "entries#unrelease", as: :entry_unrelease
   resources :entries
   resources :comments
 
@@ -61,7 +68,6 @@ Rails.application.routes.draw do
   match 'attach_files/upload' => "attach_files#upload", via:[:post]
   match 'attach_files/profile_upload' => "attach_files#profile_upload", via:[:post]
   match 'attach_files/destroy' => "attach_files#destroy", via:[:post]
-#  match 'attach_files/:id' => "attach_files#destroy", via:[:delete]
   match 'attach_files/icon/:id' => "attach_files#icon", via: [:get]
   match 'attach_files/download/:id' => "attach_files#download", via: [:get]
   resources :attach_files
@@ -79,8 +85,8 @@ Rails.application.routes.draw do
   match 'forbidden' => "application#forbidden", :via => [:get], :as => :forbidden
   match 'internal_server_error' => "application#internal_server_error", :via => [:get], :as => :internal_server_error
 
-  match 'top' => "top#index", :via => :get, :as => :top
-  match 'comming_soon' => "top#comming_soon", :via => :get, :as => :comming_soon
+  get 'top' => "top#index", :as => :top
+
   match 'about' => "top#about", :via => :get, :as => :about
   match 'guidance' => "top#guidance", :via => :get, :as => :guidance
   match 'term' => "top#term", :via => :get, :as => :term

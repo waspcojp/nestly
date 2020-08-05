@@ -1,8 +1,9 @@
 class ApplicationController < ActionController::Base
   include Pundit
   before_action :require_login
-  rescue_from ArgumentError, with: :rescue_action_in_public
-  rescue_from NoMethodError, with: :rescue_action_in_public
+#  rescue_from ArgumentError, with: :rescue_action_in_public
+#  rescue_from NoMethodError, with: :rescue_action_in_public
+
   rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_404
 
   protect_from_forgery with: :exception

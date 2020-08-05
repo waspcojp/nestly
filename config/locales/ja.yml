@@ -5,6 +5,9 @@ ja:
   boards only: 管理者のみ
   private: 非公開
   free join: 誰でも参加できる
+  subscriber only: ワッチしている人のみ
+  all members: 参加者全員
+  include invited: 招待中の人も含む
   abuse: 不正
   abuses:
     report_invite_mail: 不正な招待メールの報告
@@ -43,10 +46,13 @@ ja:
     informations: お知らせ
   nest: ネスト
   nests:
+    all: 全てのネスト
     new: ネストの作成
     admin: 管理人
     join: ネストに参加
     joined: 参加しているネスト
+    joinable: 参加可能なネスト
+    visible: 閲覧可能なネスト
     top: トップ
     title: 名前
     publication_level: 公開範囲
@@ -54,6 +60,7 @@ ja:
     join_method: 参加方法
     description: 説明
     member control: 参加者管理
+    members_list: 参加者一覧
     edit: 情報の変更
     informations: 情報
     member_count: 参加者数
@@ -70,14 +77,25 @@ ja:
     resigned: '%{name}を退会しました。'
   space: スペース
   spaces:
+    admins: スペースの管理者
     count: スペース数
     new: 新しいスペース
     list: スペース一覧
     preparation_level: エントリ作成
+    notice_level: 通知範囲
     class_name: 種類
     create_of: '「%{name}」のスペースの作成'
     edit_of: '「%{name}」の編集'
     another_entries: エントリの一覧
+    mail_postable: エントリのメール投稿可
+    entry_settings: エントリの設定
+    entry_comment_level: コメント出来る人
+    entry_publication_level: 公開範囲
+    admins_description: スペースの管理者をネストの管理者の他に指定できます
+    not_released: 公開されていません
+    released: 公開されました
+    assign_admin: 管理者を管理する
+    assign_admin_title: '「%{name}」の管理者を管理する'
   space_class:
     board: 掲示板
     information: お知らせ
@@ -91,6 +109,7 @@ ja:
   entries:
     informations: エントリの情報
     new: エントリ作成
+    created: エントリが作成されました
     comment_level: コメント追加
     list: エントリ一覧
     body_type: フォーマット
@@ -99,6 +118,9 @@ ja:
     create_of: '「%{name}」のエントリの作成'
     edit_of: '「%{name}」の編集'
     list_of: '「%{name}」のエントリ一覧'
+    notice_level: 通知範囲
+    not_released: 公開されていません
+    released: 公開されました
   watches:
     list: ワッチしているもの一覧
     list_of: '%{name} のワッチ一覧'
@@ -111,6 +133,14 @@ ja:
     edit_session: セッション情報
     user_name: ユーザ名
     display_name: 表示名
+    update profile success: プロフィールの変更をしました
+    update profile fail: プロフィールの変更ができませんでした
+    success_add_mail: メールアドレスが追加されました。このメールアドレスの認証を行って下さい。
+    fail_add_mail: メールアドレスが追加出来ませんでした。メールアドレスの重複等がないか調べて下さい。
+    authenticate_mail_sent: メールアドレス認証用のメールを送りました。
+    authenticate_mail_fail: メールアドレス認証用のメールが送れませんでした。
+    mail_authentication_success: メールアドレスの認証が成功しました。
+    mail_authentication_fail: メールアドレスの認証が出来ませんでした。
     profile: 自己紹介
     email: E-mail
     mail_address: メールアドレス
@@ -175,6 +205,11 @@ ja:
     comment_level: コメント出来る人
     more: もっと見る
     setting: 設定
+    release: 公開
+    unrelease: 非公開
+    address_for_post: メール投稿用のアドレス
+    address_for_comment_post: コメントメール投稿用のアドレス
+    address_copy: アドレスをコピー
 
     body: 本文
     comment: コメント

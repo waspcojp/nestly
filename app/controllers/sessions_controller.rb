@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
     end
   end
   def create
-    #p "params", params
     user = login(params[:user_name], params[:password], params[:remember])
     if user
       print "logged in\n"
@@ -22,7 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     logout
-    redirect_to login_path, notice: "Logged out!"
+    redirect_to top_path, notice: "Logged out!"
   end
 
 end

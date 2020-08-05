@@ -4,24 +4,27 @@ module HtmlHelper
                            :id => "icon-image",
                            :class => "icon_image"
                          })
-    
+
     if obj
       if obj.icon_image_id 
-        image_tag "/icons/download?type=#{type}&id=#{obj.icon_image_id.to_i}", style
+        tag = image_tag "/icons/download?type=#{type}&id=#{obj.icon_image_id.to_i}", style
       else
         case type
         when "side"
-          image_tag "/images/piroron_192.png", style
+          tag = image_tag "/images/piroron_192.png", style
         when "header"
-          image_tag "/images/piroron_45.png", style
+          tag = image_tag "/images/piroron_45.png", style
         when "list"
-          image_tag "/images/piroron_140.png", style
+          tag = image_tag "/images/piroron_140.png", style
         else
-          image_tag "/images/piroron_140.png", style
+          tag = image_tag "/images/piroron_140.png", style
         end
       end
+      tag
     end
+
   end
+
   def icon_img_url(obj, type)
     if obj.icon_image_id
       attaches_download_url + "&type=#{type}&id=#{obj.icon_image_id.to_i}"
@@ -70,5 +73,20 @@ class String
         "<a href=\"#{match}\" target=\"_blank\">#{match}</a>"
       end
     end.html_safe
+  end
+  def split_list
+    list = []
+    self.split(/\s*\,\s*|\s+|\r\n/).each do | entry |
+      entry.gsub!(/\s+/, '')
+      if (( entry != '' ) &&
+          ( entry =~ /.+@.+/ ))
+        if ( entry =~ /\<(.+)\>/ )
+          list << $1
+        else
+          list << entry
+        end
+      end
+    end
+    list
   end
 end

@@ -8,6 +8,8 @@ class SorceryCore < ActiveRecord::Migration[6.0]
       t.integer		:icon_image_id
       t.string		:uuid
       t.datetime	:locked_at
+      t.datetime	:expire_force_notice
+      t.datetime	:expire_use_admin
 
       t.timestamps                null: false
     end

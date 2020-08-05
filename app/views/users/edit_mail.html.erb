@@ -59,9 +59,7 @@ $(document).ready(function(){
 				 html: {
 				   class: 'text_form',
 				   }) do | f | %>
-	  <div class="input-group mb-3">
-		<%= render 'shared/errors', record: @user %>
-	  </div>
+	  <%= render 'shared/errors', record: @user %>
       <div class="input-group mb-3">
 		<%= f.label :mail_address, I18n.t('users.mail_address'), for: 'mail_address', class: "col-sm-2 col-form-label" %>
         <%= f.text_field :mail_address, autofocus: true, placeholder: I18n.t('users.mail_address'), class: 'col-sm-8 form-control' %>

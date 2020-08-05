@@ -1,39 +1,77 @@
-<div class="card-body">
-  <div class="row" style="margin-bottom: 20px;">
-	<div class="col-sm-1">
-	  <%= icon_img_tag entry.author, "header" %>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#copy').on('click', (el) => {
+		let address = $('#address').select();
+		document.execCommand('copy');
+	})
+});
+</script>
+<div class="card entry">
+  <div class="card-header">
+	<div class="d-flex justify-content-between">
+	  <span style="font-weight:bold;"><%= @entry.title %></span>
+	  <% if (  @entry.editable?(current_user) ) %>
+		<%= link_to(edit_entry_path(@entry), class:"link") do %>
+		  <i class="fas fa-cog"></i>
+		<% end %>
+	  <% end %>
 	</div>
-	<div class="col-sm-11">
-	  <div>
-		<%= entry.author_name %>
+  </div>
+  <div class="card-body">
+	<div class="row" style="margin-bottom: 20px;">
+	  <div class="col-sm-1">
+		<%= icon_img_tag entry.author, "header" %>
 	  </div>
-	  <div>
-		<%= l entry.created_at %>
-	  </div>
-	  <div class="row entry" style="padding:10px 10px 0 10px;">
-		<% case entry.body_type %>
-		<% when Entry::BodyType::MD %>
-		  <div id="entry-source" style="display:none;"><%= entry.body %></div>
-		  <div id="result-html"></div>
-		<% when Entry::BodyType::HTML %>
-		  <%= entry.body.html_safe %>
-		<% else %>
-		  <%= entry.body.to_html %>
-        <% end %>
+	  <div class="col-sm-11">
+		<div>
+		  <%= entry.author_name %>
+		</div>
+		<div>
+		  <%= l entry.created_at %>
+		</div>
+		<div class="row entry" style="padding:10px 10px 0 10px;">
+		  <% case entry.body_type %>
+		  <% when Entry::BodyType::MD %>
+		    <div id="entry-source" style="display:none;"><%= entry.body %></div>
+		    <div id="result-html"></div>
+		  <% when Entry::BodyType::HTML %>
+		    <%= entry.body.html_safe %>
+		  <% else %>
+		    <%= entry.body.to_html %>
+          <% end %>
+        </div>
       </div>
-     </div>
-   </div>
-   <div class="card-text">
-   </div>
-   <% if ( entry.attach_files.count > 0 ) %>
-	 <div class="row" style="padding:10px;height:210px;overflow-y:auto;border-top:1px solid #ccc;padding:10px;">
-	   <% entry.attach_files.order("created_at DESC").each do | attach_file | %>
-		 <div style="padding:5px;" class="col-sm-3">
-		   <%= link_to("/attach_files/download/#{attach_file.id}", target: "_blank") do %>
-			 <%= image_tag "/attach_files/icon/#{attach_file.id}", style:"width:100%;" %>
-		   <% end %>
-		 </div>
-	   <% end %>
-	 </div>
-   <%end %>
+    </div>
+    <div class="card-text">
+    </div>
+	<% if ( entry.attach_files.count > 0 ) %>
+	  <div class="row" style="padding:10px;height:210px;overflow-y:auto;border-top:1px solid #ccc;padding:10px;">
+		<% entry.attach_files.order("created_at DESC").each do | attach_file | %>
+		  <div style="padding:5px;" class="col-sm-3">
+			<%= link_to("/attach_files/download/#{attach_file.id}", target: "_blank") do %>
+			  <%= image_tag "/attach_files/icon/#{attach_file.id}", style:"width:100%;" %>
+			<% end %>
+		  </div>
+		<% end %>
+	  </div>
+	<% end %>
+  </div>
 </div>
+
+<div style="height:70px;margin:10px 0;">
+  <div style="font-weight: bold;"><%= t('view.address_for_comment_post')%></div>
+  <div style="margin-left:20px;">
+	<%= text_field_tag 'address', "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}", readonly: true, size: 80 %>
+	<button type="button" class="btn" id="copy" title="<%= t('view.address_copy')%>">
+	  <i class="far fa-copy"></i>
+	</button>
+  </div>
+</div>
+
+<% if ( @entry.comment_count > 0 ) %>
+  <%= render "comments/list", entry: @entry %>
+<% end %>
+<% if ( @entry.commentable?(current_user) ) %>
+  <a id="comment"></a>
+  <%= render "comments/new", entry: @entry %>
+<% end %>

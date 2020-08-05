@@ -1,9 +1,13 @@
 <style>
+.left-menu {
+  background: #F0F0F0;
+  padding:0;
+}
 .left-menu .active {
   background: #CCF;
 }
 </style>
-<div class="nav flex-column left-menu">
+<div class="nav flex-column">
   <% if ( action_name == "edit" ) %>
 	<%= link_to t('nests.edit'), edit_nest_path(@nest), class:"nav-link active" %>
   <% else %>

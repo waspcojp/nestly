@@ -26,26 +26,7 @@ $(document).ready(function(){
 	  <%= render "entries/list_titles", entries: @space.entries %>
 	</div>
 	<div class="col-sm-9">
-	  <div class="card entry">
-		<div class="card-header">
-		  <div class="d-flex justify-content-between">
-			<span style="font-weight:bold;"><%= @entry.title %></span>
-			<% if (  @entry.editable?(current_user) ) %>
-			  <%= link_to(edit_entry_path(@entry), class:"link") do %>
-				<i class="fas fa-cog"></i>
-			  <% end %>
-			<% end %>
-		  </div>
-		</div>
-		<%= render "entry_classes/#{@space.class_name.underscore}/show", entry: @entry %>
-	  </div>
-	  <% if ( @entry.comment_count > 0 ) %>
-		<%= render "comments/list", entry: @entry %>
-	  <% end %>
-	  <% if ( @entry.commentable?(current_user) ) %>
-		<a id="comment"></a>
-		<%= render "comments/new", entry: @entry %>
-	  <% end %>
+	  <%= render "entry_classes/#{@space.class_name.underscore}/show", entry: @entry %>
 	</div>
   </div>
 </div>

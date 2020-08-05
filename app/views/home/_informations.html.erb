@@ -11,7 +11,8 @@
   </div>
 </div>
 <%
-  @informations = Entry.where(space_id: 1).order("created_at DESC").limit(5)
+  @informations = Entry.where(space_id: 1).
+	where("released_at IS NOT NULL AND released_at < now()").order("created_at DESC").limit(5)
 %>
 <div id="informations-list" data-parent="#informations-header" style="margin:-10px 5px 10px 5px;">
   <div class="row">

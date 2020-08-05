@@ -7,8 +7,11 @@
 		<span class="mt-2">
 		  <span class="title"><%= link_to klass[0], spaces_path(nest: @nest.id, type: klass[1]), class:"link" %></span>
 		  <button type="button" class="btn" data-toggle="modal" data-target="#modal-max-spaces">
-			<span class="fa fa-pencil-alt"></span>
+			<span class="fa fa-cog"></span>
 		  </button>
+		  <%= link_to new_space_path(nest: @nest, class: klass[1]), class: "link" do %>
+			<span class="fa fa-pencil-alt"></span>
+		  <% end %>
 		</span>
 		<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#space-list-<%= k_count %>">
 		  <span class="fa fa-minus"></span>

@@ -2,11 +2,13 @@
 <div class="navbar subnav">
   <ul class="nav">
 	<li class="nav-item">
-	  <% if ( action_name == "index" ) %>
-		<span class="nav-link active"><%= t('shared.lower_header.nests') %></span>
-	  <% else %>
-		<%= link_to t('shared.lower_header.nests'), nests_path, class: "nav-link" %>
-	  <% end %>
+	  <%= link_to t('nests.visible'), nests_path(type: 'visible'), class: "nav-link" %>
+	</li>
+	<li class="nav-item">
+	  <%= link_to t('nests.joinable'), nests_path, class: "nav-link" %>
+	</li>
+	<li class="nav-item">
+	  <%= link_to t('nests.joined'), nests_path(type: 'member'), class: "nav-link" %>
 	</li>
 	<li class="nav-item">
 	  <% if ( action_name == "new" ) %>
@@ -18,6 +20,14 @@
 </div>
 <% end %>
 <% content_for :body do %>
+<script>
+$(document).ready(function(){
+	$('.title-image').on('click', (event) => {
+		let link = $(event.currentTarget).attr('href');
+		location.href = link;
+	});
+});
+</script>
 <style>
 </style>
 <div class="row">
@@ -28,6 +38,7 @@
 <div class="row">
   <% @nests.each do | nest | %>
 	<div class="col-sm-3" style="padding:10px;">
+
 	  <div class="card">
 		<div class="card-header">
 		  <div class="d-flex justify-content-between">
@@ -39,10 +50,10 @@
 			<% end %>
 		  </div>
 		</div>
-		<%= link_to(nest_path(nest), class:"link") do %>
-		  <%= image_tag "/icons/edit_icon?id=#{nest.icon_image_id}", class: "card-img-top", id: "image_preview" %>
-		<% end %>
 		<div class="card-body">
+		  <div class="text-center">
+			<%= icon_img_tag nest, "side", class: "title-image", href: nest_path(nest)%>
+		  </div>
 		  <!--ul>
 			<li><%= Nest::PublicationLevel::TYPES.rassoc(nest.publication_level)[0] %></li>
 			<li><%= Nest::JoinMethod::TYPES.rassoc(nest.join_method)[0] %></li>
@@ -52,6 +63,7 @@
 		  </div>
 		</div>
 	  </div>
+
 	</div>
   <% end %>
 </div>
