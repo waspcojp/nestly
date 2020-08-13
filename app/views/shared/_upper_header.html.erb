@@ -11,7 +11,8 @@
     });
   });
 </script>
-
+<style>
+</style>
 <header class="navbar navbar-expand navbar-light flex-column flex-md-row bd-navbar" style="margin:0 40px;">
   <div class="navbar-nav-scroll" style="height: 60px;">
 	<ul class="navbar-nav bd-navbar-nav flex-row">
@@ -44,8 +45,6 @@
 		<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
 		  <%= link_to current_user.default_display_name, edit_profile_path, class: "dropdown-item" %>
           <div class="dropdown-divider"></div>
-          <%= link_to "Help", help_path, class: "dropdown-item" %>
-          <div class="dropdown-divider"></div>
           <%= link_to t('shared.lawer_header.logout'), logout_path, class: "dropdown-item" %>
 		</div>
       </li>
@@ -63,6 +62,11 @@
 		  <%= f.submit t("sessions.log_in"), class:'btn btn-success btn-sm'  %>
 		<% end %>
 	  </li>
+	  <% if ( !Settings.service[:invite_only] ) %>
+		<li class="nav-item">
+		  <%= link_to I18n.t("users.new-"), new_user_path, class: "btn btn-primary btn-sm" %>
+		</li>
+	  <% end %>
 	</ul>
     <% end %>
   <% end %>

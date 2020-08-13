@@ -34,6 +34,7 @@ ja:
     existing_account: アカウントをお持ちのかた
   footer:
     about: このサイトについて
+    usage: 使い方
     site_top: サイトトップ
     terms_privacy: プライバシー規約
     terms_general: 利用規約
@@ -125,6 +126,7 @@ ja:
     list: ワッチしているもの一覧
     list_of: '%{name} のワッチ一覧'
   users:
+    new-: 登録
     new: アカウント登録
     edit: ユーザー情報の変更
     edit_profile: プロフィールの変更
@@ -189,7 +191,6 @@ ja:
       company_information: 企業情報
       terms_of_service: 利用規約
       privacy_policy: プライバシーポリシー
-      about_point: ポイントについて
       download: ダウンロード
       contact_us: お問い合わせ
       faq: FAQ

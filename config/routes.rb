@@ -87,23 +87,13 @@ Rails.application.routes.draw do
 
   get 'top' => "top#index", :as => :top
 
-  match 'about' => "top#about", :via => :get, :as => :about
-  match 'guidance' => "top#guidance", :via => :get, :as => :guidance
-  match 'term' => "top#term", :via => :get, :as => :term
-  match 'privacy' => "top#privacy", :via => :get, :as => :privacy
-  match 'help' => "help#index", :via => :get, :as => :help
-  match 'help/glossary' => "help#glossary", :via => :get, :as => :glossary
-  match 'help/what_is' => "help#what_is", :via => :get, :as => :what_is
-  match 'help/create_channel' => "help#create_channel", :via => :get, :as => :create_channel
-  match 'help/create_stream' => "help#create_stream", :via => :get, :as => :create_stream
-  match 'help/write_log' => "help#write_log", :via => :get, :as => :write_log
-  match 'help/api' => "help#api", :via => :get, :as => :api
-  match 'help/find_channel' => "help#find_channel", :via => :get, :as => :find_channel
-  match 'help/follow_channel' => "help#follow", :via => :get, :as => :follow_channel
-  match 'help/forget_password' => "help#forget_password", :via => :get, :as => :forget_password
-  match 'help/confirm_mail' => "help#confirm_mail", :via => :get, :as => :confirm_mail
-  match 'help/login_trouble' => "help#login_trouble", :via => :get, :as => :login_trouble
-  match 'help/sign_up' => "help#sign_up", :via => :get, :as => :sign_up
+  get 'about' => "top#about", as: :about
+  get 'usage' => "top#usage", as: :usage
+  get 'words' => "top#words", as: :words
+  get 'how_to_join' => "top#how_to_join", as: :how_to_join
+  get 'how_to_operate' => "top#how_to_operate", as: :how_to_operate
+  get 'privacy' => "top#privacy", as: :privacy
+  get 'term' => "top#term", as: :term
 
   match 'icons/create' => "icons#create", via:[:post]
   match 'icons/profile_upload' => "icons#profile_upload", via:[:post]

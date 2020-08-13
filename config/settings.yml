@@ -1,5 +1,5 @@
 service:
-  invite_only: true
+  invite_only: false
 server:
   host: '10.1.254.11'
   port: 3000
