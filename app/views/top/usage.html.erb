@@ -1,0 +1,42 @@
+<% content_for :body do %>
+<style>
+</style>
+<div class="container-fluid">
+  <div class="row">
+	<div class="jumbotron col-sm-9 text" style="margin-top:20px;">
+	  <h1 class="display-4">Nestlyの使い方</h1>
+	  <hr class="my-4">
+	  <h2>概要</h2>
+	  <p>
+		Nestlyの本質は「掲示板とリポジトリ機能のついたメーリングリスト」です。
+		これを軸にして、いろいろな機能が実現されています。
+	  </p>
+	  <p>
+		また、Nestlyは極力「会員」ということを意識しなくても利用できるようになっています。
+		メーリングリストとしてのみ利用する人は、「会員」にならなくても普通のメーリングリストとして参加できます。
+	  </p>
+	  <h2>もくじ</h2>
+	  <dl>
+		<dt><%= link_to "Nestlyの用語", words_path%></dt>
+		<dd>
+		  <p>
+			Nestlyを説明するために知っておくと良い単語です
+		  </p>
+		</dd>
+		<dt><%= link_to "参加のしかた", how_to_join_path%></dt>
+		<dd>
+		  <p>
+			Nestlyに参加する方法です
+		  </p>
+		</dd>
+		<dt><%= link_to "ネストの運用しかた", how_to_operate_path%></dt>
+		<dd>
+		  <p>
+			ネストを運用する方法です。
+		  </p>
+		</dd>
+	  </dl>
+	</div>
+  </div>
+</div>
+<% end %>
