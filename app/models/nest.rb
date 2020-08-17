@@ -83,11 +83,11 @@ class Nest < ApplicationRecord
   end
   def invites(user = nil)
     if ( user )
-      InviteUser.where(nest: self,
+      Invite.where(nest: self,
                        inviter: user,
                        expired_at: nil)
     else
-      InviteUser.where(nest: self,
+      Invite.where(nest: self,
                        expired_at: nil)
     end
   end
