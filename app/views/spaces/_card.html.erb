@@ -2,9 +2,11 @@
   <div class="<%= (space.released?) ? "card" : "card border-danger" %>">
 	<div class="card-header" style="height:70px;">
 	  <div class="d-flex justify-content-between">
-		<%= link_to(space, class: "link") do %>
-		  <%= space.title %>
-		<% end %>
+		<span>
+		  <%= link_to(space, class: "link") do %>
+			<%= space.title %>
+		  <% end %>
+		</span>
 		<span>
 		  <% if (( @nest ) &&
 				 (  @nest.admin?(current_user) )) %>
@@ -12,8 +14,6 @@
 			  <i class="fas fa-cog"></i>
 			<% end %>
 		  <% end %>
-		</span>
-		<span>
 		  <% if ( watch ) %>
 			<%= check_box_tag "check[#{watch.id}", watch.id, watch.active, class: "watch-check", title: "watch active"%>
 		  <% else %>
