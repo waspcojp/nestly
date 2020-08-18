@@ -76,6 +76,7 @@ ja:
     join_OK: 参加しました。
     already_joined: 既に参加しています。
     resigned: '%{name}を退会しました。'
+    edit_profile: プロフィール
   space: スペース
   spaces:
     admins: スペースの管理者
