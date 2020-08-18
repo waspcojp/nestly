@@ -29,7 +29,6 @@ class NestsController < ApplicationController
   def edit
     @nest = Nest.find(params[:id])
   end
-
   def create
     nest = params.require(:nest).
       permit(:title, :description, :icon_image, :publication_level, :preparation_level, :join_method)
@@ -56,6 +55,19 @@ class NestsController < ApplicationController
                                   board: true)
     @nest_member.save
     redirect_to edit_nest_path(@nest)
+  end
+  def edit_profile
+    @nest = Nest.find(params[:id])
+    @member = NestMember.where(user: current_user,
+                               nest: @nest).first
+  end
+  def update_profile
+    @member = NestMember.find(params[:id])
+    member = params.require(:nest_member).
+      permit(:display_name)
+    @member.display_name = member[:display_name]
+    @member.save
+    redirect_to edit_member_profile_path(@member.nest)
   end
 
   def invite

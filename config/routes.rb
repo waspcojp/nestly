@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   get "nests/member_control/:id" => "nests#member_control", as: :nest_member_control
   delete "nests/ban/:id" => "nests#ban", as: :nest_ban
   post "nests/member_board" => "nests#member_board"
+  get "nests/edit_profile/:id" => "nests#edit_profile", as: :edit_member_profile
+  post "nests/update_profile/:id" => "nests#update_profile", as: :update_member_profile
 
   resources :nests
 

@@ -1,0 +1,37 @@
+<% content_for :header do %>
+  <%= render "header" %>
+<% end %>
+<% content_for :body do %>
+<div class="container-fluid">
+  <%= form_for(@member,
+			 as: @member,
+			 url: update_member_profile_path(@member),
+			 html: {
+			   class: 'text_form',
+			   multipart: false,
+				 method: 'post',
+				   id: 'form' }) do |f| %>
+	<div class="row">
+	  <div class="col-sm-2">
+		<%= render "left-menu" %>
+	  </div>
+	  <div class="col-md-10" style="margin-top:20px;">
+		<div class="input-group mb-3">
+		  <%= render 'shared/errors', record: @nest %>
+		</div>
+		<div class="form-group row">
+		  <%= f.label :display_name, I18n.t('users.display_name'), for: 'user_display_name', class: "col-sm-2 col-form-label" %>
+		  <div class="col-sm-10">
+			<%= f.text_field :display_name, autofocus: true, class: 'form-control' %>
+		  </div>
+		</div>
+		<div class="row" style="padding:10px;">
+		  <div class="col-sm-10 offset-sm-2">
+			<%= f.submit I18n.t("view.save"), class: "btn btn-danger", id:'submit' %>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  <% end %>
+</div>
+<% end %>
