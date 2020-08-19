@@ -34,7 +34,7 @@
 	  <% end %>
 	<% end %>
   </ul>
-  <ul class="nav justify-content-end">
+  <ul class="nav justify-content-end mt-1">
 	<% if ( @nest ) %>
 	  <% if ( @nest.invitable?(current_user) ) %>
 		<li class="nav-item">
@@ -43,19 +43,19 @@
 	  <% end %>
 	  <% if ( @nest.admin?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to(edit_nest_path(@nest), class:"link") do %>
-			<i class="fas fa-cog mt-2" style="font-size:20px;"></i>
+		  <%= link_to(edit_nest_path(@nest), class:"link nav-link") do %>
+			<i class="fas fa-cog mt-1" style="font-size:20px;"></i>
           <% end %>
 		</li>
 	  <% end %>
 	  <% if ( @nest.resinable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t("nests.resign"), nests_resign_path(@nest) %>
+		  <%= link_to t("nests.resign"), nests_resign_path(@nest), class: "nav-link" %>
 		</li>
 	  <% end %>
 	  <% if ( @nest.joinable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t("nests.join"), nests_join_path(@nest) %>
+		  <%= link_to t("nests.join"), nests_join_path(@nest), class: "nav-link" %>
 		</li>
 	  <% end %>
 	<% end %>
