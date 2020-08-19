@@ -8,7 +8,7 @@ class Invite < ApplicationRecord
     user_mail = UserMailAddress.where(mail_address: self.to_mail).first
     if ( !user_mail )
       user = User.new(user_name: self.to_mail,
-                      defaultdisplay_name: self.to_mail)
+                      default_display_name: self.to_mail)
       user.save(validate: false)
       user.append_mail(self.to_mail)
       if ( nest )
