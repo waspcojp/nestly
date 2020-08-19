@@ -14,7 +14,7 @@
 		開設日
 	  </dt>
 	  <dd>
-		<%= l @space.created_at, format: :short %>
+		<%= l @space.created_at.in_time_zone(user_timezone), format: :short %>
 	  </dd>
 	  <dt>
 		公開範囲

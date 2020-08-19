@@ -99,7 +99,7 @@ $(document).ready(function(){
 				  </span>
 				</div>
 				<div>
-				  <%= l comment.created_at %>
+				  <%= l comment.created_at.in_time_zone(user_timezone) %>
 				</div>
 				<div class="row" style="padding-top:10px;">
 				  <%= comment.body.to_html %>

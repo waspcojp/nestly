@@ -73,7 +73,7 @@ class UsersController < ApplicationController
   end
   def update_profile
     p params
-    account_update_params = params.require(:user).permit(:icon_image, :default_display_name)
+    account_update_params = params.require(:user).permit(:icon_image, :default_display_name, :timezone)
     @user = current_user
     @icon = _create_icon(@user,
                          account_update_params[:icon_image],
@@ -86,6 +86,7 @@ class UsersController < ApplicationController
       @user.icon_image_id = @icon.id
     end
     @user.default_display_name = account_update_params[:default_display_name]
+    @user.timezone = account_update_params[:timezone]
     if ( @user.save )
       flash[:success] = t('users.update profile success')
     else
@@ -149,7 +150,7 @@ class UsersController < ApplicationController
 
 private
   def strong_params
-    params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name)
+    params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name, :timezone)
   end
 
   def _upload

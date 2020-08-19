@@ -48,6 +48,13 @@ module HtmlHelper
       ''
     end
   end
+  def user_timezone
+    if ( current_user )
+      current_user.timezone
+    else
+      'UTC'
+    end
+  end
 end
 class String
   def to_html(width = 560, height=315)

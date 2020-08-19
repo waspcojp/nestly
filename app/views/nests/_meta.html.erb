@@ -8,7 +8,7 @@
 		<%= t('view.open_at')%>
 	  </dt>
 	  <dd>
-		<%= l @nest.created_at, format: :short %>
+		<%= l @nest.created_at.in_time_zone(user_timezone), format: :short %>
 	  </dd>
 	  <dt>
 		<%= t('view.publication_level')%>

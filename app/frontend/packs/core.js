@@ -10,6 +10,7 @@ require("jquery-ui");
 require("bootstrap");
 require("remodal");
 require("cropper");
+jstz = require("jstimezonedetect");
 $ = jQuery;
 window.jQuery = $;
 window.$ = $;

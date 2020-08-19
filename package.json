@@ -8,16 +8,17 @@
 		"@rails/webpacker": "4.2.2",
 		"bootstrap": "^4.5.0",
 		"bootstrap-icons": "^1.0.0-alpha4",
+		"cropper": "^4.1.0",
+		"jexcel": "^3.8.2",
 		"jquery": "^3.5.1",
 		"jquery-ui": "^1.12.1",
 		"jquery-ujs": "^1.2.2",
-		"popper.js": "^1.16.0",
+		"jstimezonedetect": "^1.0.7",
 		"markdown-it": "^11.0.0",
 		"markdown-it-plantuml": "^1.4.1",
 		"monaco-editor": "^0.19.2",
-		"remodal": "^1.1.1",
-		"jexcel": "^3.8.2",
-		"cropper": "^4.1.0"
+		"popper.js": "^1.16.0",
+		"remodal": "^1.1.1"
 	},
 	"version": "0.1.0",
 	"devDependencies": {

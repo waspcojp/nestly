@@ -30,7 +30,7 @@
 			<%= entry.author_name %>
 		  </div>
 		  <div class="row">
-			<%= l entry.created_at, format: :short %>
+			<%= l entry.created_at.in_time_zone(user_timezone), format: :short %>
 		  </div>
 		</div>
 	  </div>

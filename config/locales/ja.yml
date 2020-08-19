@@ -147,6 +147,7 @@ ja:
     profile: 自己紹介
     email: E-mail
     mail_address: メールアドレス
+    timezone: 標準時
     password: パスワード
     password_characters_minimum: 'パスワードは %{length} 文字以上です。'
     current_password: 現在のパスワード
