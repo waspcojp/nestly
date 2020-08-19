@@ -113,6 +113,9 @@ class Space < ApplicationRecord
       end
     end
   end
+  def text(length = -1, width = 560, height=315)
+    description.gsub(/\r\n/,'').gsub(/\r/,'').gsub(/\n/,'')[0..length].to_html(width, height)
+  end
 private
   def send_notice(user, history, mail = nil)
     @watch = Watch.where(user: user,
