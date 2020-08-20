@@ -1,0 +1,90 @@
+<% content_for :header do %>
+  <%= render "nests/header" %>
+<% end %>
+<% content_for :body do %>
+<style>
+.card-header,
+.card-footer {
+  background: #fff;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(() => {
+	$('.admin').on('change', (ev) => {
+		$.ajax({
+			type: "POST",
+			url: "/spaces/manage_members",
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: {
+				id: <%= @space.id %>,
+				user: ev.target.attributes.user.value,
+				admin: ev.target.checked
+			}
+		});
+	});
+	$('.member').on('change', (ev) => {
+		$.ajax({
+			type: "POST",
+			url: "/spaces/manage_members",
+			headers: {
+				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: {
+				id: <%= @space.id %>,
+				user: ev.target.attributes.user.value,
+				member: ev.target.checked
+			}
+		});
+	});
+});
+</script>
+<div class="container-fluid">
+  <h3 class="page-title"><%= t('spaces.manage_members_title', name: @space.title )%></h3>
+  <div class="row">
+	<div class="col-sm-3">
+	  <%= render "nests/info" %>
+	  <%= render "nests/meta" %>
+	</div>
+	<div class="card col-sm-9">
+	  <div class="card-body">
+		<table class="table">
+		  <thead>
+			<tr>
+			  <th scope="col"></th>
+			  <th scope="col">name</th>
+			  <th scope="col">member</th>
+			  <th scole="col">admin</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<% @nest.members.order("display_name ASC").each do | member | %>
+			  <tr>
+				<td>
+				  <% if ( @space.admin?(member.user, false) ) %>
+					<i class="fas fa-crown" title="nest owner"></i>
+				  <% end %>
+				</td>
+				<td>
+				  <%= icon_img_tag(member.user, "header", height: 25) %>
+				  <%= label_tag "board[#{member.id}]",  member.display_name %>
+				</td>
+				<td>
+				  <input type="checkbox" name="<%= member.id%>", value="true" <%= @space.member?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="member" title="board member">
+				</td>
+				<td>
+				  <input type="checkbox" name="<%= member.id%>", value="true" <%= @space.admin?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="admin" title="board member">
+				</td>
+			  </tr>
+			<% end %>
+		  </tbody>
+		</table>
+	  </div>
+	  <div class="card-footer">
+		<%= link_to t('back'), edit_space_path(@space), class: 'btn btn-primary' %>
+	  </div>
+	</div>
+  </div>
+</div>
+<% end %>
