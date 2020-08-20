@@ -21,21 +21,29 @@
   </div>
   <%
 	if ( @nest.admin?(current_user) )
-	  @spaces = @nest.spaces.where("( class_name = '#{klass[1]}') ").
-		order("title ASC").limit(@nest.design.max_spaces)
+	  spaces = @nest.spaces.where("( class_name = '#{klass[1]}') ")
 	elsif ( @nest.member?(current_user) )
-	  @spaces = @nest.spaces.where(class_name: klass[1],
-								   publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).
-		order("title ASC").limit(@nest.design.max_spaces)
+	  ids = []
+	  @nest.spaces.where(class_name: klass[1],
+						 publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).each do | space |
+		ids << space.id
+	  end
+	  @nest.spaces.where(class_name: klass[1],
+						 publication_level: Space::PublicationLevel::PRIVATE_MEMBER_ONLY).
+		joins("LEFT JOIN space_members ON space_members.space_id = spaces.id").where("space_members.user_id = :user", {user: current_user.id}).each do | space |
+		ids << space.id
+	  end
+	  spaces = Space.where(id: ids)
 	elsif ( current_user )
-	  @spaces = @nest.spaces.where(class_name: klass[1],
-								   publication_level: 0..Space::PublicationLevel::OPEN).
-		order("title ASC").limit(@nest.design.max_spaces)
+	  spaces = @nest.spaces.where(class_name: klass[1],
+								  publication_level: 0..Space::PublicationLevel::OPEN)
 	else
-	  @spaces = @nest.spaces.where(class_name: klass[1],
-								   publication_level: 0..Space::PublicationLevel::OPEN_GLOBAL).
-		order("title ASC").limit(@nest.design.max_spaces)
-	end %>
+	  spaces = @nest.spaces.where(class_name: klass[1],
+								  publication_level: 0..Space::PublicationLevel::OPEN_GLOBAL)
+	end
+	@spaces = spaces.order("title ASC").limit(@nest.design.max_spaces)
+	%>
+
   <div id="space-list-<%= k_count %>" data-parent="#space-header-<%= k_count %>" style="margin:10px 5px;">
 	<div class="row">
 	  <%= render "spaces/list", spaces: @spaces %>

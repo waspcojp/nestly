@@ -18,9 +18,7 @@
 					 class: 'txt_form'
 					 }) do |f| %>
 		<%= hidden_field_tag :token, params[:token] %>
-        <div class="input-group mb-3">
-		  <%= render 'shared/errors', record: @user %>
-		</div>
+		<%= render 'shared/errors', record: @user %>
         <div class="input-group mb-3">
           <%= f.text_field :user_name, autofocus: true, placeholder: I18n.t('users.user_name'), class: 'form-control' %>
 		</div>

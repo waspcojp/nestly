@@ -2,7 +2,7 @@ class Space < ApplicationRecord
   belongs_to :nest
   belongs_to :creater, class_name: "User"
   has_many :entries
-  has_many :admins, class_name: "SpaceAdmin"
+  has_many :members, class_name: "SpaceMember"
   has_many :watches, dependent: :destroy, as: :target
 
   include LoggingHistory
@@ -13,9 +13,35 @@ class Space < ApplicationRecord
 
   module PublicationLevel
     include ControlLevel
+    def self.types(user)
+      if (( user ) &&
+          ( user.expire_use_admin ) &&
+          ( user.expire_use_admin > Time.now ))
+        TYPES
+      else
+        TYPES
+      end
+    end
   end
   module NoticeLevel
     include NoticeLevelHelper
+    def self.types(user)
+      if (( user ) &&
+          ( user.expire_use_admin ) &&
+          ( user.expire_use_admin > Time.now ))
+        TYPES + [
+                 [ I18n.t("spaces.member_only"), PRIVATE_MEMBER_ONLY ]
+                ]
+      else
+        types = []
+        TYPES.each do | type |
+          if ( type[1] != PRIVATE_MEMBER_ONLY )
+            types << type
+          end
+        end
+        types
+      end
+    end
   end
   module PreparationLevel
     include PreparationLevelHelper
@@ -47,12 +73,19 @@ class Space < ApplicationRecord
         true
       else
         if ( deep )
-          ( self.admins.where(user: user).first ) ? true : false
-        else
-          false
+          member = self.members.where(user: user).first
+          if (( member ) &&
+              ( member.admin ))
+            true
+          else
+            false
+          end
         end
       end
     end
+  end
+  def member?(user)
+    self.members.where(user: user).first ? true : false
   end
   def readable?(user)
     if ( self.admin?(user) )
@@ -68,6 +101,8 @@ class Space < ApplicationRecord
           self.nest.member?(user) ? true : false
         when  PublicationLevel::BOARDS_ONLY
           self.nest.admin?(user) ? true : false
+        when PublicationLevel::PRIVATE_MEMBER_ONLY
+          self.members.where(user: user).first ? true : false
         end
       else
         false

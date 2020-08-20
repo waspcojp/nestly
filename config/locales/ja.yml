@@ -97,7 +97,10 @@ ja:
     not_released: 公開されていません
     released: 公開されました
     assign_admin: 管理者を管理する
-    assign_admin_title: '「%{name}」の管理者を管理する'
+    manage_members_title: '「%{name}」の参加者を管理する'
+    member_only: スペースの参加者のみ
+    manage_member: 参加者の管理
+    members: スペースの参加者
   space_class:
     board: 掲示板
     information: お知らせ

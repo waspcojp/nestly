@@ -1,6 +1,4 @@
 class NoticeMailer < ApplicationMailer
-  default 'Content-Transfer-Encoding' => '7bit'
-
   def space_create_mail
     if ( !params[:mail] )
       @notice = params[:notice]

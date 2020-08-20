@@ -1,3 +1,23 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+	if ( $('#space_publication_level').val() == <%= Space::PublicationLevel::PRIVATE_MEMBER_ONLY %> ) {
+	  $('#space_member').show();
+	} else {
+	  $('#space_member').hide();
+	}
+
+
+
+    $('#space_publication_level').on('change', (ev) => {
+	  if ( $(ev.currentTarget).val() == <%= Space::PublicationLevel::PRIVATE_MEMBER_ONLY %> ) {
+		$('#space_member').show();
+		$('#space_notice_level').val(<%= Space::NoticeLevel::PRIVATE_MEMBER_ONLY %>);
+	  } else {
+		$('#space_member').hide();
+	  }
+    })
+  });
+</script>
 <%= hidden_field_tag :icon_x %>
 <%= hidden_field_tag :icon_y %>
 <%= hidden_field_tag :icon_width %>
@@ -29,13 +49,7 @@
 <div class="form-group row">
   <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
-	<%= form.select :publication_level, Space::PublicationLevel::TYPES, {}, class: "form-control" %>
-  </div>
-</div>
-<div class="form-group row">
-  <%= form.label :preparation_level, I18n.t("spaces.preparation_level"), class: "col-sm-2 col-form-label" %>
-  <div class="col-sm-10">
-	<%= form.select :preparation_level, Space::PreparationLevel::TYPES, {}, class: "form-control" %>
+	<%= form.select :publication_level, Space::PublicationLevel::types(current_user), {}, class: "form-control" %>
   </div>
 </div>
 <% if (( current_user ) &&
@@ -44,7 +58,7 @@
   <div class="form-group row">
 	<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label" %>
 	<div class="col-sm-10">
-	  <%= form.select :notice_level, Space::NoticeLevel::TYPES, {}, class: "form-control" %>
+	  <%= form.select :notice_level, Space::NoticeLevel::types(current_user), {}, class: "form-control" %>
 	</div>
   </div>
 <% end %>
@@ -81,22 +95,22 @@
 	   ( current_user.expire_use_admin ) &&
 	   ( current_user.expire_use_admin > Time.now )
 	   ( @space.id )) %>
-<div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;">
+<div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;" id="space_member">
   <div class="row">
-	<%= label_tag :admins, t('spaces.admins'), for: "admins", class: "col-sm-2 col-form-label" %>
+	<%= label_tag :admins, t('spaces.members'), for: "admins", class: "col-sm-2 col-form-label" %>
 	<div class="col-sm-10">
-	  <% if ( @space.admins.size > 0 ) %>
+	  <% if ( @space.members.size > 0 ) %>
 		<div style="padding:10px 0;">
-		  <% @space.admins.each do | admin | %>
+		  <% @space.members.each do | member | %>
 			<span style="border:solid 1px #CCC;padding:10px;margin:10px;">
-			  <%= admin.user.member_name(@nest) %>
+			  <%= member.user.member_name(@nest) %>
 			</span>
 		  <% end %>
 		</div>
 	  <% end %>
 	  <p><%= t('spaces.admins_description')%></p>
 	  <div>
-		<%= link_to t('spaces.assign_admin'), assign_admin_path(@space) , class: "btn btn-primary" %>
+		<%= link_to t('spaces.manage_member'), manage_space_members_path(@space) , class: "btn btn-primary" %>
 	  </div>
 	</div>
   </div>
@@ -105,6 +119,12 @@
 <%= hidden_field_tag "space[entry_edit_level]", Entry::EditLevel::BOARDS_ONLY %>
 <div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;">
   <p><%= t('spaces.entry_settings') %></p>
+  <div class="form-group row">
+	<%= form.label :preparation_level, I18n.t("spaces.preparation_level"), class: "col-sm-2 col-form-label" %>
+	<div class="col-sm-10">
+	  <%= form.select :preparation_level, Space::PreparationLevel::TYPES, {}, class: "form-control" %>
+	</div>
+  </div>
   <div class="form-group row">
 	<%= form.label :entry_publication_level, I18n.t("spaces.entry_publication_level"), class: "col-sm-2 col-form-label" %>
 	<div class="col-sm-10">

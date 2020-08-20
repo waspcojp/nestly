@@ -34,8 +34,8 @@ $(document).ready(function(){
 		  <%= @space.description.to_html %>
 		</div>
 		<div style="height:70px;">
-		  <div style="font-weight: bold;"><%= t('view.address_for_post')%></div>
 		  <% if ( @space.preparable?(current_user) ) %>
+			<div style="font-weight: bold;"><%= t('view.address_for_post')%></div>
 			<div style="margin-left:20px;">
 			  <%= text_field_tag 'address', "space-#{@space.localpart}@#{Settings.mail[:domain_part]}", readonly: true, size: 80 %>
 			  <button type="button" class="btn" id="copy" title="<%= t('view.address_copy')%>">

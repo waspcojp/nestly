@@ -136,7 +136,7 @@ class SpacesController < ApplicationController
     redirect_to edit_space_path(@space)
   end
 
-  def assign_admin
+  def manage_members
     @space = Space.find(params[:id])
     @nest = @space.nest
     if ( current_user.use_admin? )
@@ -145,20 +145,39 @@ class SpacesController < ApplicationController
       redirect_to_404
     end
   end
-  def assign_admin_op
+  def manage_members_op
     p params
     @space = Space.find(params[:id])
     @user = User.find(params[:user])
-    @space_admin = SpaceAdmin.where(space: @space,
-                                    user: @user).first
-    if ( params[:admin]  == "true" )
-      if ( !@space_admin )
-        @space_admin = SpaceAdmin.create(space: @space,
-                                         user: @user)
+    @space_member = SpaceMember.where(space: @space,
+                                      user: @user).first
+    if ( params[:admin] )
+      if ( params[:admin]  == "true" )
+        if ( !@space_member )
+          @space_member = SpaceMember.create(space: @space,
+                                             user: @user,
+                                             admin: true)
+        else
+          @space_member.admin = true
+          @space_member.save
+        end
+      else
+        if ( @space_member )
+          @space_member.destroy
+        end
       end
-    else
-      if ( @space_admin )
-        @space_admin.destroy
+    end
+    if ( params[:member] )
+      if ( params[:member]  == "true" )
+        if ( !@space_member )
+          @space_member = SpaceMember.create(space: @space,
+                                             user: @user,
+                                             admin: false)
+        end
+      else
+        if ( @space_member )
+          @space_member.destroy
+        end
       end
     end
   end
