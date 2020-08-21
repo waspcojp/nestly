@@ -14,9 +14,9 @@ class NestsController < ApplicationController
   end
 
   def show
-    request.headers.sort.map do |k, v|
-      p "#{k}:#{v}"
-    end
+    #request.headers.sort.map do |k, v|
+    #  p "#{k}:#{v}"
+    #end
     @nest = Nest.find(params[:id])
     if ( @nest.visible?(current_user) )
       render
