@@ -201,6 +201,8 @@ ja:
       faq: FAQ
     header_entrance:
       company_information: 企業情報
+  mailer:
+    mail_authentication_subject: Nestlyからのメールアドレス認証
   view:
     save: 保存
     open_at: 開設日
@@ -216,7 +218,8 @@ ja:
     address_for_post: メール投稿用のアドレス
     address_for_comment_post: コメントメール投稿用のアドレス
     address_copy: アドレスをコピー
-
+    user_name_description: ログインする時に入れる名前です。他の人との重複を避けるために、メールアドレス等が良いでしょう。
+    default_display_name_description: 画面に「名前」を表示する時の名前です。これはネスト毎に自由に設定できますが、特に設定しない場合はこの名前が使われます。
     body: 本文
     comment: コメント
     edit_level: 編集範囲

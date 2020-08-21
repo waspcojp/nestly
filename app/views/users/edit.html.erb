@@ -14,6 +14,9 @@
 		<%= f.label :user_name, I18n.t('users.user_name'), for: "user_name", class: "col-sm-2 col-form-label" %>
 		<div class="col-sm-10">
 		  <%= f.text_field :user_name, autofocus: true, placeholder: I18n.t('users.user_name'), class: 'form-control' %>
+		  <div class="description">
+			<%= t('view.user_name_description')%>
+		  </div>
 		</div>
 	  </div>
 	  <% if f.object.crypted_password.present? %>
@@ -25,12 +28,12 @@
 		</div>
 	  <% end %>
       <div class="input-group mb-3">
-		<%= I18n.t('users.password_characters_minimum', length: Settings.authenticate[:password_length] ) %>
-	  </div>
-      <div class="input-group mb-3">
 		<%= f.label :password, I18n.t('users.new_password'), for: 'new_password', class: "col-sm-2 col-form-label" %>
 		<div class="col-sm-10">
 	      <%= f.password_field :password, autocomplete: "off", placeholder: I18n.t('users.new_password'), class: 'form-control' %>
+		  <div class="description">
+			<%= I18n.t('users.password_characters_minimum', length: Settings.authenticate[:password_length] ) %>
+		  </div>
 		</div>
 	  </div>
       <div class="input-group mb-3">

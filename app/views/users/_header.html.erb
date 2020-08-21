@@ -2,14 +2,14 @@
   <li class="nav-item">
 	<% if ( ( action_name == "edit_profile" ) ||
 			( action_name == "update_profile" ) ) %>
-	  <span class="nav-link active"><%= t('users.edit_profile') %></span>
+	  <%= link_to t('users.edit_profile'), edit_profile_path, class: "nav-link active" %>
 	<% else %>
 	  <%= link_to t('users.edit_profile'), edit_profile_path, class: "nav-link" %>
 	<% end %>
   </li>
   <li class="nav-item">
 	<% if ( action_name == "edit_mail" ) %>
-	  <span class="nav-link active"><%= t('users.edit_mail') %></span>
+	  <%= link_to t('users.edit_mail'), edit_mail_path, class: "nav-link active" %>
 	<% else %>
 	  <%= link_to t('users.edit_mail'), edit_mail_path, class: "nav-link" %>
 	<% end %>
@@ -17,7 +17,7 @@
   <li class="nav-item">
 	<% if ( ( action_name == "edit" ) ||
 			( action_name == "update" ) ) %>
-	  <span class="nav-link active"><%= t('users.edit_password') %></span>
+	  <%= link_to t('users.edit_password'), edit_user_path(current_user), class: "nav-link active" %>
 	<% else %>
 	  <%= link_to t('users.edit_password'), edit_user_path(current_user), class: "nav-link" %>
 	<% end %>

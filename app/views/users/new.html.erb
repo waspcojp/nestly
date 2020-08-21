@@ -21,14 +21,20 @@
 		<%= render 'shared/errors', record: @user %>
         <div class="input-group mb-3">
           <%= f.text_field :user_name, autofocus: true, placeholder: I18n.t('users.user_name'), class: 'form-control' %>
+		  <div class="description">
+			<%= t('view.user_name_description')%>
+		  </div>
 		</div>
         <div class="input-group mb-3">
           <%= f.text_field :default_display_name, autofocus: true, placeholder: I18n.t('users.display_name'), class: 'form-control' %>
+		  <div class="description">
+			<%= t('view.default_display_name_description')%>
+		  </div>
 		</div>
         <div class="input-group mb-3">
 		  <%= f.password_field :password, autocomplete: "off", placeholder: I18n.t('users.new_password'), class: 'form-control' %>
 		</div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 description">
 		  <%= I18n.t('users.password_characters_minimum', length: Settings.authenticate[:password_length] ) %>
 		</div>
         <div class="input-group mb-3">

@@ -5,9 +5,9 @@ class NoticeMailer < ApplicationMailer
       @space = @notice.watch.target
       @notice.user.user_mail_addresses.each do | mail_address |
         if ( mail_address.notice )
-          p mail(to: mail_address.mail_address,
-                 from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
-                 subject: 'new space created')
+          mail(to: mail_address.mail_address,
+               from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
+               subject: 'new space created')
         end
       end
     else
@@ -22,9 +22,9 @@ class NoticeMailer < ApplicationMailer
       @entry = @notice.watch.target
       @notice.user.user_mail_addresses.each do | mail_address |
         if ( mail_address.notice )
-          p mail(to: mail_address.mail_address,
-                 from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
-                 subject: "[#{@entry.space.title_id}] #{@entry.title}")
+          mail(to: mail_address.mail_address,
+               from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+               subject: "[#{@entry.space.title_id}] #{@entry.title}")
         end
       end
     else
@@ -39,9 +39,9 @@ class NoticeMailer < ApplicationMailer
     @entry = @notice.watch.target
     @notice.user.user_mail_addresses.each do | mail_address |
       if ( mail_address.notice )
-        p mail(to: mail_address.mail_address,
-               from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
-               subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
+        mail(to: mail_address.mail_address,
+             from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+             subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
       end
     end
   end
