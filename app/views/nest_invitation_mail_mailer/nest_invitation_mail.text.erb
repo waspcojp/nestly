@@ -1,7 +1,7 @@
 <%= @invite.to_mail %>
 ========================================
 
-<%= @invite.inviter.user_name %> さんより <%= @invite.nest.title %> に
+<%= @invite.inviter.default_display_name %> さんより <%= @invite.nest.title %> に
 メールアドレス <%= @invite.to_mail %> として招待されました。
 
 <%= @invite.expired_at %>までに以下のURLをクリックして参加の意思表示をして下さい。
