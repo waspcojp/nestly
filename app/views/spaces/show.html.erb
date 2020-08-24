@@ -59,9 +59,18 @@ $(document).ready(function(){
 	  <%
 		@entries = @space.entries.order("updated_at DESC")
 		%>
-		<div class="row">
-		  <%= render "entries/list" %>
-		</div>
+	  <div class="row">
+		<% if ( @space.preparable?(current_user) ) %>
+		  <div class="col-sm-4" style="padding:10px;">
+			<div class="text-center">
+			  <div class="card-body" style="height:365px;">
+				<%= link_to t("entries.new"), new_entry_path(space: @space), class: "btn btn-primary btn-lg btn-block" %>
+			  </div>
+			</div>
+		  </div>
+		<% end %>
+		<%= render "entries/list" %>
+	  </div>
 	</div>
   </div>
 </div>
