@@ -3,9 +3,7 @@
 <%= hidden_field_tag :icon_y %>
 <%= hidden_field_tag :icon_width %>
 <%= hidden_field_tag :icon_height %>
-<div class="input-group mb-3">
-  <%= render 'shared/errors', record: @nest %>
-</div>
+<%= render 'shared/errors', record: @nest %>
 <div class="form-group mb-3">
   <div class="row" style="padding:10px;">
 	<div class="col-sm-2 col-form-label">
@@ -27,9 +25,6 @@
 	  </div>
 	</div>
   </div>
-</div>
-<div class="input-group mb-3">
-  <%= render 'shared/errors', record: @nest %>
 </div>
 <div class="input-group mb-3">
   <%= form.label :title, I18n.t('nests.title'), for: "title", class: "col-sm-2 col-form-label" %>

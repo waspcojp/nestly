@@ -49,16 +49,16 @@
 <div class="form-group row">
   <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
   <div class="col-sm-10">
-	<%= form.select :publication_level, Space::PublicationLevel::types(current_user), {}, class: "form-control" %>
+	<%= form.select :publication_level, Space::PublicationLevel::types(@nest.owner), {}, class: "form-control" %>
   </div>
 </div>
-<% if (( current_user ) &&
-	   ( current_user.expire_force_notice ) &&
-	   ( current_user.expire_force_notice > Time.now )) %>
+<% if (( @nest.owner ) &&
+	   ( @nest.owner.expire_force_notice ) &&
+	   ( @nest.owner.expire_force_notice > Time.now )) %>
   <div class="form-group row">
 	<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label" %>
 	<div class="col-sm-10">
-	  <%= form.select :notice_level, Space::NoticeLevel::types(current_user), {}, class: "form-control" %>
+	  <%= form.select :notice_level, Space::NoticeLevel::types(@nest.owner), {}, class: "form-control" %>
 	</div>
   </div>
 <% end %>
@@ -91,9 +91,9 @@
 	</div>
   </div>
 </div>
-<% if (( current_user ) &&
-	   ( current_user.expire_use_admin ) &&
-	   ( current_user.expire_use_admin > Time.now )
+<% if (( @nest.owner ) &&
+	   ( @nest.owner.expire_use_admin ) &&
+	   ( @nest.owner.expire_use_admin > Time.now )
 	   ( @space.id )) %>
 <div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;" id="space_member">
   <div class="row">

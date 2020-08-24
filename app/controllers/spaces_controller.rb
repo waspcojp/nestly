@@ -79,9 +79,16 @@ class SpacesController < ApplicationController
         if ( @nest.admin?(current_user) )
           spaces = @nest.spaces
         elsif ( @nest.member?(current_user) )
-          spaces = @nest.spaces.where(publication_level: ..Space::PublicationLevel::MEMBERS_ONLY).where(class_name: params[:type])
+          spaces = @nest.spaces.where(publication_level: [
+                                                          Space::PublicationLevel::OPEN_GLOBAL,
+                                                          Space::PublicationLevel::OPEN,
+                                                          Space::PublicationLevel::MEMBERS_ONLY
+                                                         ]).where(class_name: params[:type])
         elsif ( current_user )
-          spaces = @nest.spaces.where(publication_level: ..Space::PublicationLevel::OPEN).where(class_name: params[:type])
+          spaces = @nest.spaces.where(publication_level: [
+                                                          Space::PublicationLevel::OPEN_GLOBAL,
+                                                          Space::PublicationLevel::OPEN,
+                                                         ]).where(class_name: params[:type])
         else
           spaces = @nest.spaces.where(publication_level: Space::PublicationLevel::OPEN_GLOBAL).where(class_name: params[:type])
         end
@@ -96,9 +103,16 @@ class SpacesController < ApplicationController
           if ( @nest.admin?(current_user) )
             spaces = @nest.spaces.where(class_name: klass[1])
           elsif ( @nest.member?(current_user) )
-            spaces = @nest.spaces.where(publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY).where(class_name: klass[1])
+            spaces = @nest.spaces.where(publication_level: [
+                                                            Space::PublicationLevel::OPEN_GLOBAL,
+                                                            Space::PublicationLevel::OPEN,
+                                                            Space::PublicationLevel::MEMBERS_ONLY
+                                                           ]).where(class_name: klass[1])
           elsif ( current_user )
-            spaces = @nest.spaces.where(publication_level: 0..Space::PublicationLevel::OPEN).where(class_name: klass[1])
+            spaces = @nest.spaces.where(publication_level: [
+                                                            Space::PublicationLevel::OPEN_GLOBAL,
+                                                            Space::PublicationLevel::OPEN,
+                                                           ]).where(class_name: klass[1])
           else
             spaces = @nest.spaces.where(publication_level: Space::PublicationLevel::OPEN_GLOBAL).where(class_name: klass[1])
           end

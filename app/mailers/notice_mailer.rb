@@ -7,13 +7,15 @@ class NoticeMailer < ApplicationMailer
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
                from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
-               subject: 'new space created')
+               subject: t('space.created')
+               )
         end
       end
     else
       p mail(to: params[:mail],
              from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
-             subject: 'new space created')
+             subject: t('space.created')
+             )
     end
   end
   def entry_create_mail

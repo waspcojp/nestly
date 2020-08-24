@@ -77,6 +77,7 @@ ja:
     already_joined: 既に参加しています。
     resigned: '%{name}を退会しました。'
     edit_profile: プロフィール
+    invitation_mail_subject: Nestlyのネストへの招待メール
   space: スペース
   spaces:
     admins: スペースの管理者
@@ -101,6 +102,7 @@ ja:
     member_only: スペースの参加者のみ
     manage_member: 参加者の管理
     members: スペースの参加者
+    created: スペースが作成されました
   space_class:
     board: 掲示板
     information: お知らせ
@@ -145,6 +147,7 @@ ja:
     fail_add_mail: メールアドレスが追加出来ませんでした。メールアドレスの重複等がないか調べて下さい。
     authenticate_mail_sent: メールアドレス認証用のメールを送りました。
     authenticate_mail_fail: メールアドレス認証用のメールが送れませんでした。
+    mail_authentication_subject: Nestlyのメールアドレスの認証メール
     mail_authentication_success: メールアドレスの認証が成功しました。
     mail_authentication_fail: メールアドレスの認証が出来ませんでした。
     profile: 自己紹介
