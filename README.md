@@ -1,4 +1,4 @@
 # Nestly
 
-[Web service](https//nestly.net/) for community.
+[Web service](https://www.nestly.net/) for community.
 
