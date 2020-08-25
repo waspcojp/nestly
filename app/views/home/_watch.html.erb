@@ -9,9 +9,9 @@
 	<div class="col-sm-12 body-title-1">
 	  <div class="d-flex justify-content-between">
 		<span class="" style="margin-top:12px;">
-		  <span class="title"><%= t("watches.list") %></span>
+		  <span class="title tips" title="<%= t('help.watches.list')%>"><%= t("watches.list") %></span>
 		  <%= link_to(home_watches_path, class:"link") do %>
-			<i class="fas fa-cog"></i>
+			<i class="fas fa-cog tips" title="<%= t('help.watches.management')%>"></i>
 		  <% end %>
 		</span>
 		<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#watch-list">

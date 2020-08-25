@@ -6,30 +6,30 @@
 <div class="navbar nest-nav">
   <ul class="nav">
 	<li class="nav-item">
-	  <%= link_to t("nests.top"), @nest, class: "nav-link" %>
+	  <%= link_to t("nests.top"), @nest, class: "nav-link tips", title: t('help.nests.top') %>
 	</li>
 	<li class="nav-item">
-	  <%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link" %>
+	  <%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link tips", title: t('help.nests.spaces_list') %>
 	</li>
 	<% if ( @nest.preparable?(current_user) ) %>
 	  <li class="nav-item">
-		<%= link_to t("spaces.new"), new_space_path(nest: @nest), class: "nav-link" %>
+		<%= link_to t("spaces.new"), new_space_path(nest: @nest), class: "nav-link tips", title: t('help.nests.new_space') %>
 	  </li>
 	<% end %>
 
 	<li class="nav-item">
 	  <% if ( ( @space    ) &&
 			  ( @space.id ) ) %>
-		<%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link" %>
+		<%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link tips", title: t('help.entries.list') %>
 	  <% else %>
-		<%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link" %>
+		<%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link tips", title: t('help.entries.list') %>
 	  <% end %>
 	</li>
 	<% if ( ( @space    ) &&
 			( @space.id ) ) %>
 	  <% if ( @space.preparable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link" %>
+		  <%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link tips", title: t('help.spaces.new_entry') %>
 		</li>
 	  <% end %>
 	<% end %>
@@ -38,13 +38,13 @@
 	<% if ( @nest ) %>
 	  <% if ( @nest.invitable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t('invite'), invite_nest_path(@nest), class: "nav-link" %>
+		  <%= link_to t('invite'), invite_nest_path(@nest), class: "nav-link tips", title: t('help.nests.invite') %>
 		</li>
 	  <% end %>
 	  <% if ( @nest.admin?(current_user) ) %>
 		<li class="nav-item">
 		  <%= link_to(edit_nest_path(@nest), class:"link nav-link") do %>
-			<i class="fas fa-cog mt-1" style="font-size:20px;"></i>
+			<i class="fas fa-cog mt-1 tips" style="font-size:20px;" title="<%= t('help.nests.edit')%>"></i>
           <% end %>
 		</li>
 	  <% end %>
@@ -55,7 +55,7 @@
 	  <% end %>
 	  <% if ( @nest.joinable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t("nests.join"), nests_join_path(@nest), class: "nav-link" %>
+		  <%= link_to t("nests.join"), nests_join_path(@nest), class: "nav-link tips", title: t('help.nests.join') %>
 		</li>
 	  <% end %>
 	<% end %>

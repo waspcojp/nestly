@@ -11,23 +11,25 @@
 		  <% if (( @nest ) &&
 				 (  @nest.admin?(current_user) )) %>
 			<%= link_to(edit_space_path(space), class:"link") do %>
-			  <i class="fas fa-cog"></i>
+			  <i class="fas fa-cog tips" title="<%= t('help.spaces.edit')%>"></i>
 			<% end %>
 		  <% end %>
 		  <% if ( watch ) %>
-			<%= check_box_tag "check[#{watch.id}", watch.id, watch.active, class: "watch-check", title: "watch active"%>
+			<%= check_box_tag "check[#{watch.id}", watch.id, watch.active,
+				class: "watch-check tips", title: "#{t('help.spaces.watch')}" %>
 		  <% else %>
-			<%= check_box_tag "check", 0, false, class: "watch-check", title: "watch active", 'data-id': space.id, 'data-type': "Space" %>
+			<%= check_box_tag "check", 0, false,
+				class: "watch-check tips", 'data-id': space.id, 'data-type': "Space", title: "#{t('help.spaces.watch')}" %>
 		  <% end %>
 		</span>
 	  </div>
 	</div>
-	<div class="card-body" style="height:295px;">
+	<div class="card-body" style="height:295px;overflow-y:hidden;">
 	  <div class="text-center">
 		<%= icon_img_tag(space, "side", class: "title-image", href: space_path(space)) %>
 	  </div>
 	  <div>
-		<%= space.text(36, 220,160) %>
+		<%= space.text(50, 220,160) %>
 	  </div>
 	</div>
   </div>

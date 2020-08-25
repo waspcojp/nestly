@@ -19,7 +19,7 @@ $(document).ready(function(){
 	<%= @space.title %>
 	<% if ( @space.admin?(current_user) ) %>
 	  <%= link_to edit_space_path(@space), class: "link" do %>
-	    <i class="fas fa-cog"></i>
+		<i class="fas fa-cog tips" title="<%= t('help.spaces.edit')%>"></i>
 	  <% end %>
 	<% end %>
   </h3>
@@ -30,15 +30,18 @@ $(document).ready(function(){
 		<%= image_tag "/icons/get_icon?id=#{@space.icon_image_id}&type=side", class: "card-img-top", id: "image_preview", style: "width:220px;" %>
 	  </div>
 	  <div class="col-sm-9" style="padding:0 20px;">
-		<div style="height:160px;">
+		<div style="height:150px;overflow-y:auto;">
 		  <%= @space.description.to_html %>
 		</div>
 		<div style="height:70px;">
 		  <% if ( @space.preparable?(current_user) ) %>
-			<div style="font-weight: bold;"><%= t('view.address_for_post')%></div>
+			<div style="font-weight: bold;">
+			  <%= t('view.address_for_post')%>
+			</div>
 			<div style="margin-left:20px;">
-			  <%= text_field_tag 'address', "space-#{@space.localpart}@#{Settings.mail[:domain_part]}", readonly: true, size: 80 %>
-			  <button type="button" class="btn" id="copy" title="<%= t('view.address_copy')%>">
+			  <%= text_field_tag 'address', "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
+				  readonly: true, size: 80, class: "tips", title: "#{t('help.spaces.address_for_post')}" %>
+			  <button type="button" class="btn tips" id="copy" title="<%= t('help.address_copy')%>">
 				<i class="far fa-copy"></i>
 			  </button>
 			</div>
@@ -64,7 +67,8 @@ $(document).ready(function(){
 		  <div class="col-sm-4" style="padding:10px;">
 			<div class="text-center">
 			  <div class="card-body" style="height:365px;">
-				<%= link_to t("entries.new"), new_entry_path(space: @space), class: "btn btn-primary btn-lg btn-block" %>
+				<%= link_to t("entries.new"), new_entry_path(space: @space),
+					class: "btn btn-primary btn-lg btn-block tips", title: t('help.spaces.new_entry') %>
 			  </div>
 			</div>
 		  </div>

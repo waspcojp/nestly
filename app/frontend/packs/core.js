@@ -15,3 +15,9 @@ $ = jQuery;
 window.jQuery = $;
 window.$ = $;
 
+$(document).ready(function(){
+	$('.tips').tooltip({
+		show: false,
+		hide: false
+	});
+});

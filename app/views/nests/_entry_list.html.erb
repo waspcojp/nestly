@@ -2,10 +2,12 @@
   <div class="col-sm-12 body-title-1">
 	<div class="d-flex justify-content-between">
 	  <span class="mt-2">
-		<span class="title"><%= link_to t("entries.updates"), entries_path(nest:@nest.id, order: 'update'), class: "link" %></span>
-		<button type="button" class="btn" data-toggle="modal" data-target="#modal-max-update-entries">
-		  <span class="fa fa-cog"></span>
-		</button>
+		<span class="title tips" title="<%= t('help.entries.updates')%>"><%= link_to t("entries.updates"), entries_path(nest:@nest.id, order: 'update'), class: "link" %></span>
+		<% if ( @nest.admin?(current_user) ) %>
+		  <button type="button" class="btn" data-toggle="modal" data-target="#modal-max-update-entries">
+			<span class="fa fa-cog tips" title="<%= t('help.nests.max-entries', value: @nest.design.max_update_entries)%>"></span>
+		  </button>
+		<% end %>
 	  </span>
 	  <button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#entry-list">
 		<span class="fa fa-minus"></span>
@@ -18,11 +20,18 @@
 	@entries = Entry.where(space_id: Space.where(nest_id: @nest.id)).order("updated_at DESC").limit(@nest.design.max_update_entries)
   elsif ( @nest.member?(current_user) )
     @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,
-												 publication_level: 0..Space::PublicationLevel::MEMBERS_ONLY)).
+												 publication_level: [
+																	 Space::PublicationLevel::OPEN_GLOBAL,
+																	 Space::PublicationLevel::OPEN,
+																	 Space::PublicationLevel::MEMBERS_ONLY
+																	])).
 	  order("updated_at DESC").limit(@nest.design.max_update_entries)
   elsif ( current_user )
     @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,
-												 publication_level: 0..Space::PublicationLevel::OPEN)).
+												 publication_level: [
+																	 Space::PublicationLevel::OPEN_GLOBAL,
+																	 Space::PublicationLevel::OPEN
+																	])).
 	  order("updated_at DESC").limit(@nest.design.max_update_entries)
   else
     @entries = Entry.where(space_id: Space.where(nest_id: @nest.id,

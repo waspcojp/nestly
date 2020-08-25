@@ -7,7 +7,7 @@
 		<li class="list-inline-item"><%= link_to  I18n.t('footer.usage'), usage_path %></li>
 		<li class="list-inline-item"><%= link_to I18n.t('footer.terms_privacy'), privacy_path %></li>
 		<li class="list-inline-item"><%= link_to I18n.t('footer.terms_general'), term_path %></li>
-		<li class="list-inline-item"><a href="https://www.wasp.co.jp/" title="<%= I18n.t('footer.operation_company')%>" target="_blank"><%= I18n.t('footer.operation_company')%></li>
+		<li class="list-inline-item"><%= link_to t('footer.operation_company'), Settings.web[:company_url], title: t('footer.operation_company'),target:"_blank"%></li>
 		<li class="list-inline-item"><%= mail_to Settings.announcement[:email], I18n.t('footer.contact_us') %></li>
 	  </ul>
 	</div>

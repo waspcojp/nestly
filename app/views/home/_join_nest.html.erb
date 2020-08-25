@@ -2,7 +2,7 @@
   <div class="col-sm-12 body-title-1">
 	<div class="d-flex justify-content-between">
 	  <span class="mt-2">
-		<span class="title"><%= t("nests.joined")%></span>
+		<span class="title tips" title="<%= t('help.nests.joined')%>"><%= t("nests.joined")%></span>
 	  </span>
 	</div>
   </div>
@@ -18,6 +18,7 @@
 	<%= render "nests/list", limit: 5 %>
   </div>
   <div class="row">
-	<%= link_to t("view.more"), nests_path(type: 'member'), class: "btn btn-success", style: "margin:10px;width:100%" %>
+	<%= link_to t("view.more"), nests_path(type: 'member'),
+		class: "btn btn-success tips", style: "margin:10px;width:100%", title: t('help.home.more') %>
   </div>
 </div>

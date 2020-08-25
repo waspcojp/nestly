@@ -11,6 +11,8 @@ mail:
   invalid_domain: 'example.net'
   smtp_server_address: '10.3.0.44'
   domain_part: test.nestly.net
+web:
+  company_url: 'https://www.wasp.co.jp/'
 invitation:
   expire: (3 * 24 * 3600)
 announcement:

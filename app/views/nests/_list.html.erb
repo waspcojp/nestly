@@ -18,13 +18,13 @@ $(document).ready(function(){
 		  <% end %>
 		  <% if (  nest.admin?(current_user) ) %>
 			<%= link_to(edit_nest_path(nest), class:"link") do %>
-			  <i class="fas fa-cog"></i>
+			  <i class="fas fa-cog tips" title="<%= t('help.nests.edit')%>"></i>
 			<% end %>
 		  <% end %>
 		</div>
 	  </div>
 	  <div class="card-body">
-		<%= icon_img_tag(nest, "side", class: "title-image", href: nest_path(nest)) %>
+		<%= icon_img_tag(nest, "side", class: "title-image tips", href: nest_path(nest), title: nest.description) %>
 	  </div>
 	</div>
   </div>

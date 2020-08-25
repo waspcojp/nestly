@@ -9,13 +9,15 @@
 		  <% if (( @nest ) &&
 				 (  @nest.admin?(current_user) )) %>
 			<%= link_to(edit_entry_path(entry), class:"link") do %>
-			  <i class="fas fa-cog"></i>
+			  <i class="fas fa-cog tips" title="<%= t('help.entries.edit')%>"></i>
 			<% end %>
 		  <% end %>
 		  <% if ( watch ) %>
-			<%= check_box_tag "check", watch.id, watch.active, class: "watch-check", title: "watch active"%>
+			<%= check_box_tag "check", watch.id, watch.active,
+				class: "watch-check tips", title: "#{t('help.entries.watch')}"%>
 		  <% else %>
-			<%= check_box_tag "check", 0, false, class: "watch-check", title: "watch active", 'data-id': entry.id, 'data-type': "Entry" %>
+			<%= check_box_tag "check", 0, false,
+				class: "watch-check tips", 'data-id': entry.id, 'data-type': "Entry", title: "#{t('help.entries.watch')}"%>
 		  <% end %>
 		</span>
 	  </div>
@@ -34,20 +36,26 @@
 		  </div>
 		</div>
 	  </div>
-	  <div class="row entry" style="padding:10px;">
-		<%= entry.text(52, 220,160) %>
-	  </div>
-	  <div class="row">
-		<% i = 0
-		   entry.attach_files.order("created_at DESC").
-			 each do | attach_file |
-			 i += 1
-			 break if ( i > 3 ) %>
+	  <% if ( entry.attach_files.size > 0 ) %>
+		<div class="row entry" style="padding:10px;height:130px;overflow-y:hidden;">
+		  <%= entry.text(120, 220,160) %>
+		</div>
+		<div class="row">
+		  <% i = 0
+			 entry.attach_files.order("created_at DESC").
+			   each do | attach_file |
+			   i += 1
+			   break if ( i > 3 ) %>
 	      <div style="padding:5px;" class="col-sm-4">
 		    <%= image_tag "/attach_files/icon/#{attach_file.id}", style: "width:100%" %>
 	      </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
+	  <% else %>
+		<div class="row entry" style="padding:20px;height:200px;overflow-y:hidden;">
+		  <%= entry.text(120, 220,160) %>
+		</div>
+	  <% end %>
     </div>
   </div>
 </div>

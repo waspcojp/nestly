@@ -5,12 +5,16 @@
 	<div class="col-sm-12 body-title-1">
 	  <div class="d-flex justify-content-between">
 		<span class="mt-2">
-		  <span class="title"><%= link_to klass[0], spaces_path(nest: @nest.id, type: klass[1]), class:"link" %></span>
-		  <button type="button" class="btn" data-toggle="modal" data-target="#modal-max-spaces">
-			<span class="fa fa-cog"></span>
-		  </button>
-		  <%= link_to new_space_path(nest: @nest, class: klass[1]), class: "link" do %>
-			<span class="fa fa-pencil-alt"></span>
+		  <span class="title tips" title="<%= t('help.spaces.list_class', class: klass[0]) %>"><%= link_to klass[0], spaces_path(nest: @nest.id, type: klass[1]), class:"link" %></span>
+		  <% if ( @nest.admin?(current_user) ) %>
+			<button type="button" class="btn" data-toggle="modal" data-target="#modal-max-spaces">
+			  <span class="fa fa-cog tips" title="<%= t('help.nests.max-spaces', value: @nest.design.max_spaces) %>"></span>
+			</button>
+		  <% end %>
+		  <% if ( @nest.preparable?(current_user) ) %>
+			<%= link_to new_space_path(nest: @nest, class: klass[1]), class: "link" do %>
+			  <span class="fa fa-pencil-alt tips" title="<%= t('help.spaces.create', class: klass[0])%>"></span>
+		    <% end %>
 		  <% end %>
 		</span>
 		<button class="btn" type="button" style="font-weight:bold;" data-toggle="collapse" data-target="#space-list-<%= k_count %>">
