@@ -1,8 +1,8 @@
 class ApplicationMailbox < ActionMailbox::Base
   # routing /something/i => :somewhere
-  routing /comment-(.+)@nestly.net/i => :comment_replies
-  routing /entry-(.+)@nestly.net/i => :entry_replies
-  routing /space-(.+)@nestly.net/i => :space_replies
+  routing /comment-(.+)@(.*)nestly.net/i => :comment_replies
+  routing /entry-(.+)@(.*)nestly.net/i => :entry_replies
+  routing /space-(.+)@(.*)nestly.net/i => :space_replies
 private
   def clean_body(text)
     body = ""

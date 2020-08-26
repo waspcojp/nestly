@@ -133,8 +133,7 @@ class UsersController < ApplicationController
   def auth_mail
     @user_mail_address = UserMailAddress.where(authenticate_token: params[:id]).first
     if ( @user_mail_address )
-      @user_mail_address.authorized_at = Time.now
-      @user_mail_address.save
+      @user_mail_address.authenticate
       flash[:success] = t('users.mail_authentication_success')
     else
       flash[:danger] = t('users.mail_authentication_fail')

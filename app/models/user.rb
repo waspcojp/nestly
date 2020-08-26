@@ -20,9 +20,9 @@ class User < ApplicationRecord
   end
   def append_mail(mail, auth = Time.now)
     if ( UserMailAddress.where(mail_address: mail).count == 0 )
-      UserMailAddress.create(user: self,
-                             mail_address:mail,
-                             authorized_at: auth)
+      user_mail_address = UserMailAddress.create(user: self,
+                                                 mail_address:mail)
+      user_mail_address.authenticate(auth)
     else
       nil
     end

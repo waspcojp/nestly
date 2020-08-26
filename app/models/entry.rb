@@ -100,7 +100,7 @@ class Entry < ApplicationRecord
       true
     else
       if (( self.released? ) &&
-          ( self.space.relased? ))
+          ( self.space.released? ))
         case self.space.entry_publication_level
         when  PublicationLevel::OPEN_GLOBAL
           true
