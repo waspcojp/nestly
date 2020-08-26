@@ -2,13 +2,25 @@
 <div class="navbar subnav">
   <ul class="nav">
 	<li class="nav-item">
-	  <%= link_to t('nests.visible'), nests_path(type: 'visible'), class: "nav-link" %>
+	  <% if ( params[:type] == 'visible' ) %>
+		<%= link_to t('nests.visible'), nests_path(type: 'visible'), class: "nav-link active" %>
+	  <% else %>
+		<%= link_to t('nests.visible'), nests_path(type: 'visible'), class: "nav-link" %>
+	  <% end %>
 	</li>
 	<li class="nav-item">
-	  <%= link_to t('nests.joinable'), nests_path, class: "nav-link" %>
+	  <% if ( !params[:type] ) %>
+		<%= link_to t('nests.joinable'), nests_path, class: "nav-link active" %>
+	  <% else %>
+		<%= link_to t('nests.joinable'), nests_path, class: "nav-link" %>
+	  <% end %>
 	</li>
 	<li class="nav-item">
-	  <%= link_to t('nests.joined'), nests_path(type: 'member'), class: "nav-link" %>
+	  <% if ( params[:type] == 'member' ) %>
+		<%= link_to t('nests.joined'), nests_path(type: 'member'), class: "nav-link active" %>
+	  <% else %>
+		<%= link_to t('nests.joined'), nests_path(type: 'member'), class: "nav-link" %>
+	  <% end %>
 	</li>
 	<li class="nav-item">
 	  <% if ( action_name == "new" ) %>
