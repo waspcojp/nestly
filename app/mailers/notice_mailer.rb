@@ -7,11 +7,12 @@ class NoticeMailer < ApplicationMailer
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
                from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
-               subject: t('space.created')
+               subject: t('spaces.created')
                )
         end
       end
     else
+      @space = params[:space]
       p mail(to: params[:mail],
              from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
              subject: t('space.created')

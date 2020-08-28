@@ -1,39 +1,71 @@
-<style>
-.nest-nav {
-	border-bottom: 1px solid #CCC;
-	height: 50px;
-</style>
 <div class="navbar nest-nav">
   <ul class="nav">
 	<li class="nav-item">
 	  <%= link_to t("nests.top"), @nest, class: "nav-link tips", title: t('help.nests.top') %>
 	</li>
 	<li class="nav-item">
-	  <%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link tips", title: t('help.nests.spaces_list') %>
+	  <% if (( controller_name == 'spaces' ) &&
+			 ( action_name == "index" )) %>
+		<%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link active tips", title: t('help.nests.spaces_list') %>
+	  <% else %>
+		<%= link_to t("spaces.list"), spaces_path(nest:@nest), class: "nav-link tips", title: t('help.nests.spaces_list') %>
+	  <% end %>
 	</li>
+
 	<% if ( @nest.preparable?(current_user) ) %>
 	  <li class="nav-item">
+		<% if (( action_name == "new" ) &&
+			   ( controller_name == "spaces" )) %>
+		<%= link_to t("spaces.new"), new_space_path(nest: @nest), class: "nav-link active tips", title: t('help.nests.new_space') %>
+	  <% else %>
 		<%= link_to t("spaces.new"), new_space_path(nest: @nest), class: "nav-link tips", title: t('help.nests.new_space') %>
+	  <% end %>
 	  </li>
 	<% end %>
 
+	<% if ( controller_name == 'entries' ) %>
+	  <li class="nav-item">
+		<%= link_to t("spaces.top"), space_path(@space), class: "nav-link tips", title: t('help.entries.list') %>
+	  </li>
+	<% elsif (( controller_name == "spaces" ) &&
+			  ( action_name == "show" )) %>
+	  <li class="nav-item">
+		<%= link_to t("spaces.top"), space_path(@space), class: "nav-link active tips", title: t('help.entries.list') %>
+	  </li>
+	<% end %>
 	<li class="nav-item">
 	  <% if ( ( @space    ) &&
 			  ( @space.id ) ) %>
-		<%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link tips", title: t('help.entries.list') %>
+		<% if (( controller_name == 'entries' ) &&
+			   ( action_name == "index" )) %>
+		  <%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link active tips", title: t('help.entries.list') %>
+		<% else %>
+		  <%= link_to t("entries.list"), entries_path(space: @space), class: "nav-link tips", title: t('help.entries.list') %>
+		<% end %>
 	  <% else %>
-		<%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link tips", title: t('help.entries.list') %>
+		<% if (( controller_name == 'entries' ) &&
+			   ( action_name == "index" )) %>
+		  <%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link active tips", title: t('help.entries.list') %>
+		<% else %>
+		  <%= link_to t("entries.list"), entries_path(nest: @nest, order: 'update'), class: "nav-link tips", title: t('help.entries.list') %>
+		<% end %>
 	  <% end %>
 	</li>
 	<% if ( ( @space    ) &&
 			( @space.id ) ) %>
 	  <% if ( @space.preparable?(current_user) ) %>
 		<li class="nav-item">
-		  <%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link tips", title: t('help.spaces.new_entry') %>
+		  <% if (( action_name == "new" ) &&
+				 ( controller_name == "entries" )) %>
+			<%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link active tips", title: t('help.spaces.new_entry') %>
+		  <% else %>
+			<%= link_to t("entries.new"), new_entry_path(space: @space), class: "nav-link tips", title: t('help.spaces.new_entry') %>
+		  <% end %>
 		</li>
 	  <% end %>
 	<% end %>
   </ul>
+
   <ul class="nav justify-content-end mt-1">
 	<% if ( @nest ) %>
 	  <% if ( @nest.invitable?(current_user) ) %>

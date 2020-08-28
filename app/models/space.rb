@@ -153,16 +153,22 @@ class Space < ApplicationRecord
   end
 private
   def send_notice(user, history, mail = nil)
-    @watch = Watch.where(user: user,
-                         target: self).first
-    if ( !@watch )
-      @watch = Watch.create(user: user,
-                            target: self)
+    if ( user )
+      @watch = Watch.where(user: user,
+                           target: self).first
+      if ( !@watch )
+        @watch = Watch.create(user: user,
+                              target: self)
+      end
+      @notice = Notice.create(user: user,
+                              history: history,
+                              watch: @watch)
+      NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
+    else
+      NoticeMailer.with(notice: nil,
+                        space: self,
+                        mail: mail).space_create_mail.deliver_now
     end
-    @notice = Notice.create(user: user,
-                            history: history,
-                            watch: @watch)
-    NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
   end
   def create_ids
     if (( !self.title_id ) ||

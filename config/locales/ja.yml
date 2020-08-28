@@ -80,6 +80,7 @@ ja:
     invitation_mail_subject: Nestlyのネストへの招待メール
   space: スペース
   spaces:
+    top: スペースのトップ
     admins: スペースの管理者
     count: スペース数
     new: 新しいスペース

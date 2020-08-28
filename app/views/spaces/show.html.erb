@@ -4,8 +4,6 @@
 <% end %>
 <% content_for :body do %>
 <%= render "shared/watch_control" %>
-<style>
-</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#copy').on('click', (el) => {
@@ -23,7 +21,6 @@ $(document).ready(function(){
 	  <% end %>
 	<% end %>
   </h3>
-  </div>
   <div class="page-header">
 	<div class="row">
 	  <div class="col-sm-3">
@@ -53,8 +50,6 @@ $(document).ready(function(){
 
   <div class="row">
 	<div class="col-sm-3">
-	  <div style="height:10px;">
-	  </div>
 	  <%= render "meta" %>
 	  <%= render "nests/info" %>
 	</div>
@@ -62,9 +57,9 @@ $(document).ready(function(){
 	  <%
 		@entries = @space.entries.order("updated_at DESC")
 		%>
-	  <div class="row">
+	  <div class="row" style="margin-top:-10px;">
 		<% if ( @space.preparable?(current_user) ) %>
-		  <div class="col-sm-4" style="padding:10px;">
+		  <div class="col-sm-4">
 			<div class="text-center">
 			  <div class="card-body" style="height:365px;">
 				<%= link_to t("entries.new"), new_entry_path(space: @space),
