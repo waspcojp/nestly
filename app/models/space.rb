@@ -123,28 +123,32 @@ class Space < ApplicationRecord
   end
   def send_message_callback(history)
     case ( history.operation )
-    when 'create'
-      case (self.notice_level)
-      when NoticeLevel::DEFAULT
-        self.nest.members.each do | member |
-          if ( self.readable?(member.user) )
-            send_notice(member.user, history)
-          else
-            ;
+    when 'update'
+      if (( self.released_at ) &&
+          ( self.released_at < Time.now ) &&
+          ( self.previous_changes[:released_at] ))
+        case (self.notice_level)
+        when NoticeLevel::DEFAULT
+          self.nest.members.each do | member |
+            if ( self.readable?(member.user) )
+              send_notice(member.user, history)
+            else
+              ;
+            end
           end
+        when NoticeLevel::ALL_MEMBERS
+          self.nest.members.each do | member |
+            send_notice(member.user, history)
+          end
+        when NoticeLevel::INCLUDE_INVITED
+          self.nest.members.each do | member |
+            send_notice(member.user, history)
+          end
+          self.nest.invites.each do | invite |
+            send_notice(nil, history, invite)
+          end
+        else
         end
-      when NoticeLevel::ALL_MEMBERS
-        self.nest.members.each do | member |
-          send_notice(member.user, history)
-        end
-      when NoticeLevel::INCLUDE_INVITED
-        self.nest.members.each do | member |
-          send_notice(member.user, history)
-        end
-        self.nest.invites.each do | invite |
-          send_notice(nil, history, invite.to_mail)
-        end
-      else
       end
     end
   end
@@ -152,7 +156,7 @@ class Space < ApplicationRecord
     description.gsub(/\r\n/,'').gsub(/\r/,'').gsub(/\n/,'')[0..length].to_html(width, height)
   end
 private
-  def send_notice(user, history, mail = nil)
+  def send_notice(user, history, invite = nil)
     if ( user )
       @watch = Watch.where(user: user,
                            target: self).first
@@ -165,9 +169,10 @@ private
                               watch: @watch)
       NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
     else
+      invite.save
       NoticeMailer.with(notice: nil,
                         space: self,
-                        mail: mail).space_create_mail.deliver_now
+                        invite: invite).space_create_mail.deliver_now
     end
   end
   def create_ids

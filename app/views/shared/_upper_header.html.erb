@@ -23,7 +23,7 @@
 	  </li>
 	  <% if current_user %>
 		<li class="nav-item pt-2">
-		  <%= link_to t('nest'), nests_path, class: "nav-link tips", title: t('help.nest') %>
+		  <%= link_to t('nest'), nests_path(type: 'member'), class: "nav-link tips", title: t('help.nest') %>
 		</li>
 		<li class="nav-item pt-2">
 		  <% if ( controller_name == 'users' ) %>

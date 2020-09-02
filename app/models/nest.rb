@@ -36,13 +36,16 @@ class Nest < ApplicationRecord
              [ I18n.t("private"), PRIVATE ]
             ]
   end
-  def owner_name
-    member = self.member?(self.owner)
+  def member_name(user)
+    member = self.member?(user)
     if ( member)
       member.display_name
     else
       ""
     end
+  end
+  def owner_name
+    member_name(self.owner)
   end
   #
   # エントリやスペースの可視性はそれぞれで管理されているのでここではあまりうるさく言わない
@@ -84,12 +87,14 @@ class Nest < ApplicationRecord
   def invites(user = nil)
     if ( user )
       Invite.where(nest: self,
-                       inviter: user,
-                       expired_at: nil)
+                   inviter: user).where("( expired_at IS NULL ) or ( expired_at > now() )")
     else
-      Invite.where(nest: self,
-                       expired_at: nil)
+      Invite.where(nest: self).where("( expired_at IS NULL ) or ( expired_at > now() )")
     end
+  end
+  def invited?(mail)
+    Invite.where(nest: self,
+                 to_mail: mail).first
   end
   def join(user, inviter = nil, name = nil)
     if ( NestMember.where(nest: self,

@@ -168,7 +168,7 @@ class Entry < ApplicationRecord
             send_notice(member.user, history)
           end
           self.space.nest.invites.each do | invite |
-            send_notice(nil, history, invite.to_mail)
+            send_notice(nil, history, invite)
           end
         else
         end
@@ -176,17 +176,24 @@ class Entry < ApplicationRecord
     end
   end
 private
-  def send_notice(user, history, mail = nil)
-    @watch = Watch.where(user: user,
-                         target: self).first
-    if ( !@watch )
-      @watch = Watch.create(user: user,
-                            target: self)
+  def send_notice(user, history, invite = nil)
+    if ( user )
+      @watch = Watch.where(user: user,
+                           target: self).first
+      if ( !@watch )
+        @watch = Watch.create(user: user,
+                              target: self)
+      end
+      @notice = Notice.create(user: user,
+                              history: history,
+                              watch: @watch)
+      NoticeMailer.with(notice: @notice).entry_create_mail.deliver_now
+    else
+      invite.save
+      NoticeMailer.with(notice: nil,
+                        entry: self,
+                        invite: invite).entry_create_mail.deliver_now
     end
-    @notice = Notice.create(user: user,
-                            history: history,
-                            watch: @watch)
-    NoticeMailer.with(notice: @notice, mail: mail).entry_create_mail.deliver_now
   end
   def create_ids
     if self.localpart.nil?

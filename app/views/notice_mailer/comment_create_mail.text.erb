@@ -1,9 +1,21 @@
 <%= @comment.body.html_safe %>
-
 ----------------------------------------------------------------------
-
-このメールはあなたが「<%= @notice.watch.target.title %>」をワッチしていることにより送られています。
-
+<% if ( !@invite ) %>
+<% case @entry.notice_level %>
+<% when Entry::NoticeLevel::DEFAULT %>
+このメールはあなたが「<%= @entry.title %>」をワッチしていることにより送られています。
 このエントリのワッチをやめたい場合は、以下のURLをクリックして下さい。
 
 <%=  notice_watch_url(@notice.watch.accept_token, on_off: "off") %>
+<% when Entry::NoticeLevel::ALL_MEMBERS, Entry::NoticeLevel::INCLUDE_INVITED %>
+このメールは「<%= @entry.space.nest.title %>」の管理者が全員に通知するように設定しているために送られています。
+<% end %>
+<% else %>
+このメールは「<%= @entry.space.nest.title %>」の管理者が招待中の人を含めて通知するように設定しているために送られています。
+あなたは、「<%= @invite.nest.title %>」への参加表明をしていません。
+参加する場合は、<%= l @invite.expired_at.in_time_zone('Tokyo'), format: :short %>までに以下のURLをクリックして参加の意思表示をして下さい。
+
+<%= invite_url(@invite.invitation_token) %>
+
+参加しない場合、このメールに心あたりのない場合も、上のURLよりその旨申告することが出来ます。
+<% end %>

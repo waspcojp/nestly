@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   #layout "admin"
 
-  skip_before_action :require_login, only: [:index, :new, :create, :update, :edit]
+  skip_before_action :require_login, only: [:index, :new, :create, :update, :edit, :token_login]
 
   def new
     if ( !Settings.service[:invite_only] )
@@ -12,7 +12,8 @@ class UsersController < ApplicationController
   end
   def create
     if ( !Settings.service[:invite_only] )
-      @user = User.new(strong_params)
+      user = params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name, :timezone)
+      @user = User.new(user)
       if @user.save
         if ( params[:token] )
           user = login(params[:user][:user_name], params[:user][:password], false)
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
     @user = current_user
   end
   def update
-    inputs = strong_params
+    inputs = params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name, :timezone)
     @user = current_user
     if (( !@user.crypted_password.present? ) ||
         ( @user.valid_password?(inputs[:current_password]) ))
@@ -56,14 +57,14 @@ class UsersController < ApplicationController
       if ( @user.valid? )
         @user.default_display_name = inputs[:default_display_name]
         @user.save
-        flash[:success] = 'password changed'
+        flash[:success] = t('users.password_changed')
         redirect_to edit_user_path(@user)
       else
-        flash[:warning] = 'password not match'
+        flash[:warning] = t('users.password_not_match')
         render :edit, layout: "application"
       end
     else
-      flash[:danger] = 'password error'
+      flash[:danger] = t('users.password_error')
       render :edit, layout: "application"
     end
   end
@@ -122,8 +123,8 @@ class UsersController < ApplicationController
     @user_mail_address.mail_sent_at = Time.now
     @user_mail_address.authorized_at = nil
     if ( @user_mail_address.save )
-      AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_later
-      #AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_now
+      #AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_later
+      AuthenticationMailMailer.with(user_mail_address: @user_mail_address).authentication_mail.deliver_now
       flash[:success] = t('users.authenticate_mail_sent')
     else
       flash[:danger] = t('users.authenticate_mail_fail')
@@ -145,13 +146,24 @@ class UsersController < ApplicationController
     @user_mail_address.notice = params[:on_off]
     @user_mail_address.save
   end
+  def token_login
+    @invite = Invite.where(invitation_token: params[:id]).first
+    if ( @invite )
+      if ( @user_mail_address = UserMailAddress.where(mail_address: @invite.to_mail).first )
+        @user = @user_mail_address.user
+        @invite.destroy
+        auto_login(@user)
+        redirect_to edit_user_path(@user)
+      else
+        redirect_to_404
+      end
+    else
+      redirect_to_404
+    end
+  end
 
 
 private
-  def strong_params
-    params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name, :timezone)
-  end
-
   def _upload
     if ( icon = params[:user][:profile_image] )
       @attach = Attach.new

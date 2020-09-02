@@ -36,10 +36,65 @@ class Comment < ApplicationRecord
             NoticeMailer.with(notice: @notice,
                               comment: self).comment_create_mail.deliver_now
           else
+            NoticeMailer.with(notice: nil,
+                              comment: self,
+                              invite: invite).entry_create_mail.deliver_now
             ;
           end
         end
       end
+    end
+  end
+  def send_message_callback(history)
+    case ( history.operation )
+    when "create"
+      case (self.entry.notice_level)
+      when Entry::NoticeLevel::DEFAULT
+        self.entry.watches.each do | watch |
+          if ( watch.active )
+            if ( self.readable?(watch.user) )
+              send_notice(watch.user, history)
+            else
+              ;
+            end
+          end
+        end
+      when Entry::NoticeLevel::ALL_MEMBERS
+        self.entry.space.nest.members.each do | member |
+          send_notice(member.user, history)
+        end
+      when Entry::NoticeLevel::INCLUDE_INVITED
+        self.entry.space.nest.members.each do | member |
+          send_notice(member.user, history)
+        end
+        self.entry.space.nest.invites.each do | invite |
+          if ( UserMailAddress.where(mail_address: invite.to_mail).size == 0 )
+            send_notice(nil, history, invite)
+          end
+        end
+      else
+      end
+    end
+  end
+private
+  def send_notice(user, history, invite = nil)
+    if ( user )
+      @watch = Watch.where(user: user,
+                           target: self).first
+      if ( !@watch )
+        @watch = Watch.create(user: user,
+                              target: self)
+      end
+      @notice = Notice.create(user: user,
+                              history: history,
+                              watch: @watch)
+      NoticeMailer.with(notice: @notice,
+                        comment: self).comment_create_mail.deliver_now
+    else
+      invite.save
+      NoticeMailer.with(notice: nil,
+                        comment: self,
+                        invite: invite).comment_create_mail.deliver_now
     end
   end
 end

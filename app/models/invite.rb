@@ -11,6 +11,8 @@ class Invite < ApplicationRecord
                       default_display_name: self.to_mail)
       user.save(validate: false)
       user.append_mail(self.to_mail)
+      p NoticeMailer.with(user: user,
+                          invite: self).user_create_mail.deliver_now
       if ( nest )
         nest.join(user)
       end
@@ -25,7 +27,7 @@ class Invite < ApplicationRecord
   end
 private
   def set_expire
-    p self.expired_at = Time.now + eval(Settings.invitation[:expire])
+    self.expired_at = Time.now + eval(Settings.invitation[:expire])
   end
   def set_invitation_token
     self.invitation_token = SecureRandom.uuid

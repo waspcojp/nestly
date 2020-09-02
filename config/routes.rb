@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   match "users/send_mail/:id" => "users#send_mail", :via => [:post], :as => :send_mail
   match "users/auth_mail/:id" => "users#auth_mail", :via => [:get], :as => :auth_mail
   post "users/notice_mail/:id" => "users#notice_mail", as: :notice_mail
+  get "users/token_login/:id" => "users#token_login", as: :token_login
 
   resources :users, except: [:index] do
     member do
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
   post "nest_tops/:id" => "nest_tops#update"
   resources :nest_tops
 
+  get "invites/expire/:id" => "invites#expire", as: :invite_expire
   get "invites/join/:id" => "invites#join", as: :invite_join
 
   post "invites/leave/:id" => "invites#leave", as: :invite_leave

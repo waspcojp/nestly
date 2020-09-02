@@ -142,6 +142,7 @@ ja:
     edit_session: セッション情報
     user_name: ユーザ名
     display_name: 表示名
+    created: Nestlyに参加しました
     update profile success: プロフィールの変更をしました
     update profile fail: プロフィールの変更ができませんでした
     success_add_mail: メールアドレスが追加されました。このメールアドレスの認証を行って下さい。
@@ -162,6 +163,9 @@ ja:
     password_confirmation: パスワード確認
     need_current: 現在のパスワードを入れて下さい
     password_change: パスワードを変更する場合入力して下さい
+    password_changed: パスワードを変更しました
+    password_not_match: パスワードが一致しません
+    password_error: パスワードが違います
     cancel_account: アカウントの削除
     confirmations_finish:
       title: アカウント登録完了

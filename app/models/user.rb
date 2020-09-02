@@ -1,14 +1,16 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
-  has_many :user_mail_addresses
+  has_many :user_mail_addresses, dependent: :destroy
+  has_many :watches, dependent: :destroy
+  has_many :nest_members, dependent: :destroy
+  has_many :space_members, dependent: :destroy
 
   validates :user_name, uniqueness: true
   validates :password, length: { minimum: 6 }, if: -> { new_record? || ( !crypted_password.nil? && changes["crypted_password"] ) }
   validates :password, confirmation: true, if: -> { new_record? || ( !crypted_password.nil? && changes["crypted_password"] ) }
   validates :password_confirmation, presence: true, if: -> { new_record? || ( !crypted_password.nil? && changes["crypted_password"] ) }
   before_save :set_uuid
-  after_create :join_automatic
-                                                      
+  after_create :after_create
 
   def mail_authorized?
     UserMailAddress.where("( user_id = :user_id ) and ( authorized_at is not null )",
@@ -69,7 +71,7 @@ private
       self.uuid = SecureRandom.uuid
     end
   end
-  def join_automatic
+  def after_create
     if ( self.id != 1 )
       nest = Nest.find(1)
       nest.join(self)

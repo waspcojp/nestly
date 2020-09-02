@@ -23,7 +23,8 @@
 	  </li>
 	<% end %>
 
-	<% if ( controller_name == 'entries' ) %>
+	<% if (( controller_name == 'entries' ) &&
+		   ( @space )) %>
 	  <li class="nav-item">
 		<%= link_to t("spaces.top"), space_path(@space), class: "nav-link tips", title: t('help.entries.list') %>
 	  </li>

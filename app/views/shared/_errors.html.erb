@@ -1,16 +1,4 @@
 <div class="message-field">
-  <% if record %>
-	<% if record.errors.any? %>
-	  <div id="error_explanation">
-		<h2><%= pluralize(record.errors.count, "error") %> prohibited this record from being saved:</h2>
-		<ul class="message">
-		  <% record.errors.full_messages.each do |message| %>
-			<li><%= t(message) %></li>
-		  <% end %>
-		</ul>
-	  </div>
-	<% end %>
-  <% end %>
   <ul class="message col-sm-12">
 	<% flash.each do |message_type, message| %>
 	  <% message_type = 'success' if message_type == 'notice' %>

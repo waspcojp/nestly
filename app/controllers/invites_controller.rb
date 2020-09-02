@@ -21,10 +21,15 @@ class InvitesController < ApplicationController
       redirect_to_404
     end
   end
+  def expire
+    @invite = Invite.where(invitation_token: params[:id]).first
+  end
   def join
     @invite = Invite.where(invitation_token: params[:id]).first
     if ( @invite )
-      if ( !current_user )
+      if ( @invite.expired_at < Time.now )
+        redirect_to invite_expire_path(@invite.invitation_token)
+      elsif ( !current_user )
         if ( !Settings.service[:invite_only] )
           redirect_to new_user_path(token: @invite.invitation_token)
         else
