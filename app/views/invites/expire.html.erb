@@ -1,0 +1,17 @@
+<% content_for :header do %>
+<% end %>
+<% content_for :body do %>
+<div class="container-fluid">
+  <div class="row">
+	<div class="junbotron">
+	  <h1 class="display-4">招待メールの有効期限切れ</h1>
+	  <p>
+		あなたに届いた招待メールは有効期限が過ぎていました。
+	  </p>
+	  <p>
+		Nestlyに参加したい場合は、再度招待者(<%= @invite.nest.member_name(@invite.inviter) %>)にメールを送信するようにお願いして下さい。
+	  </p>
+	</div>
+  </div>
+</div>
+<% end %>
