@@ -75,7 +75,7 @@ class Entry < ApplicationRecord
     if ( member)
       member.display_name
     else
-      ""
+      I18n.t("users.withdrawal_member")
     end
   end
   def commentable?(user)
@@ -144,11 +144,11 @@ class Entry < ApplicationRecord
   end
   def send_message_callback(history)
     case ( history.operation )
-    when "update"
+    when "update", "create"
       if (( self.released_at ) &&
           ( self.released_at < Time.now ) &&
           ( self.previous_changes[:released_at] ))
-        case (self.notice_level)
+        case (self.space.notice_level)
         when NoticeLevel::DEFAULT
           self.space.watches.each do | watch |
             if ( watch.active )
@@ -165,10 +165,12 @@ class Entry < ApplicationRecord
           end
         when NoticeLevel::INCLUDE_INVITED
           self.space.nest.members.each do | member |
-            send_notice(member.user, history)
+            p send_notice(member.user, history)
           end
           self.space.nest.invites.each do | invite |
-            send_notice(nil, history, invite)
+            if ( UserMailAddress.where(mail_address: invite.to_mail).size == 0 )
+              send_notice(nil, history, invite)
+            end
           end
         else
         end

@@ -14,7 +14,7 @@ class Comment < ApplicationRecord
     if ( member)
       member.display_name
     else
-      ""
+      I18n.t("users.withdrawal_member")
     end
   end
   def deletable?(user)
@@ -48,7 +48,7 @@ class Comment < ApplicationRecord
   def send_message_callback(history)
     case ( history.operation )
     when "create"
-      case (self.entry.notice_level)
+      case (self.entry.space.notice_level)
       when Entry::NoticeLevel::DEFAULT
         self.entry.watches.each do | watch |
           if ( watch.active )
