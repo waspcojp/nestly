@@ -21,13 +21,12 @@ class CommentRepliesMailbox < ApplicationMailbox
           end
         else
           if ( @invite = @entry.space.nest.invited?(from) )
-            p @invite
             @user = @invite.create_user(@entry.space.nest)
             break
           end
         end
       end
-      p @user
+
       if (( @user ) &&
           ( @entry.commentable?(@user) ))
         no = nil
@@ -35,7 +34,6 @@ class CommentRepliesMailbox < ApplicationMailbox
           id = $1
           no = $3
         end
-        p no
         if ( no )
           parent = @entry.comment(no)
         else
@@ -48,7 +46,11 @@ class CommentRepliesMailbox < ApplicationMailbox
                                       parent: parent)
         @comment.save
       else
-        print "This user is not commentable #{@user.default_display_name}\n"
+        if ( @user )
+          print "This user is not commentable #{@user.default_display_name}\n"
+        else
+          print "This user is not found\n"
+        end
       end
     else
       print "This entry can not found #{localpart}\n"

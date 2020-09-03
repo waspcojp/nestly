@@ -1,43 +1,47 @@
 class EntryRepliesMailbox < ApplicationMailbox
   def process
     dump
-    @user = nil
-    mail.from.each do | from |
-      address = UserMailAddress.where(mail_address: from).first
-      if ( address )
-        @user = address.user
-        break
+    @entry = nil
+    mail.to.each do | to |
+      if ( to.match(/^entry-(.+)@(.+)/) )
+        @entry = Entry.where(localpart: $1).first
+        break;
       end
     end
-    if ( @user )
-      @entry = nil
-      mail.to.each do | to |
-        if ( to.match(/^entry-(.+)@(.+)/) )
-          @entry = Entry.where(localpart: $1).first
-          break;
+    if ( @entry )
+      @user = nil
+      mail.from.each do | from |
+        address = UserMailAddress.where(mail_address: from).first
+        if ( address )
+          @user = address.user
+          break
+        else
+          if ( @invite = @entry.space.nest.invited?(from) )
+            @user = @invite.create_user(@entry.space.nest)
+            break
+          end
         end
       end
-      if (( @entry ) &&
-          ( @entry.commentable?(@user) ))
+
+      if ( ( @user ) &&
+           ( @entry.commentable?(@user) ))
         no = nil
         if ( mail.subject.match(/\[(.*?)\]/) )
           id = $1
         end
-        p id
-        
-
         @entry.watch = @user
-        @comment = @entry.add_comment(@user, body: clean_body(mail.body.to_s))
+        @comment = @entry.add_comment(@user,
+                                      body: clean_body(mail.body.to_s))
         @comment.save
       else
-        #
-        # send entry not found error
-        #
+        if ( @user )
+          print "** This user is not commentable #{@user.default_display_name}\n"
+        else
+          print "** This user is not found\n"
+        end
       end
     else
-      #
-      # send user not found error
-      #
+      print "** This entry can not found #{localpart}\n"
     end
   end
 private
