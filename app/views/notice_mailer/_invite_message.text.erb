@@ -1,0 +1,5 @@
+あなたは <%= @invite.nest.member_name(@invite.inviter) %>様の招待により、Nestlyにアカウントを作りました。
+これは「<%= @invite.nest.title %>」への参加招待を受けて、あなたが <%= @invite.nest.title %> へメールを送ったからです。
+
+まだパスワード等が登録されていませんので、Nestlyにログインする場合は、以下のURLをクリックして下さい。
+<%= token_login_url(@invite.invitation_token) %>
