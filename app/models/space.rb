@@ -73,7 +73,7 @@ class Space < ApplicationRecord
         true
       else
         if ( deep )
-          member = self.members.where(user: user).first
+          member = self.members.where(target: user).first
           if (( member ) &&
               ( member.admin ))
             true
@@ -84,8 +84,8 @@ class Space < ApplicationRecord
       end
     end
   end
-  def member?(user)
-    self.members.where(user: user).first ? true : false
+  def member?(target)
+    self.members.where(target: target).first ? true : false
   end
   def readable?(user)
     if ( self.admin?(user) )

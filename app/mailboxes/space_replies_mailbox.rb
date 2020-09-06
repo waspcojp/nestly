@@ -1,43 +1,54 @@
 class SpaceRepliesMailbox < ApplicationMailbox
   def process
     dump
-    @user = nil
-    mail.from.each do | from |
-      address = UserMailAddress.where(mail_address: from).first
-      if ( address )
-        @user = address.user
+    @space = nil
+    mail.to.each do | to |
+      if ( to.match(/^space-(.+)@(.+)/) )
+        @space = Space.where(localpart: $1).first
         break
       end
     end
-    if ( @user )
-      @space = nil
-      mail.to.each do | to |
-        if ( to.match(/^space-(.+)@(.+)/) )
-          @space = Space.where(localpart: $1).first
-          break;
+    if ( @space )
+      @user = nil
+      mail.from.each do | from |
+        address = UserMailAddress.where(mail_address: from).first
+        if ( address )
+          @user = address.user
+          break
+        else
+          if ( @invite = @space.nest.invited?(from) )
+            @user = @invite.create_user(@space.nest)
+            break
+          end
         end
       end
-      if (( @space ) &&
+      if (( @user ) &&
           ( @space.preparable?(@user) ))
+        parts = parse_mail
 
         @space.watch = @user
         @entry = Entry.new(
                            title: mail.subject,
-                           body: clean_body(mail.body.to_s),
+                           body: clean_body(parts[0][:body]),
                            body_type: Entry::BodyType::TEXT,
                            released_at: Time.now,
                            author: @user,
                            space: @space)
         @entry.save
+        parts.shift
+        parts.each do | part |
+          upload_attach(@entry, @user, part)
+        end
+
       else
-        #
-        # send entry not found error
-        #
+        if ( @user )
+          print "** This user is not commentable #{@user.default_display_name}\n"
+        else
+          print "** This user is not found\n"
+        end
       end
     else
-      #
-      # send user not found error
-      #
+      print "** This space can not found #{localpart}\n"
     end
   end
 private

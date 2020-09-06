@@ -166,7 +166,10 @@ ja:
     password_changed: パスワードを変更しました
     password_not_match: パスワードが一致しません
     password_error: パスワードが違います
+    user_or_password_was_invalid: ユーザー名またはパスワードが違います
+    logged_out: ログアウトしました。
     cancel_account: アカウントの削除
+    withdrawal_member: 退会したメンバー
     confirmations_finish:
       title: アカウント登録完了
       text1: アカウントの登録が完了しました！
@@ -281,6 +284,7 @@ ja:
       max-spaces: このページに表示するスペースの最大数を設定します。現在%{value}件です。
       max-entries: このページに表示するエントリの最大数を設定します。現在%{value}件です。
       edit: このネストの情報を編集します。
+      edit_profile: 参加プロフィールの編集をします。
       invite: このネストに招待をします。
       join: このネストに参加します。
       spaces_list: このネストのスペースの一覧を表示します。

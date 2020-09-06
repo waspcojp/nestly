@@ -162,35 +162,54 @@ class SpacesController < ApplicationController
   def manage_members_op
     p params
     @space = Space.find(params[:id])
-    @user = User.find(params[:user])
-    @space_member = SpaceMember.where(space: @space,
-                                      user: @user).first
-    if ( params[:admin] )
-      if ( params[:admin]  == "true" )
-        if ( !@space_member )
-          @space_member = SpaceMember.create(space: @space,
-                                             user: @user,
-                                             admin: true)
+    if ( params[:user] )
+      @user = User.find(params[:user])
+      @space_member = SpaceMember.where(space: @space,
+                                        target: @user).first
+      if ( params[:admin] )
+        if ( params[:admin]  == "true" )
+          if ( !@space_member )
+            @space_member = SpaceMember.create(space: @space,
+                                               target: @user,
+                                               admin: true)
+          else
+            @space_member.admin = true
+            @space_member.save
+          end
         else
-          @space_member.admin = true
-          @space_member.save
-        end
-      else
-        if ( @space_member )
-          @space_member.destroy
+          if ( @space_member )
+            @space_member.destroy
+          end
         end
       end
-    end
-    if ( params[:member] )
-      if ( params[:member]  == "true" )
-        if ( !@space_member )
-          @space_member = SpaceMember.create(space: @space,
-                                             user: @user,
-                                             admin: false)
+      if ( params[:member] )
+        if ( params[:member]  == "true" )
+          if ( !@space_member )
+            @space_member = SpaceMember.create(space: @space,
+                                               target: @user,
+                                               admin: false)
+          end
+        else
+          if ( @space_member )
+            @space_member.destroy
+          end
         end
-      else
-        if ( @space_member )
-          @space_member.destroy
+      end
+    elsif ( params[:invite] )
+      @invite = Invite.find(params[:invite])
+      @space_member = SpaceMember.where(space: @space,
+                                        target: @invite).first
+      if ( params[:member] )
+        if ( params[:member]  == "true" )
+          if ( !@space_member )
+            @space_member = SpaceMember.create(space: @space,
+                                               target: @invite,
+                                               admin: false)
+          end
+        else
+          if ( @space_member )
+            @space_member.destroy
+          end
         end
       end
     end

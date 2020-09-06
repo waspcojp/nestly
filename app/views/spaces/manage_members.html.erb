@@ -25,18 +25,33 @@ $(document).ready(() => {
 		});
 	});
 	$('.member').on('change', (ev) => {
-		$.ajax({
-			type: "POST",
-			url: "/spaces/manage_members",
-			headers: {
-				'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-			},
-			data: {
-				id: <%= @space.id %>,
-				user: ev.target.attributes.user.value,
-				member: ev.target.checked
-			}
-		});
+		if ( typeof(ev.target.attributes.user ) != "undefined" ) {
+			$.ajax({
+				type: "POST",
+				url: "/spaces/manage_members",
+				headers: {
+					'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+				},
+				data: {
+					id: <%= @space.id %>,
+					user: ev.target.attributes.user.value,
+					member: ev.target.checked
+				}
+			});
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/spaces/manage_members",
+				headers: {
+					'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+				},
+				data: {
+					id: <%= @space.id %>,
+					invite: ev.target.attributes.invite.value,
+					member: ev.target.checked
+				}
+			});
+		}
 	});
 });
 </script>
@@ -71,12 +86,28 @@ $(document).ready(() => {
 				  <%= label_tag "board[#{member.id}]",  member.display_name %>
 				</td>
 				<td>
-				  <input type="checkbox" name="<%= member.id%>", value="true" <%= @space.member?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="member" title="board member">
+				  <input type="checkbox" name="member-<%= member.id%>", value="true" <%= @space.member?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="member" title="board member">
 				</td>
 				<td>
 				  <input type="checkbox" name="<%= member.id%>", value="true" <%= @space.admin?(member.user) ? "checked='checked'" : "" %> user="<%= member.user.id%>" class="admin" title="board member">
 				</td>
 			  </tr>
+			<% end %>
+			<% @nest.invites.order("to_mail ASC").each do | invite | %>
+			  <% if ( UserMailAddress.where(mail_address: invite.to_mail).count == 0 ) %>
+				<tr>
+				  <td>
+				  </td>
+				  <td>
+					<%= label_tag "invite[#{invite.id}]",  invite.to_mail %>
+				  </td>
+				  <td>
+					<input type="checkbox" name="invite-<%= invite.id%>", value="true" <%= @space.member?(invite) ? "checked='checked'" : "" %> invite="<%= invite.id%>" class="member" title="board member">
+				  </td>
+				  <td>
+				  </td>
+				</tr>
+			  <% end %>
 			<% end %>
 		  </tbody>
 		</table>

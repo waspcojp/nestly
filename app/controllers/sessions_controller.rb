@@ -14,14 +14,15 @@ class SessionsController < ApplicationController
       print "logged in\n"
       redirect_back_or_to params[:return] ? params[:return] : "/home"
     else
-      flash.now[:alert] = "User name or password was invalid"
+      flash[:danger] = I18n.t("users.user_or_password_was_invalid")
       render :new
     end
   end
 
   def destroy
     logout
-    redirect_to top_path, notice: "Logged out!"
+    flash[:success] = I18n.t("users.logged_out")
+    redirect_to top_path
   end
 
 end

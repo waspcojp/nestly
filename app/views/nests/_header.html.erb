@@ -80,6 +80,12 @@
 			<i class="fas fa-cog mt-1 tips" style="font-size:20px;" title="<%= t('help.nests.edit')%>"></i>
           <% end %>
 		</li>
+	  <% else %>
+		<li class="nav-item">
+		  <%= link_to(edit_member_profile_path(@nest), class:"link nav-link") do %>
+			<i class="fas fa-cog mt-1 tips" style="font-size:20px;" title="<%= t('help.nests.edit_profile') %>"></i>
+          <% end %>
+		</li>
 	  <% end %>
 	  <% if ( @nest.resinable?(current_user) ) %>
 		<li class="nav-item">

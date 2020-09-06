@@ -1,12 +1,7 @@
 <%= @user.default_display_name %> 様
 
 <% if ( @invite ) %>
-あなたは <%= @invite.nest.member_name(@invite.inviter) %>様の招待により、Nestlyにアカウントを作りました。
-これは「<%= @invite.nest.title %>」への参加招待を受けて、あなたが <%= @invite.nest.title %> へメールを送ったことによります。
-
-まだパスワード等が登録されていませんので、Nestlyにログインする場合は、以下のURLをクリックして下さい。
-
-<%= token_login_url(@invite.invitation_token) %>
+<%= render "invite_message" %>
 <% else %>
 あなたはNestlyにアカウントを作りました。
 <% end %>

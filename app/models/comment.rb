@@ -38,7 +38,7 @@ class Comment < ApplicationRecord
           else
             NoticeMailer.with(notice: nil,
                               comment: self,
-                              invite: invite).entry_create_mail.deliver_now
+                              invite: invite).comment_create_mail.deliver_now
             ;
           end
         end

@@ -1,6 +1,6 @@
 class CommentRepliesMailbox < ApplicationMailbox
   def process
-    dump
+    #dump
     @entry = nil
     localpart = nil
     mail.to.each do | to |
@@ -40,11 +40,18 @@ class CommentRepliesMailbox < ApplicationMailbox
           parent = nil
         end
 
+        parts = parse_mail
+          
         @entry.watch = @user
         @comment = @entry.add_comment(@user,
-                                      body: clean_body(mail.body.to_s),
+                                      body: clean_body(parts[0][:body]),
                                       parent: parent)
         @comment.save
+
+        parts.shift
+        parts.each do | part |
+          upload_attach(@comment, @user, part)
+        end
       else
         if ( @user )
           print "This user is not commentable #{@user.default_display_name}\n"
@@ -65,7 +72,28 @@ private
     print "Subject: ", mail.subject, "\n"
     print "Date: ", mail.date, "\n"
     print "Message-ID: ", mail.message_id, "\n"
-    print mail.body, "\n"
+    if ( !mail.multipart? )
+      print mail.body.decoded, "\n"
+    else
+      mail.body.parts.each do | part |
+        print "---------\n"
+        print "file-name: ", part.filename, "\n"
+        print "mime-type: ", part.mime_type, "\n"
+        print "-----\n"
+        if ( part.multipart? )
+          part.parts.each do | p_part |
+            print "file-name: ", p_part.filename, "\n"
+            print "mime-type: ", p_part.mime_type, "\n"
+            print "---\n"
+            print p_part.body.decoded, "\n"
+          end
+        else
+          print part.body.decoded, "\n"
+        end
+      end
+    end
+    print "---------\n"
+    print "methods", mail.body.parts[1].methods, "\n"
     p mail
   end
 end

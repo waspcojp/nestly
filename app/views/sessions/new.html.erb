@@ -1,11 +1,6 @@
 <% content_for :header do %>
 <% end %>
 <% content_for :body do %>
-<style>
-.card-header {
-  background: #fff;
-}
-</style>
 <div class="container-fluid">
   <div class="row">
 	<div class="junbotron col-sm-7">
@@ -17,11 +12,7 @@
 					   class: 'txt_form'
 					   }) do |f| %>
 		<%= hidden_field_tag :return, params[:return] %>
-		<% if alert %>
-		  <div class="input-group mb-3">
-			<p class="login_error"><%= flash[:alert] %></p>
-		  </div>
-		<% end %>
+		<%= render 'shared/errors' %>
 		<div class="input-group mb-3">
 		  <%= f.text_field :user_name, autofocus: true, class: "form-control", placeholder: I18n.t('users.user_name') %>
 		</div>

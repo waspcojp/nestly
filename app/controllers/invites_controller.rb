@@ -30,15 +30,11 @@ class InvitesController < ApplicationController
       if ( @invite.expired_at < Time.now )
         redirect_to invite_expire_path(@invite.invitation_token)
       elsif ( !current_user )
-        if ( !Settings.service[:invite_only] )
-          redirect_to new_user_path(token: @invite.invitation_token)
-        else
-          @user = @invite.create_user
-          @invite.destroy
-          auto_login(@user)
+        @user = @invite.create_user
+        @invite.destroy
+        auto_login(@user)
 
-          redirect_to edit_user_path(@user)
-        end
+        redirect_to edit_user_path(@user)
       else
         redirect_to nest_join_path(@invite.nest, token: @invite.invitation_token)
       end

@@ -43,7 +43,7 @@
 		  <%= icon_img_tag current_user, "header", id:"icon-image", alt:"", class:"icon-image"%>
 		</a>
 		<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
-		  <%= link_to current_user.default_display_name, edit_profile_path, class: "dropdown-item" %>
+		  <%= link_to current_user.default_display_name || current_user.user_name, edit_profile_path, class: "dropdown-item" %>
           <div class="dropdown-divider"></div>
           <%= link_to t('shared.lawer_header.logout'), logout_path, class: "dropdown-item" %>
 		</div>

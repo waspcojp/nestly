@@ -34,7 +34,8 @@
 	  end
 	  @nest.spaces.where(class_name: klass[1],
 						 publication_level: Space::PublicationLevel::PRIVATE_MEMBER_ONLY).
-		joins("LEFT JOIN space_members ON space_members.space_id = spaces.id").where("space_members.user_id = :user", {user: current_user.id}).each do | space |
+		joins("LEFT JOIN space_members ON space_members.space_id = spaces.id").
+		where("(space_members.target_id = :user) AND ( space_members.target_type ='User' )", {user: current_user.id}).each do | space |
 		ids << space.id
 	  end
 	  spaces = Space.where(id: ids)

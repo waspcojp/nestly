@@ -5,6 +5,7 @@ class NoticeMailer < ApplicationMailer
       @space = @notice.watch.target
       @invite = nil
       @notice.user.user_mail_addresses.each do | mail_address |
+        @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
                from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
@@ -15,6 +16,7 @@ class NoticeMailer < ApplicationMailer
     else
       @space = params[:space]
       @invite = params[:invite]
+      @to_address = @invite.to_mail
       p mail(to: @invite.to_mail,
              from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
              subject: t('spaces.created')
@@ -27,6 +29,7 @@ class NoticeMailer < ApplicationMailer
       @entry = @notice.watch.target
       @invite = nil
       @notice.user.user_mail_addresses.each do | mail_address |
+        @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
                from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
@@ -36,6 +39,7 @@ class NoticeMailer < ApplicationMailer
     else
       @entry = params[:entry]
       @invite = params[:invite]
+      @to_address = @invite.to_mail
       p mail(to: @invite.to_mail,
              from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
              subject: "[#{@entry.space.title_id}] #{@entry.title}")
@@ -47,6 +51,7 @@ class NoticeMailer < ApplicationMailer
       @comment = params[:comment]
       @entry = @comment.entry
       @notice.user.user_mail_addresses.each do | mail_address |
+        @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
                from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
@@ -57,18 +62,18 @@ class NoticeMailer < ApplicationMailer
       @comment = params[:comment]
       @entry = @comment.entry
       @invite = params[:invite]
-      p mail(to: @invite.to_mail,
-             from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
-             subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
+      @to_address = @invite.to_mail
+      mail(to: @invite.to_mail,
+           from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+           subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
     end
   end
   def user_create_mail
     @user = params[:user]
     @invite = params[:invite]
-    @user.user_mail_addresses.each do | mail_address |
-      p mail(to: mail_address.mail_address,
-             from: "Nestly <no-reply@#{Settings.mail[:domain_part]}>",
-             subject: t('users.created'))
-    end
+    @to_address = @invite.to_mail
+    mail(to: @to_address,
+         from: "Nestly <no-reply@#{Settings.mail[:domain_part]}>",
+         subject: t('users.created'))
   end
 end

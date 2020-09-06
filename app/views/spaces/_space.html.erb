@@ -103,7 +103,7 @@
 		<div style="padding:10px 0;">
 		  <% @space.members.each do | member | %>
 			<span style="border:solid 1px #CCC;padding:10px;margin:10px;">
-			  <%= member.user.member_name(@nest) %>
+			  <%= member.target.member_name(@nest) %>
 			</span>
 		  <% end %>
 		</div>

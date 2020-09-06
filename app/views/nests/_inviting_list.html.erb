@@ -13,26 +13,28 @@
 <div id="invitational-list" data-parent="#invitational-header" style="margin:10px 5px;">
   <div class="row">
 	<% Invite.where(nest: @nest).each do | invite | %>
-	  <li class="list-group-item d-flex justify-content-between" style="margin:10px;">
-		<span>
-		  <%= invite.to_mail %>
-		  <% user_mail = UserMailAddress.where(mail_address: invite.to_mail).first %>
-		  <% if ( user_mail ) %>
-			(<%= user_mail.user.user_name %>)
-		  <% end %>
-		</span>
-		<span>
-		  <% if (( !invite.mail_sent_at ) ||
-				 ( Time.now > invite.expired_at )) %>
-			<%= link_to invite_nest_send_path(@nest, invite: invite), method: :post, class: "link" do %>
-			  <i class="fas fa-envelope"></i>
+	  <% if ( UserMailAddress.where(mail_address: invite.to_mail).count == 0 ) %>
+		<li class="list-group-item d-flex justify-content-between" style="margin:10px;">
+		  <span>
+			<%= invite.to_mail %>
+			<% user_mail = UserMailAddress.where(mail_address: invite.to_mail).first %>
+			<% if ( user_mail ) %>
+			  (<%= user_mail.user.user_name %>)
+			<% end %>
+		  </span>
+		  <span>
+			<% if (( !invite.mail_sent_at ) ||
+				   ( Time.now > invite.expired_at )) %>
+			  <%= link_to invite_nest_send_path(@nest, invite: invite), method: :post, class: "link" do %>
+			    <i class="fas fa-envelope"></i>
+		      <% end %>
+	  		<% end %>
+ 	  		<%= link_to(invite_nest_url(@nest, entry: invite), method: :delete, data: { confirm: t('view.are_you_sure') }, class: "link" ) do %>
+			  <i class="far fa-minus-square"></i>
 		    <% end %>
-	      <% end %>
- 	      <%= link_to(invite_nest_url(@nest, entry: invite), method: :delete, data: { confirm: t('view.are_you_sure') }, class: "link" ) do %>
-			<i class="far fa-minus-square"></i>
-		  <% end %>
-	    </span>
-      </li>
+	  	  </span>
+		</li>
+	  <% end %>
     <% end %>
   </div>
 </div>
