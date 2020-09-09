@@ -50,7 +50,6 @@ $(document).ready(function(){
 <div class="row">
   <% @nests.each do | nest | %>
 	<div class="col-sm-3" style="padding:10px;">
-
 	  <div class="card">
 		<div class="card-header">
 		  <div class="d-flex justify-content-between">
@@ -62,20 +61,15 @@ $(document).ready(function(){
 			<% end %>
 		  </div>
 		</div>
-		<div class="card-body">
+		<div class="card-body" style="height:320px;overflow-y:hidden;">
 		  <div class="text-center">
 			<%= icon_img_tag nest, "side", class: "title-image", href: nest_path(nest)%>
 		  </div>
-		  <!--ul>
-			<li><%= Nest::PublicationLevel::TYPES.rassoc(nest.publication_level)[0] %></li>
-			<li><%= Nest::JoinMethod::TYPES.rassoc(nest.join_method)[0] %></li>
-		  </ul -->
 		  <div>
 			<%= str_to_html nest.description || "" %>
 		  </div>
 		</div>
 	  </div>
-
 	</div>
   <% end %>
 </div>
