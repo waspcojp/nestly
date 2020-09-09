@@ -25,23 +25,6 @@ class Space < ApplicationRecord
   end
   module NoticeLevel
     include NoticeLevelHelper
-    def self.types(user)
-      if (( user ) &&
-          ( user.expire_use_admin ) &&
-          ( user.expire_use_admin > Time.now ))
-        TYPES + [
-                 [ I18n.t("spaces.member_only"), PRIVATE_MEMBER_ONLY ]
-                ]
-      else
-        types = []
-        TYPES.each do | type |
-          if ( type[1] != PRIVATE_MEMBER_ONLY )
-            types << type
-          end
-        end
-        types
-      end
-    end
   end
   module PreparationLevel
     include PreparationLevelHelper
@@ -102,7 +85,7 @@ class Space < ApplicationRecord
         when  PublicationLevel::BOARDS_ONLY
           self.nest.admin?(user) ? true : false
         when PublicationLevel::PRIVATE_MEMBER_ONLY
-          self.members.where(user: user).first ? true : false
+          self.member?(user)
         end
       else
         false
@@ -110,14 +93,18 @@ class Space < ApplicationRecord
     end
   end
   def preparable?(user)
-    if ( self.creater == user )
+    if ( self.admin?(user) )
       true
     else
-      case self.preparation_level
-      when  PreparationLevel::MEMBERS_ONLY
-        self.nest.member?(user) ? true : false
-      when  PreparationLevel::BOARDS_ONLY
-        self.nest.admin?(user) ? true : false
+      if ( self.readable?(user) )
+        case self.preparation_level
+        when  PreparationLevel::MEMBERS_ONLY
+          self.nest.member?(user) ? true : false
+        when  PreparationLevel::BOARDS_ONLY
+          self.nest.admin?(user) ? true : false
+        end
+      else
+        false
       end
     end
   end
@@ -127,27 +114,51 @@ class Space < ApplicationRecord
       if (( self.released_at ) &&
           ( self.released_at < Time.now ) &&
           ( self.previous_changes[:released_at] ))
-        case (self.notice_level)
-        when NoticeLevel::DEFAULT
-          self.nest.members.each do | member |
-            if ( self.readable?(member.user) )
-              send_notice(member.user, history)
-            else
-              ;
+        if ( self.publication_level == PublicationLevel::PRIVATE_MEMBER_ONLY )
+          case (self.notice_level)
+          when NoticeLevel::DEFAULT
+            self.watches.each do | watch |
+              if ( self.readable?(watch.user) )
+                send_notice(watch.user, history)
+              end
             end
-          end
-        when NoticeLevel::ALL_MEMBERS
-          self.nest.members.each do | member |
-            send_notice(member.user, history)
-          end
-        when NoticeLevel::INCLUDE_INVITED
-          self.nest.members.each do | member |
-            send_notice(member.user, history)
-          end
-          self.nest.invites.each do | invite |
-            send_notice(nil, history, invite)
+          when NoticeLevel::ALL_MEMBERS
+            self.members.each do | member |
+              send_notice(member.target, history)
+            end
+          when NoticeLevel::INCLUDE_INVITED
+            self.members.each do | member |
+              if ( member.target.instance_of? User )
+                send_notice(member.target, history)
+              else
+                send_notice(member.target, history)
+              end
+            end
+          else
           end
         else
+          case (self.notice_level)
+          when NoticeLevel::DEFAULT
+            self.watches.each do | watch |
+              if ( self.readable?(watch.user) )
+                send_notice(watch.user, history)
+              else
+                ;
+              end
+            end
+          when NoticeLevel::ALL_MEMBERS
+            self.nest.members.each do | member |
+              send_notice(member.user, history)
+            end
+          when NoticeLevel::INCLUDE_INVITED
+            self.nest.members.each do | member |
+              send_notice(member.user, history)
+            end
+            self.nest.invites.each do | invite |
+              send_notice(invite, history)
+            end
+          else
+          end
         end
       end
     end
@@ -156,23 +167,23 @@ class Space < ApplicationRecord
     description.gsub(/\r\n/,'').gsub(/\r/,'').gsub(/\n/,'')[0..length].to_html(width, height)
   end
 private
-  def send_notice(user, history, invite = nil)
-    if ( user )
-      @watch = Watch.where(user: user,
+  def send_notice(target, history)
+    if ( target.instance_of? User )
+      @watch = Watch.where(user: target,
                            target: self).first
       if ( !@watch )
-        @watch = Watch.create(user: user,
+        @watch = Watch.create(user: target,
                               target: self)
       end
-      @notice = Notice.create(user: user,
+      @notice = Notice.create(user: target,
                               history: history,
                               watch: @watch)
       NoticeMailer.with(notice: @notice).space_create_mail.deliver_now
     else
-      invite.save
+      target.save
       NoticeMailer.with(notice: nil,
                         space: self,
-                        invite: invite).space_create_mail.deliver_now
+                        invite: target).space_create_mail.deliver_now
     end
   end
   def create_ids

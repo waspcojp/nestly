@@ -52,10 +52,8 @@ class Comment < ApplicationRecord
       when Entry::NoticeLevel::DEFAULT
         self.entry.watches.each do | watch |
           if ( watch.active )
-            if ( self.readable?(watch.user) )
+            if ( self.entry.readable?(watch.user) )
               send_notice(watch.user, history)
-            else
-              ;
             end
           end
         end

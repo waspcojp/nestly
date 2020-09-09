@@ -14,7 +14,9 @@
 このメールは「<%= @entry.space.nest.title %>」の管理者が全員に通知するように設定しているために送られています。
 <% end %>
 <% if ( @invite )
-	 @invite.save %>
+	 @invite.save
+	 @send_token = true
+	 %>
 
 <%= render "invite_message" %>
 <% end %>
@@ -24,6 +26,8 @@
 参加する場合は、<%= l @invite.expired_at.in_time_zone('Tokyo'), format: :short %>までに以下のURLをクリックして参加の意思表示をして下さい。
 
 <%= invite_url(@invite.invitation_token) %>
+
+また、このメールに返信した場合は、このエントリにコメントが投稿されると共に、参加表明したことになります。  
 
 参加しない場合、このメールに心あたりのない場合も、上のURLよりその旨申告することが出来ます。
 <% end %>

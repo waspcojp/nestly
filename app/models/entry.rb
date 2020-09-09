@@ -21,7 +21,7 @@ class Entry < ApplicationRecord
     include ControlLevel
   end
   module CommentLevel
-    include ControlLevel
+    include PreparationLevelHelper
   end
 
   module BodyType
@@ -78,48 +78,43 @@ class Entry < ApplicationRecord
       I18n.t("users.withdrawal_member")
     end
   end
-  def commentable?(user)
+  def readable?(user)
     if ( self.author == user )
       true
     else
+      if (( self.released? ) &&
+          ( self.space.released? ))
+        if ( self.space.readable?(user) )
+          case self.space.entry_publication_level
+          when  PublicationLevel::OPEN_GLOBAL
+            true
+          when  PublicationLevel::OPEN
+            user ? true : false
+          when  PublicationLevel::MEMBERS_ONLY
+            self.space.nest.member?(user) ? true : false
+          when  PublicationLevel::BOARDS_ONLY
+            self.space.nest.admin?(user) ? true : false
+          end
+        else
+          false
+        end
+      end
+    end
+  end
+  def commentable?(user)
+    if ( self.readable?(user) )
       case self.space.entry_comment_level
-      when  CommentLevel::OPEN_GLOBAL
-        true
-      when  CommentLevel::OPEN
-        user ? true : false
       when  CommentLevel::MEMBERS_ONLY
         self.space.nest.member?(user) ? true : false
       when  CommentLevel::BOARDS_ONLY
         self.space.nest.admin?(user) ? true : false
       end
-    end
-  end
-  def readable?(user)
-    if (( self.author == user ) ||
-        ( self.space.admin?(user) ))
-      true
     else
-      if (( self.released? ) &&
-          ( self.space.released? ))
-        case self.space.entry_publication_level
-        when  PublicationLevel::OPEN_GLOBAL
-          true
-        when  PublicationLevel::OPEN
-          user ? true : false
-        when  PublicationLevel::MEMBERS_ONLY
-          self.space.nest.member?(user) ? true : false
-        when  PublicationLevel::BOARDS_ONLY
-          self.space.nest.admin?(user) ? true : false
-        end
-      else
-        false
-      end
+      false
     end
   end
   def editable?(user)
-    if ( self.author == user )
-      true
-    else
+    if ( self.readable?(user) )
       case self.space.entry_edit_level
       when  EditLevel::OPEN_GLOBAL
         true
@@ -130,6 +125,8 @@ class Entry < ApplicationRecord
       when  EditLevel::BOARDS_ONLY
         self.space.nest.admin?(user) ? true : false
       end
+    else
+      false
     end
   end
   def text(length = -1, width = 560, height=315)

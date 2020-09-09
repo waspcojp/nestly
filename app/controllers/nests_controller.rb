@@ -108,9 +108,9 @@ class NestsController < ApplicationController
     NestInvitationMailMailer.with(invite: @invite).nest_invitation_mail.deliver_later
     @invite.mail_sent_at = Time.now
     if ( @invite.save )
-      flash[:success] = 'invitation mail sent'
+      flash[:success] = I18n.t('nests.invitation_mail_sent')
     else
-      flash[:danger] = 'invitation mail fail'
+      flash[:danger] = I18n.t('nests.invitation_mail_fail')
     end
 
     redirect_to :invite_nest

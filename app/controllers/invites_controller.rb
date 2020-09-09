@@ -30,7 +30,7 @@ class InvitesController < ApplicationController
       if ( @invite.expired_at < Time.now )
         redirect_to invite_expire_path(@invite.invitation_token)
       elsif ( !current_user )
-        @user = @invite.create_user
+        @user = @invite.create_user(false)
         @invite.destroy
         auto_login(@user)
 

@@ -11,7 +11,7 @@
     $('#space_publication_level').on('change', (ev) => {
 	  if ( $(ev.currentTarget).val() == <%= Space::PublicationLevel::PRIVATE_MEMBER_ONLY %> ) {
 		$('#space_member').show();
-		$('#space_notice_level').val(<%= Space::NoticeLevel::PRIVATE_MEMBER_ONLY %>);
+		$('#space_notice_level').val(<%= Space::NoticeLevel::INCLUDE_INVITED %>);
 	  } else {
 		$('#space_member').hide();
 	  }
@@ -24,7 +24,7 @@
 <%= hidden_field_tag :icon_height %>
 <%= render 'shared/errors', record: obj %>
 <div class="form-group row">
-  <%= form.label :class_name, I18n.t("spaces.class_name"), class: "col-sm-2 col-form-label" %>
+  <%= form.label :class_name, I18n.t("spaces.class_name"), class: "col-sm-2 col-form-label tips", title: t('help.spaces.class_name') %>
   <div class="col-sm-10">
 	<% if ( @space.id ) %>
 	  <%= form.select :class_name, Space::ClassName::CLASSES, {}, class: "form-control", disabled: true %>
@@ -34,20 +34,19 @@
   </div>
 </div>
 <div class="form-group row">
-  <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label" %>
+  <%= form.label :title, t('view.title'),  class: "col-sm-2 col-form-label tips", title: t('help.spaces.title') %>
   <div class="col-sm-10">
 	<%= form.text_field :title, class: "form-control", placeholder: t("view.title") %>
   </div>
 </div>
 <div class="form-group row">
-  <%= form.label :title_id, t('view.title_id'),  class: "col-sm-2 col-form-label" %>
+  <%= form.label :title_id, t('view.title_id'),  class: "col-sm-2 col-form-label tips", title: t('help.spaces.title_id') %>
   <div class="col-sm-10">
 	<%= form.text_field :title_id, class: "form-control", placeholder: t("view.title_id") %>
-	<p><%= t('view.title_id_description')%></p>
   </div>
 </div>
 <div class="form-group row">
-  <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label" %>
+  <%= form.label :publication_level, I18n.t("view.publication_level"), class: "col-sm-2 col-form-label tips", title: t('help.spaces.publication_level') %>
   <div class="col-sm-10">
 	<%= form.select :publication_level, Space::PublicationLevel::types(@nest.owner), {}, class: "form-control" %>
   </div>
@@ -56,21 +55,21 @@
 	   ( @nest.owner.expire_force_notice ) &&
 	   ( @nest.owner.expire_force_notice > Time.now )) %>
   <div class="form-group row">
-	<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label" %>
+	<%= form.label :notice_level, I18n.t("spaces.notice_level"), class: "col-sm-2 col-form-label tips", title: t('help.spaces.notice_level') %>
 	<div class="col-sm-10">
-	  <%= form.select :notice_level, Space::NoticeLevel::types(@nest.owner), {}, class: "form-control" %>
+	  <%= form.select :notice_level, Space::NoticeLevel::TYPES, {}, class: "form-control" %>
 	</div>
   </div>
 <% end %>
 
 <div class="form-group row">
-  <%= form.label :description, I18n.t("view.description"), for: "description", class: "col-sm-2 col-form-label" %>
+  <%= form.label :description, I18n.t("view.description"), for: "description", class: "col-sm-2 col-form-label tips", title: t('help.spaces.description') %>
   <div class="col-sm-10">
 	<%= form.text_area :description, class: "form-control" %>
   </div>
 </div>
 <div class="form-group row">
-  <div class="col-sm-2 col-form-label">
+  <div class="col-sm-2 col-form-label tips" title="<%= t('help.spaces.icon') %>">
 	<%= t('view.icon') %>
   </div>
   <div class="col-sm-10" style="padding:0px 0px 10px 20px;">
@@ -97,7 +96,7 @@
 	   ( @space.id )) %>
 <div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;" id="space_member">
   <div class="row">
-	<%= label_tag :admins, t('spaces.members'), for: "admins", class: "col-sm-2 col-form-label" %>
+	<%= label_tag :admins, t('spaces.members'), for: "admins", class: "col-sm-2 col-form-label tips", title: t('help.spaces.members') %>
 	<div class="col-sm-10">
 	  <% if ( @space.members.size > 0 ) %>
 		<div style="padding:10px 0;">
@@ -118,21 +117,15 @@
 <% end %>
 <%= hidden_field_tag "space[entry_edit_level]", Entry::EditLevel::BOARDS_ONLY %>
 <div style="border:solid #CCC 1px;padding:10px;margin-bottom:20px;">
-  <p><%= t('spaces.entry_settings') %></p>
+  <p class="tips" title="<%= t('help.spaces.entry_settings')%>"><%= t('spaces.entry_settings') %></p>
   <div class="form-group row">
-	<%= form.label :preparation_level, I18n.t("spaces.preparation_level"), class: "col-sm-2 col-form-label" %>
+	<%= form.label :preparation_level, I18n.t("spaces.preparation_level"), class: "col-sm-2 col-form-label tips", title: t('help.spaces.preparation_level') %>
 	<div class="col-sm-10">
 	  <%= form.select :preparation_level, Space::PreparationLevel::TYPES, {}, class: "form-control" %>
 	</div>
   </div>
   <div class="form-group row">
-	<%= form.label :entry_publication_level, I18n.t("spaces.entry_publication_level"), class: "col-sm-2 col-form-label" %>
-	<div class="col-sm-10">
-	  <%= form.select :entry_publication_level, Entry::PublicationLevel::TYPES, {}, class: "form-control" %>
-	</div>
-  </div>
-  <div class="form-group row">
-	<%= form.label :entry_comment_level, I18n.t("spaces.entry_comment_level"), class: "col-sm-2 col-form-label" %>
+	<%= form.label :entry_comment_level, I18n.t("spaces.entry_comment_level"), class: "col-sm-2 col-form-label tips", title: t('help.spaces.entry_comment_level') %>
 	<div class="col-sm-10">
 	  <%= form.select :entry_comment_level, Entry::CommentLevel::TYPES, {}, class: "form-control" %>
 	</div>

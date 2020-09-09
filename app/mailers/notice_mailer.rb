@@ -8,7 +8,7 @@ class NoticeMailer < ApplicationMailer
         @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
-               from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
+               from: "#{@space.nest.title} <space-#{@space.localpart}@#{Settings.mail[:domain_part]}>",
                subject: t('spaces.created')
                )
         end
@@ -18,7 +18,7 @@ class NoticeMailer < ApplicationMailer
       @invite = params[:invite]
       @to_address = @invite.to_mail
       p mail(to: @invite.to_mail,
-             from: "space-#{@space.localpart}@#{Settings.mail[:domain_part]}",
+             from: "#{@space.nest.title} <space-#{@space.localpart}@#{Settings.mail[:domain_part]}>",
              subject: t('spaces.created')
              )
     end
@@ -32,7 +32,7 @@ class NoticeMailer < ApplicationMailer
         @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
-               from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+               from: "#{@entry.space.nest.title} <entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}>",
                subject: "[#{@entry.space.title_id}] #{@entry.title}")
         end
       end
@@ -41,7 +41,7 @@ class NoticeMailer < ApplicationMailer
       @invite = params[:invite]
       @to_address = @invite.to_mail
       p mail(to: @invite.to_mail,
-             from: "entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+             from: "#{@entry.space.nest.title} <entry-#{@entry.localpart}@#{Settings.mail[:domain_part]}>",
              subject: "[#{@entry.space.title_id}] #{@entry.title}")
     end
   end
@@ -54,7 +54,7 @@ class NoticeMailer < ApplicationMailer
         @to_address = mail_address.mail_address
         if ( mail_address.notice )
           mail(to: mail_address.mail_address,
-               from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+               from: "#{@entry.space.nest.title} <comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}>",
                subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
         end
       end
@@ -64,7 +64,7 @@ class NoticeMailer < ApplicationMailer
       @invite = params[:invite]
       @to_address = @invite.to_mail
       mail(to: @invite.to_mail,
-           from: "comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}",
+           from: "#{@entry.space.nest.title} <comment-#{@entry.localpart}@#{Settings.mail[:domain_part]}>",
            subject: "[#{@entry.space.title_id}:#{@entry.comment_count}] #{@entry.title}")
     end
   end
@@ -72,6 +72,7 @@ class NoticeMailer < ApplicationMailer
     @user = params[:user]
     @invite = params[:invite]
     @to_address = @invite.to_mail
+    @send_token = params[:send_token]
     mail(to: @to_address,
          from: "Nestly <no-reply@#{Settings.mail[:domain_part]}>",
          subject: t('users.created'))

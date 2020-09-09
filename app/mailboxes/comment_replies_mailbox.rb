@@ -21,7 +21,7 @@ class CommentRepliesMailbox < ApplicationMailbox
           end
         else
           if ( @invite = @entry.space.nest.invited?(from) )
-            @user = @invite.create_user(@entry.space.nest)
+            @user = @invite.create_user(true)
             break
           end
         end

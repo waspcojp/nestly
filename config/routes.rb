@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   post "spaces/release/:id" => "spaces#release", as: :space_release
   post "spaces/unrelease/:id" => "spaces#unrelease", as: :space_unrelease
   get  "spaces/manage_members/:id" => "spaces#manage_members", as: :manage_space_members
+  get  "spaces/members/:id" => "spaces#members", as: :space_members
   post "spaces/manage_members" => "spaces#manage_members_op"
   resources :spaces
 

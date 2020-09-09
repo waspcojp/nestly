@@ -1,5 +1,11 @@
 あなたは <%= @invite.nest.member_name(@invite.inviter) %>様の招待により、Nestlyにアカウントを作りました。
+<% if ( !@send_token ) %>
+これは「<%= @invite.nest.title %>」への参加招待を受けて、登録手続きを行ったことによります。
+<% else %>
 これは「<%= @invite.nest.title %>」への参加招待を受けて、あなたが <%= @invite.nest.title %> へメールを送ったからです。
 
 まだパスワード等が登録されていませんので、Nestlyにログインする場合は、以下のURLをクリックして下さい。
 <%= token_login_url(@invite.invitation_token) %>
+<% end %>
+
+なお、このメールに全く心当たりがない場合は、<%= "abuse@#{Settings.mail[:domain_part]}" %>まで連絡下さい。

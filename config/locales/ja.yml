@@ -42,6 +42,9 @@ ja:
     back_to_top: ページ先頭に戻る
     contact_us: お問い合わせ
     guidance: ガイダンス
+  mail_from:
+    authentication_mail: Nestlyのメールアドレス認証
+    nest_invitation_mail: Nestlyからの招待メール
   homes:
     of: '%{name} のホーム'
     informations: お知らせ
@@ -63,7 +66,7 @@ ja:
     member control: 参加者管理
     members_list: 参加者一覧
     edit: 情報の変更
-    informations: 情報
+    informations: ネストの情報
     member_count: 参加者数
     members: 参加者
     set-max-spaces: 表示スペース数の設定
@@ -78,6 +81,8 @@ ja:
     resigned: '%{name}を退会しました。'
     edit_profile: プロフィール
     invitation_mail_subject: Nestlyのネストへの招待メール
+    invitation_mail_sent: 招待メールを送りました
+    invitation_mail_fail: 招待メールが送れませんでした
   space: スペース
   spaces:
     top: スペースのトップ
@@ -85,6 +90,7 @@ ja:
     count: スペース数
     new: 新しいスペース
     list: スペース一覧
+    informations: スペースの情報
     preparation_level: エントリ作成
     notice_level: 通知範囲
     class_name: 種類
@@ -95,11 +101,12 @@ ja:
     entry_settings: エントリの設定
     entry_comment_level: コメント出来る人
     entry_publication_level: 公開範囲
-    admins_description: スペースの管理者をネストの管理者の他に指定できます
+    admins_description: スペースの管理者もネストの管理者の他に指定できます
     not_released: 公開されていません
     released: 公開されました
     assign_admin: 管理者を管理する
     manage_members_title: '「%{name}」の参加者を管理する'
+    member_list_for: '「%{name}」の参加者一覧'
     member_only: スペースの参加者のみ
     manage_member: 参加者の管理
     members: スペースの参加者
@@ -236,7 +243,6 @@ ja:
     edit_level: 編集範囲
     title: タイトル
     title_id: タイトル略称
-    title_id_description: 通知メールのタイトルにつく略称です
     icon: アイコン
     captured_at: 入力時刻
     uuid: UUID
@@ -307,6 +313,18 @@ ja:
       edit: 内容を編集します。
       address_for_post: このメールアドレスにメールを送ることで、このスペースにエントリを作ることができます。
       new_entry: このスペースに新しくエントリを作ります。
+      class_name: スペースの種類。このスペースに作るエントリが何であるかという種類です
+      title: このスペースの名前です
+      title_id: 通知メールのタイトルにつく略称です
+      publication_level: このスペースを見ることのできるユーザの範囲を指定します。
+      notice_level: このスペースが閲覧可能な人のうち、このスペースに更新のあった時に通知を送るユーザの範囲を指定します。これはユーザのワッチ指定に優先します。
+      description: このスペースの説明です。この説明はエントリを表示する時にも表示されるので、エントリを閲覧する時の注意書き等に使うことができます
+      icon: スペースを表示する時のアイコンです。一覧等でも使われます。
+      members: このスペースに参加する人を指定します。招待中の人を指定することにより、メールで参加してもらうことが可能です。
+      entry_settings: このスペースに作られるエントリを設定します。このスペースに作られるエントリの全てにこの設定が有効です。
+      preparation_level: エントリを作成できるユーザを設定します。
+      entry_publication_level: エントリを閲覧できるユーザを設定します。
+      entry_comment_level: エントリにコメントができるユーザを設定します。
     users:
       edit: ユーザ名、パスワード等、ユーザ情報の変更を行います。
     home:

@@ -140,8 +140,7 @@ class Nest < ApplicationRecord
           user = nil
         end
       end
-      if ( ( user ) &&
-           ( user.instance_of? User ) )
+      if ( user )
         NestMember.where(user: user,
                          nest: self).first
       else

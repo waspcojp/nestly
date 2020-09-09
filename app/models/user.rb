@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :user_mail_addresses, dependent: :destroy
   has_many :watches, dependent: :destroy
   has_many :nest_members, dependent: :destroy
+  has_many :notices, dependent: :destroy
 
   validates :user_name, uniqueness: true
   validates :password, length: { minimum: 6 }, if: -> { new_record? || ( !crypted_password.nil? && changes["crypted_password"] ) }

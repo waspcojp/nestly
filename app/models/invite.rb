@@ -7,20 +7,17 @@ class Invite < ApplicationRecord
   def member_name(nest)
     self.to_mail
   end
-  def create_user(nest = nil)
+  def create_user(send_token = false)
     user_mail = UserMailAddress.where(mail_address: self.to_mail).first
     if ( !user_mail )
       p user = User.new(user_name: self.to_mail,
                         default_display_name: self.to_mail)
       user.save(validate: false)
       user.append_mail(self.to_mail)
-      p NoticeMailer.with(user: user,
-                          invite: self).user_create_mail.deliver_now
-      if ( nest )
-        nest.join(user)
-      end
-      if (( self.nest ) &&
-          ( self.nest != nest ))
+      NoticeMailer.with(user: user,
+                        invite: self,
+                        send_token: send_token).user_create_mail.deliver_now
+      if ( self.nest )
         self.nest.join(user)
       end
       SpaceMember.where(target: self).each do | space_member |

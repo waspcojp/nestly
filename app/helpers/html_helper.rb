@@ -5,20 +5,20 @@ module HtmlHelper
                            :class => "icon_image"
                          })
 
-    if obj
-      if obj.icon_image_id 
-        tag = image_tag "/icons/download?type=#{type}&id=#{obj.icon_image_id.to_i}", style
+    if (( obj ) &&
+        ( obj.respond_to? :icon_image_id ) &&
+        ( obj.icon_image_id ))
+      tag = image_tag "/icons/download?type=#{type}&id=#{obj.icon_image_id.to_i}", style
+    else
+      case type
+      when "side"
+        tag = image_tag "/images/piroron_192.png", style
+      when "header"
+        tag = image_tag "/images/piroron_45.png", style
+      when "list"
+        tag = image_tag "/images/piroron_140.png", style
       else
-        case type
-        when "side"
-          tag = image_tag "/images/piroron_192.png", style
-        when "header"
-          tag = image_tag "/images/piroron_45.png", style
-        when "list"
-          tag = image_tag "/images/piroron_140.png", style
-        else
-          tag = image_tag "/images/piroron_140.png", style
-        end
+        tag = image_tag "/images/piroron_140.png", style
       end
       tag
     end

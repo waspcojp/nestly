@@ -17,7 +17,7 @@ class SpaceRepliesMailbox < ApplicationMailbox
           break
         else
           if ( @invite = @space.nest.invited?(from) )
-            @user = @invite.create_user(@space.nest)
+            @user = @invite.create_user(true)
             break
           end
         end

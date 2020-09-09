@@ -150,10 +150,19 @@ class SpacesController < ApplicationController
     redirect_to edit_space_path(@space)
   end
 
+  def members
+    @space = Space.find(params[:id])
+    if (( @space.nest.admin?(current_user) ) ||
+        ( @space.member?(current_user) ))
+      render
+    else
+      redirect_to_404
+    end
+  end
   def manage_members
     @space = Space.find(params[:id])
     @nest = @space.nest
-    if ( current_user.use_admin? )
+    if ( @nest.owner.use_admin? )
       render
     else
       redirect_to_404
