@@ -51,9 +51,9 @@ $(document).ready(function(){
   <% @nests.each do | nest | %>
 	<div class="col-sm-3" style="padding:10px;">
 	  <div class="card">
-		<div class="card-header">
+		<div class="card-header tips" style="height:50px;overflow-y:hidden;" title="<%= nest.title %>">
 		  <div class="d-flex justify-content-between">
-			<%= nest.title %>
+			<span><%= nest.title %></span>
 			<% if (  nest.admin?(current_user) ) %>
 			  <%= link_to(edit_nest_path(nest), class:"link") do %>
 				<i class="fas fa-cog"></i>
