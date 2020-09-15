@@ -94,7 +94,6 @@ $(document).ready(() => {
 			  </tr>
 			<% end %>
 			<% @nest.invites.order("to_mail ASC").each do | invite | %>
-			  <% if ( UserMailAddress.where(mail_address: invite.to_mail).count == 0 ) %>
 				<tr>
 				  <td>
 				  </td>
@@ -107,6 +106,7 @@ $(document).ready(() => {
 				  <td>
 				  </td>
 				</tr>
+			  <% if ( UserMailAddress.where(mail_address: invite.to_mail).count == 0 ) %>
 			  <% end %>
 			<% end %>
 		  </tbody>

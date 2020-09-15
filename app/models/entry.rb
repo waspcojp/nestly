@@ -84,20 +84,9 @@ class Entry < ApplicationRecord
     else
       if (( self.released? ) &&
           ( self.space.released? ))
-        if ( self.space.readable?(user) )
-          case self.space.entry_publication_level
-          when  PublicationLevel::OPEN_GLOBAL
-            true
-          when  PublicationLevel::OPEN
-            user ? true : false
-          when  PublicationLevel::MEMBERS_ONLY
-            self.space.nest.member?(user) ? true : false
-          when  PublicationLevel::BOARDS_ONLY
-            self.space.nest.admin?(user) ? true : false
-          end
-        else
-          false
-        end
+        self.space.readable?(user)
+      else
+        false
       end
     end
   end
@@ -148,25 +137,27 @@ class Entry < ApplicationRecord
         case (self.space.notice_level)
         when NoticeLevel::DEFAULT
           self.space.watches.each do | watch |
-            if ( watch.active )
-              if ( self.readable?(watch.user) )
-                send_notice(watch.user, history)
-              else
-                ;
-              end
+            if (( watch.active ) &&
+                ( self.readable?(watch.user) ))
+              p send_notice(watch.user, history)
             end
           end
         when NoticeLevel::ALL_MEMBERS
           self.space.nest.members.each do | member |
-            send_notice(member.user, history)
+            if ( self.readable?(member.user) )
+              p send_notice(member.user, history)
+            end
           end
         when NoticeLevel::INCLUDE_INVITED
           self.space.nest.members.each do | member |
-            p send_notice(member.user, history)
+            if ( self.readable?(member.user) )
+              p send_notice(member.user, history)
+            end
           end
           self.space.nest.invites.each do | invite |
-            if ( UserMailAddress.where(mail_address: invite.to_mail).size == 0 )
-              send_notice(nil, history, invite)
+            if (( UserMailAddress.where(mail_address: invite.to_mail).size == 0 ) &&
+                ( self.readable?(invite) ))
+              p send_notice(invite, history)
             end
           end
         else
@@ -175,23 +166,23 @@ class Entry < ApplicationRecord
     end
   end
 private
-  def send_notice(user, history, invite = nil)
-    if ( user )
-      @watch = Watch.where(user: user,
+  def send_notice(target, history)
+    if ( target.instance_of? User )
+      @watch = Watch.where(user: target,
                            target: self).first
       if ( !@watch )
-        @watch = Watch.create(user: user,
+        @watch = Watch.create(user: target,
                               target: self)
       end
-      @notice = Notice.create(user: user,
+      @notice = Notice.create(user: target,
                               history: history,
                               watch: @watch)
       NoticeMailer.with(notice: @notice).entry_create_mail.deliver_now
     else
-      invite.save
+      target.save
       NoticeMailer.with(notice: nil,
                         entry: self,
-                        invite: invite).entry_create_mail.deliver_now
+                        invite: target).entry_create_mail.deliver_now
     end
   end
   def create_ids

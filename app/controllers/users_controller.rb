@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   def update
     inputs = params.require(:user).permit(:user_name, :password, :current_password, :password_confirmation, :default_display_name, :timezone)
     @user = current_user
+    crypted_password = @user.crypted_password
     if (( !@user.crypted_password.present? ) ||
         ( @user.valid_password?(inputs[:current_password]) ))
       @user.password  = inputs[:password]
@@ -61,6 +62,8 @@ class UsersController < ApplicationController
         redirect_to edit_user_path(@user)
       else
         flash[:warning] = t('users.password_not_match')
+        @user = current_user
+        @user.crypted_password = crypted_password
         render :edit, layout: "application"
       end
     else

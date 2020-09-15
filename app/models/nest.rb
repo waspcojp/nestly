@@ -84,6 +84,7 @@ class Nest < ApplicationRecord
       end
     end
   end
+=begin
   def invites(user = nil)
     if ( user )
       Invite.where(nest: self,
@@ -92,6 +93,7 @@ class Nest < ApplicationRecord
       Invite.where(nest: self).where("( expired_at IS NULL ) or ( expired_at > now() )")
     end
   end
+=end
   def invited?(mail)
     Invite.where(nest: self,
                  to_mail: mail).first
@@ -109,15 +111,19 @@ class Nest < ApplicationRecord
     end
   end
   def admin?(user)
-    if ( self.owner == user )
-      true
-    else
-      member = member?(user)
-      if ( member )
-        member.board
+    if ( user.instance_of? User )
+      if ( self.owner == user )
+        true
       else
-        false
+        member = member?(user)
+        if ( member )
+          member.board
+        else
+          false
+        end
       end
+    else
+      nil
     end
   end
   def resign(user)

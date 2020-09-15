@@ -48,30 +48,34 @@ class Space < ApplicationRecord
     @watch.active = active
     @watch.save
   end
-  def admin?(user, deep = true)
-    if ( self.creater == user )
-      true
-    else
-      if ( self.nest.admin?(user) )
+  def admin?(target, deep = true)
+    if ( target.instance_of? User )
+      if ( self.creater == target )
         true
       else
-        if ( deep )
-          member = self.members.where(target: user).first
-          if (( member ) &&
-              ( member.admin ))
-            true
-          else
-            false
+        if ( self.nest.admin?(target) )
+          true
+        else
+          if ( deep )
+            member = self.members.where(target: target).first
+            if (( member ) &&
+                ( member.admin ))
+              true
+            else
+              false
+            end
           end
         end
       end
+    else
+      false
     end
   end
   def member?(target)
     self.members.where(target: target).first ? true : false
   end
-  def readable?(user)
-    if ( self.admin?(user) )
+  def readable?(target)
+    if ( self.admin?(target) )
       true
     else
       if ( self.released? )
@@ -79,13 +83,13 @@ class Space < ApplicationRecord
         when  PublicationLevel::OPEN_GLOBAL
           true
         when  PublicationLevel::OPEN
-          user ? true : false
+          ( target ) && ( target.instance_of? User )? true : false
         when  PublicationLevel::MEMBERS_ONLY
-          self.nest.member?(user) ? true : false
+          self.nest.member?(target) ? true : false
         when  PublicationLevel::BOARDS_ONLY
-          self.nest.admin?(user) ? true : false
+          self.nest.admin?(target) ? true : false
         when PublicationLevel::PRIVATE_MEMBER_ONLY
-          self.member?(user)
+          self.member?(target)
         end
       else
         false
@@ -114,51 +118,31 @@ class Space < ApplicationRecord
       if (( self.released_at ) &&
           ( self.released_at < Time.now ) &&
           ( self.previous_changes[:released_at] ))
-        if ( self.publication_level == PublicationLevel::PRIVATE_MEMBER_ONLY )
-          case (self.notice_level)
-          when NoticeLevel::DEFAULT
-            self.watches.each do | watch |
-              if ( self.readable?(watch.user) )
-                send_notice(watch.user, history)
-              end
+        case (self.notice_level)
+        when NoticeLevel::DEFAULT
+          self.watches.each do | watch |
+            if ( self.readable?(watch.user) )
+              send_notice(watch.user, history)
             end
-          when NoticeLevel::ALL_MEMBERS
-            self.members.each do | member |
-              send_notice(member.target, history)
-            end
-          when NoticeLevel::INCLUDE_INVITED
-            self.members.each do | member |
-              if ( member.target.instance_of? User )
-                send_notice(member.target, history)
-              else
-                send_notice(member.target, history)
-              end
-            end
-          else
           end
-        else
-          case (self.notice_level)
-          when NoticeLevel::DEFAULT
-            self.watches.each do | watch |
-              if ( self.readable?(watch.user) )
-                send_notice(watch.user, history)
-              else
-                ;
-              end
-            end
-          when NoticeLevel::ALL_MEMBERS
-            self.nest.members.each do | member |
+        when NoticeLevel::ALL_MEMBERS
+          self.nest.members.each do | member |
+            if ( self.readable?(member.user) )
               send_notice(member.user, history)
             end
-          when NoticeLevel::INCLUDE_INVITED
-            self.nest.members.each do | member |
+          end
+        when NoticeLevel::INCLUDE_INVITED
+          self.nest.members.each do | member |
+            if ( self.readable?(member.user) )
               send_notice(member.user, history)
             end
-            self.nest.invites.each do | invite |
+          end
+          self.nest.invites.each do | invite |
+            if ( self.readable?(invite) )
               send_notice(invite, history)
             end
-          else
           end
+        else
         end
       end
     end
